@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 namespace math {
     template <typename T>
     class vec2 {

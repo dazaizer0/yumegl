@@ -2,38 +2,30 @@
 
 #include "../../config.h"
 
-namespace sqm {
-    class classic_square {
+namespace rs {
+    class square {
     public:
         std::vector<float> data;
-        classic_square();
-        virtual void draw();
-        virtual void del();
-
-        unsigned int VBO, VAO, vertex_count;
-    };
-
-    class modern_square : public classic_square {
-    public:
         math::vec3<float> position = math::vec3<float>::ZERO();
         math::color4 color = math::color4::BLACK();
         float size {};
 
-        modern_square(math::vec3<float> position, math::color4 color, float size);
+        unsigned int VBO, VAO, vertex_count;
 
-        void draw() override {
+        square(math::vec3<float> position, float size, math::color4 color);
+
+        void draw() {
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
         }
 
-        void del() override {
+        void del() {
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
         }
-
     };
 
-    modern_square::modern_square(math::vec3<float> position, math::color4 color, float size) {
+    square::square(math::vec3<float> position, float size, math::color4 color) {
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
         //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
