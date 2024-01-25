@@ -2,6 +2,7 @@
 
 #include "engine/render/triangle.h"
 #include "engine/render/square.h"
+#include "engine/render/texture.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -35,7 +36,7 @@ int main() {
         std::cout << "opengl loaded correctly.\n";
     }
 #pragma endregion initialize
-    setColor(math::color4::BLACK()); // black
+    setColor(math::color4::WHITE()); // black
 
     //SHADERS
 #pragma region shaders
@@ -90,17 +91,15 @@ int main() {
 #pragma endregion shaders
 
     // TRIANGLE
-    rt::triangle tr = rt::triangle(
-            math::vec3<float>::CUSTOM(0.2f, 0.3f, 0.0f),
-            0.1f,
-            math::color4::RED()
+
+    // TEXTURES
+    rt::texture tex = rt::texture(
+            math::vec3<float>::ZERO(),
+            0.5f,
+            math::color4::RED(),
+            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/sonic.png"
     );
 
-    rs::square sq = rs::square(
-            math::vec3<float>::CUSTOM(-0.2f, -0.3f, 0.0f),
-            0.2f,
-            math::color4::GREEN()
-    );
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window)) {
@@ -109,11 +108,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
-        glUseProgram(shaderProgram);
-
-        tr.draw();
-        sq.draw();
-
+        tex.draw();
         glfwSwapBuffers(window);
     }
 
@@ -121,8 +116,7 @@ int main() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    tr.del();
-    sq.del();
+    tex.del();
 
     glfwTerminate();
     return 0;

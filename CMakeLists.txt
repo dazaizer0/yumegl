@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME}
         dep/stb/stb.cpp
         src/engine/render/triangle.h
         src/engine/render/square.h
+        src/engine/render/texture.h
+        src/engine/render/texture.h
 )
 
 target_include_directories(${PROJECT_NAME}
