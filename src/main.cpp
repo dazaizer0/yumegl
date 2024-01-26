@@ -36,7 +36,7 @@ int main() {
         std::cout << "opengl loaded correctly.\n";
     }
 #pragma endregion initialize
-    setColor(math::color4::WHITE()); // black
+    setColor(math::colorRGBA::BLACK());
 
     //SHADERS
 #pragma region shaders
@@ -93,12 +93,11 @@ int main() {
     // TRIANGLE
 
     // TEXTURES
-    rt::texture tex = rt::texture(
-            math::vec3<float>::ZERO(),
-            0.5f,
-            math::color4::RED(),
-            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/sonic.png"
-    );
+    rsq::square sq = rsq::square(
+            math::vec3<float>::CUSTOM(0.4f, -0.2f, 0.0f),
+            0.4f,
+            math::colorRGBA::GREEN()
+	);
 
 
     // MAIN LOOP
@@ -108,7 +107,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
-        tex.draw();
+        sq.draw();
         glfwSwapBuffers(window);
     }
 
@@ -116,7 +115,7 @@ int main() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    tex.del();
+    sq.del();
 
     glfwTerminate();
     return 0;

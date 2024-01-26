@@ -18,7 +18,7 @@ add_executable(${PROJECT_NAME}
         src/engine/render/square.h
         src/engine/render/texture.h
         src/engine/render/texture.h
-)
+  )
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE

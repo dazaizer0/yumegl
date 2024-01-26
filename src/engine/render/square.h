@@ -2,17 +2,17 @@
 
 #include "../../config.h"
 
-namespace rs {
+namespace rsq {
     class square {
     public:
         std::vector<float> data;
         math::vec3<float> position = math::vec3<float>::ZERO();
-        math::color4 color = math::color4::BLACK();
+        math::colorRGBA color = math::colorRGBA::BLACK();
         float size {};
 
         unsigned int VBO, VAO, vertex_count;
 
-        square(math::vec3<float> position, float size, math::color4 color);
+        square(math::vec3<float> position, float size, math::colorRGBA color);
 
         void draw() {
             glBindVertexArray(VAO);
@@ -25,7 +25,7 @@ namespace rs {
         }
     };
 
-    square::square(math::vec3<float> position, float size, math::color4 color) {
+    square::square(math::vec3<float> position, float size, math::colorRGBA color) {
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
         //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,

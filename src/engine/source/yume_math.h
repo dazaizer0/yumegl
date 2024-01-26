@@ -60,6 +60,22 @@ namespace math {
             std::cout << "b: " << c << "\n";
         }
 
+        vec3 operator+(const vec3& other) const {
+            return vec2(a + other.a, b + other.b, c + other.c);
+        }
+
+        vec3 operator-(const vec3& other) const {
+            return vec2(a - other.a, b - other.b, c - other.c);
+        }
+
+        vec3 operator*(const vec3& other) const {
+            return vec2(a * other.a, b * other.b, c * other.c);
+        }
+
+        vec3 operator/(const vec3& other) const {
+            return vec2<float>(a / other.a, b / other.b, c / other.c);
+        }
+
         static vec3 CUSTOM(T a, T b, T c) { return {a, b, c}; };
 
         static vec3 ZERO() { return {0.0f, 0.0f, 0.0f}; };
@@ -88,20 +104,41 @@ namespace math {
         static vec4 ONE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };
     };
 
-    class color4 {
+    class colorRGB {
     public:
         float r{};
         float g{};
         float b{};
         float a{};
 
-        color4(float rValue, float gValue, float bValue, float aValue)
+        colorRGB(float rValue, float gValue, float bValue)
+            : r(rValue), g(gValue), b(bValue) {}
+
+        static colorRGB CUSTOM(float r, float g, float b) { return { r, g, b }; };
+
+        static colorRGB BLACK() { return { 0.0f, 0.0f, 0.0f }; };
+        static colorRGB WHITE() { return { 1.0f, 1.0f, 1.0f }; };
+        static colorRGB RED() { return { 1.0f, 0.0f, 0.0f }; };
+        static colorRGB GREEN() { return { 0.0f, 1.0f, 0.0f }; };
+        static colorRGB BLUE() { return { 0.0f, 0.0f, 1.0f }; };
+    };
+
+    class colorRGBA {
+    public:
+        float r{};
+        float g{};
+        float b{};
+        float a{};
+
+        colorRGBA(float rValue, float gValue, float bValue, float aValue)
                 : r(rValue), g(gValue), b(bValue), a(aValue) {}
 
-        static color4 BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
-        static color4 WHITE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };
-        static color4 RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
-        static color4 GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
-        static color4 BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
+        static colorRGBA CUSTOM(float r, float g, float b, float a) { return { r, g, b, a }; };
+
+        static colorRGBA BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
+        static colorRGBA WHITE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };
+        static colorRGBA RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
+        static colorRGBA GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
+        static colorRGBA BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
     };
 }

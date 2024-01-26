@@ -2,7 +2,7 @@
 
 #include "../../config.h"
 
-namespace rt {
+namespace rtr {
     class triangle{
     public:
         // main data
@@ -10,13 +10,13 @@ namespace rt {
 
         // properties
         math::vec3<float> position = math::vec3<float>::ZERO();
-        math::color4 color = math::color4::WHITE();
+        math::colorRGBA color = math::colorRGBA::WHITE();
 
         float size {};
 
         unsigned int VBO, VAO;
 
-        triangle(math::vec3<float> position, float size, math::color4 color);
+        triangle(math::vec3<float> position, float size, math::colorRGBA color);
 
         void draw() {
             glBindVertexArray(VAO);
@@ -29,7 +29,7 @@ namespace rt {
         }
     };
 
-    triangle::triangle(math::vec3<float> position, float size, math::color4 color) {
+    triangle::triangle(math::vec3<float> position, float size, math::colorRGBA color) {
         data = {
                 position.a + -size, position.b + -size, position.c,
                 color.r, color.b, color.g,

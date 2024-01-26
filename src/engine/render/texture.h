@@ -3,12 +3,12 @@
 #include "../../config.h"
 #include "stb/stb_image.h"
 
-namespace rt {
+namespace rtex {
     class texture {
     public:
         std::vector<float> data;
         math::vec3<float> position = math::vec3<float>::ZERO();
-        math::color4 color = math::color4::BLACK();
+        math::colorRGBA color = math::colorRGBA::BLACK();
         float size {};
 
         unsigned int texture_object;
@@ -17,7 +17,7 @@ namespace rt {
         unsigned int VBO, VAO;
         int width, height, nrChannels;
 
-        texture(math::vec3<float> position, float size, math::color4 color, const char* texture_path);
+        texture(math::vec3<float> position, float size, math::colorRGBA color, const char* texture_path);
 
         void draw() {
             glBindTexture(GL_TEXTURE_2D, texture_object);
@@ -32,7 +32,7 @@ namespace rt {
         }
     };
 
-    texture::texture(math::vec3<float> position, float size, math::color4 color, const char* texture_path) {
+    texture::texture(math::vec3<float> position, float size, math::colorRGBA color, const char* texture_path) {
         // ... (bez zmian)
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
