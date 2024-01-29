@@ -18,21 +18,22 @@ namespace render {
         unsigned int VBO{}, VAO{};
 
     public:
+        // CONSTRUCTOR
         triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
-        void render_triangle();
+        // FUNCTIONS
+        void render_triangle() const;
         void remove_data();
     };
 
     triangle::triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
-
         // SET PROPERTIES
         position = position_value;
         color = color_value;
         size = size_value;
 
         // CREATE DATA
-        /*data = {
+        data = {
                 position.x + -size, position.y + -size, position.z,
                 color.r, color.b, color.g,
 
@@ -41,17 +42,6 @@ namespace render {
 
                 position.x + size, position.y + size, position.z,
                 color.r, color.b, color.g,
-        };*/
-
-        data = { // TEMPORARY RAINBOW TRIANGLE
-                position.x + -size, position.y + -size, position.z,
-                1.0f, 0.0f, 0.0f,
-
-                position.x + size, position.y + -size, position.z,
-                0.0f, 1.0f, 0.0f,
-
-                position.x + size, position.y + size, position.z,
-                0.0f, 0.0f, 1.0f,
         };
 
         // GENERATE OBJECT
@@ -60,10 +50,13 @@ namespace render {
 
         glGenBuffers(1, &VBO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
+
+        // SEND DATA TO BUFFER
+        auto buffer_size = static_cast<GLsizeiptr>(data.size() * sizeof(float));
+        glBufferData(GL_ARRAY_BUFFER, buffer_size, data.data(), GL_STATIC_DRAW);
 
         // POSITION
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)nullptr);
         glEnableVertexAttribArray(0);
 
         // COLOR
@@ -72,7 +65,7 @@ namespace render {
     }
 
     // RENDER
-    void triangle::render_triangle() {
+    void triangle::render_triangle() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
@@ -84,4 +77,4 @@ namespace render {
 
         std::cerr << "- object's data has been successfully removed" << std::endl;
     }
-};
+}

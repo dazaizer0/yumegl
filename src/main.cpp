@@ -1,13 +1,10 @@
 #include "config.h"
 
 #include "engine/render/triangle.h"
-#include "engine/render/square.h"
-#include "engine/render/texture.h"
-
 #include "engine/input/input.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
+const int WINDOW_WIDTH = 640;
+const int WINDOW_HEIGHT = 480;
 
 int main() {
     // INITIALIZE
@@ -27,7 +24,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "YumeGL!", NULL, NULL);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "YumeGL!", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -49,18 +46,18 @@ int main() {
 #include "engine/shader/vertex.vs"
         ;
 
-    unsigned int vertexShader;
+    unsigned int vertex_shader;
 
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertex_shader, 1, &vertexShaderSource, nullptr);
+    glCompileShader(vertex_shader);
 
     int  success;
     char infoLog[512];
 
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
     if(!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        glGetShaderInfoLog(vertex_shader, 512, nullptr, infoLog);
         std::cerr << ">> ERROR::SHADER::VERTEX::COMPILATION_FAILED >> " << infoLog << std::endl;
     }
     else {
@@ -68,28 +65,28 @@ int main() {
     }
 
     // FRAGMENT SHADER
-    const char *fragmentShaderSource =
+    const char *fragment_shader_source =
 #include "engine/shader/fragment.vs"
     ;
 
-    unsigned int fragmentShader;
+    unsigned int fragment_shader;
 
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
+    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
+    glCompileShader(fragment_shader);
 
     // COMPLETE SHADER
     unsigned int shader;
 
     shader = glCreateProgram();
 
-    glAttachShader(shader, vertexShader);
-    glAttachShader(shader, fragmentShader);
+    glAttachShader(shader, vertex_shader);
+    glAttachShader(shader, fragment_shader);
     glLinkProgram(shader);
 
     glGetProgramiv(shader, GL_LINK_STATUS, &success);
     if(!success) {
-        glGetProgramInfoLog(shader, 512, NULL, infoLog);
+        glGetProgramInfoLog(shader, 512, nullptr, infoLog);
         std::cerr << ">> ERROR::SHADER::FRAGMENT::COMPILATION_FAILED >> " << infoLog << std::endl;
     }
     else {
@@ -102,7 +99,7 @@ int main() {
     // TRIANGLE
     render::triangle triangle_object = render::triangle(
             mathy::vec3<float>::ZERO(),
-            mathy::colorRGBA::WHITE(),
+            mathy::colorRGBA::GREEN(),
             0.4f
     );
 
@@ -111,7 +108,7 @@ int main() {
         glfwPollEvents();
 
         if (input::isKeyClicked('E')) {
-            std::cerr << "- closing program..." << std::endl;
+            std::cerr << "- closing program...\n";
             break;
         }
 
@@ -125,10 +122,11 @@ int main() {
     }
 
     // DE-INITIALIZE
-    std::cerr << "- program has been closed." << std::endl;
+    std::cout << std::endl;
+    std::cerr << "- program has been closed.\n";
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
 
     triangle_object.remove_data();
 

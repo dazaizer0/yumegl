@@ -1,4 +1,4 @@
-#pragma once // IN DEVELOPMENT
+#pragma once // IN DEVELOPMENT HERE IS A LOT OF MESSSSS
 
 #include "../../config.h"
 #include "stb/stb_image.h"
