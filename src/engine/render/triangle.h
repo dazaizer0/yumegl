@@ -5,19 +5,19 @@
 namespace render {
     // TRIANGLE
     class triangle {
-    public:
+    private:
         // MAIN DATA VECTOR
         std::vector<float> data;
-
-        // PROPERTIES
-        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
-        mathy::colorRGBA color = mathy::colorRGBA::WHITE();
-        float size{};
 
         // VBO, VAO
         unsigned int VBO{}, VAO{};
 
     public:
+        // PROPERTIES
+        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
+        mathy::colorRGBA color = mathy::colorRGBA::WHITE();
+        float size{};
+
         // CONSTRUCTOR
         triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 

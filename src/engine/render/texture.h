@@ -111,11 +111,11 @@ namespace render {
             std::cout << "texture loaded correctly\n";
         }
         else {
-            std::cout << "Failed to load texture: " << stbi_failure_reason() << "\n";
+            std::cerr << "Failed to load texture: " << stbi_failure_reason() << "\n";
         }
 
         if (!texture_data) {
-            std::cout << "Failed to load texture: " << stbi_failure_reason() << "\n";
+            std::cerr << "Failed to load texture: " << stbi_failure_reason() << "\n";
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);

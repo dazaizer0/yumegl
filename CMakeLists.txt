@@ -5,21 +5,36 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(glfw)
 
+# project
 add_executable(${PROJECT_NAME}
+        # main
         src/main.cpp
-        dep/glad/glad.c
         src/config.h
+
+        # math
         src/engine/math/mathy.h
+
+        # input
         src/engine/input/input.h
+
+        # other
         src/engine/source/glImprovements.h
+
+        # deps
+        dep/glad/glad.c
         dep/stb/stb_image.h
         dep/stb/stb.cpp
+
+        # render
         src/engine/render/triangle.h
         src/engine/render/square.h
         src/engine/render/texture.h
         src/engine/render/texture.h
-  )
+        src/engine/render/material.h
+        src/engine/render/material.h
+)
 
+# OPENGL
 target_include_directories(${PROJECT_NAME}
         PRIVATE
         dep
@@ -29,3 +44,5 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         glfw
 )
+
+

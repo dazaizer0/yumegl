@@ -2,6 +2,7 @@
 
 #include "engine/render/triangle.h"
 #include "engine/input/input.h"
+#include "engine/render/material.h"
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -98,7 +99,7 @@ int main() {
 
     // TRIANGLE
     render::triangle triangle_object = render::triangle(
-            mathy::vec3<float>::ZERO(),
+            mathy::vec3 {0.5f, -0.2f, 0.0f},
             mathy::colorRGBA::GREEN(),
             0.4f
     );
@@ -106,11 +107,6 @@ int main() {
     // MAIN LOOP
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
-
-        if (input::isKeyClicked('E')) {
-            std::cerr << "- closing program...\n";
-            break;
-        }
 
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shader);

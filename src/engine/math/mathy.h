@@ -41,8 +41,6 @@ namespace mathy {
             return vec2<T>(x / other.x, y / other.y);
         }
 
-        static vec2<T> CUSTOM(T x, T y) { return {x, y}; };
-
         static vec2<T> ZERO() { return {T(0), T(0)}; };
         static vec2<T> ONE() { return {T(1), T(1)}; };
 
@@ -93,8 +91,6 @@ namespace mathy {
             return vec3<T>(x / other.x, y / other.y, z / other.z);
         }
 
-        static vec3<T> CUSTOM(T x, T y, T z) { return {x, y, z}; };
-
         static vec3<T> ZERO() { return {T(0), T(0), T(0)}; };
         static vec3<T> ONE() { return {T(1), T(1), T(1)}; };
     };
@@ -105,7 +101,6 @@ namespace mathy {
         float r {};
         float g {};
         float b {};
-        float a {};
 
         colorRGB(float rValue, float gValue, float bValue)
             : r(rValue), g(gValue), b(bValue) {}
@@ -117,8 +112,6 @@ namespace mathy {
 
             return *this;
         }
-
-        static colorRGB CUSTOM(float r, float g, float b) { return {r, g, b}; };
 
         static colorRGB BLACK() { return {0.0f, 0.0f, 0.0f}; };
         static colorRGB WHITE() { return {1.0f, 1.0f, 1.0f}; };
@@ -147,8 +140,6 @@ namespace mathy {
 
             return *this;
         }*/
-
-        static colorRGBA CUSTOM(float r, float g, float b, float a) { return {r, g, b, a}; };
 
         static colorRGBA BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
         static colorRGBA WHITE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };
