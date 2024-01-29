@@ -1,14 +1,14 @@
-#pragma once
+#pragma once // IN DEVELOPMENT
 
 #include "../../config.h"
 #include "stb/stb_image.h"
 
-namespace rtex {
+namespace render {
     class texture {
     public:
         std::vector<float> data;
-        math::vec3<float> position = math::vec3<float>::ZERO();
-        math::colorRGBA color = math::colorRGBA::BLACK();
+        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
+        mathy::colorRGBA color = mathy::colorRGBA::BLACK();
         float size {};
 
         unsigned int texture_object;
@@ -17,22 +17,24 @@ namespace rtex {
         unsigned int VBO, VAO;
         int width, height, nrChannels;
 
-        texture(math::vec3<float> position, float size, math::colorRGBA color, const char* texture_path);
+        texture(mathy::vec3<float> position, float size, mathy::colorRGBA color, const char* texture_path);
 
-        void draw() {
+        void render_texture() {
             glBindTexture(GL_TEXTURE_2D, texture_object);
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
 
-        void del() {
+        void remove_data() {
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
             glDeleteTextures(1, &texture_object);
+
+            std::cerr << "The object's data has been successfully removed" << std::endl;
         }
     };
 
-    texture::texture(math::vec3<float> position, float size, math::colorRGBA color, const char* texture_path) {
+    texture::texture(mathy::vec3<float> position, float size, mathy::colorRGBA color, const char* texture_path) {
         // ... (bez zmian)
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
@@ -49,23 +51,24 @@ namespace rtex {
         //};
 
         data = {
-                position.a + -size/*0-x*/, position.b + -size /*1-y*/, position.c/*2-z*/,
+                position.x + -size/*0-x*/, position.y + -size /*1-y*/, position.z/*2-z*/,
                 color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
                 0.0f, 1.0f,
 
-                position.a + size/*6-x*/, position.b + -size/*7-y*/, position.c/*8-z*/,
+                position.x + size/*6-x*/, position.y + -size/*7-y*/, position.z/*8-z*/,
                 color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
                 1.0f, 0.0f,
 
-                position.a + -size/*12-x*/, position.b + size/*13-y*/, position.c/*14-z*/,
+                position.x + -size/*12-x*/, position.y + size/*13-y*/, position.z/*14-z*/,
                 color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
                 0.0f, 0.0f,
 
-                position.a + size/*18-x*/, position.b + size/*19-y*/, position.c/*20-z*/,
+                position.x + size/*18-x*/, position.y + size/*19-y*/, position.z/*20-z*/,
                 color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/,
                 1.0f, 1.0f
         };
 
+        // GENERATE TEXTURE
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
 
@@ -100,6 +103,7 @@ namespace rtex {
         }
 
         unsigned char* texture_data = stbi_load(texture_path, &width, &height, &nrChannels, 0);
+
         if (texture_data) {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
             glGenerateMipmap(GL_TEXTURE_2D);

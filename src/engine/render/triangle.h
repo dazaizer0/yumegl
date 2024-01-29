@@ -2,45 +2,59 @@
 
 #include "../../config.h"
 
-namespace rtr {
-    class triangle{
+namespace render {
+    // TRIANGLE
+    class triangle {
     public:
-        // main data
+        // MAIN DATA VECTOR
         std::vector<float> data;
 
-        // properties
-        math::vec3<float> position = math::vec3<float>::ZERO();
-        math::colorRGBA color = math::colorRGBA::WHITE();
+        // PROPERTIES
+        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
+        mathy::colorRGBA color = mathy::colorRGBA::WHITE();
+        float size{};
 
-        float size {};
+        // VBO, VAO
+        unsigned int VBO{}, VAO{};
 
-        unsigned int VBO, VAO;
+    public:
+        triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
-        triangle(math::vec3<float> position, float size, math::colorRGBA color);
-
-        void draw() {
-            glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-        }
-
-        void del() {
-            glDeleteVertexArrays(1, &VAO);
-            glDeleteBuffers(1, &VBO);
-        }
+        void render_triangle();
+        void remove_data();
     };
 
-    triangle::triangle(math::vec3<float> position, float size, math::colorRGBA color) {
-        data = {
-                position.a + -size, position.b + -size, position.c,
+    triangle::triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+
+        // SET PROPERTIES
+        position = position_value;
+        color = color_value;
+        size = size_value;
+
+        // CREATE DATA
+        /*data = {
+                position.x + -size, position.y + -size, position.z,
                 color.r, color.b, color.g,
 
-                position.a + size, position.b + -size, position.c,
+                position.x + size, position.y + -size, position.z,
                 color.r, color.b, color.g,
 
-                position.a + size, position.b + size, position.c,
+                position.x + size, position.y + size, position.z,
                 color.r, color.b, color.g,
+        };*/
+
+        data = { // TEMPORARY RAINBOW TRIANGLE
+                position.x + -size, position.y + -size, position.z,
+                1.0f, 0.0f, 0.0f,
+
+                position.x + size, position.y + -size, position.z,
+                0.0f, 1.0f, 0.0f,
+
+                position.x + size, position.y + size, position.z,
+                0.0f, 0.0f, 1.0f,
         };
 
+        // GENERATE OBJECT
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
 
@@ -48,12 +62,26 @@ namespace rtr {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
 
-        //position
+        // POSITION
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
         glEnableVertexAttribArray(0);
 
-        //color
+        // COLOR
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
         glEnableVertexAttribArray(1);
     }
-}
+
+    // RENDER
+    void triangle::render_triangle() {
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
+
+    // REMOVE
+    void triangle::remove_data() {
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
+
+        std::cerr << "- object's data has been successfully removed" << std::endl;
+    }
+};

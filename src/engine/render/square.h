@@ -1,31 +1,33 @@
-#pragma once
+#pragma once // IN DEVELOPMENT
 
 #include "../../config.h"
 
-namespace rsq {
+namespace render {
     class square {
     public:
         std::vector<float> data;
-        math::vec3<float> position = math::vec3<float>::ZERO();
-        math::colorRGBA color = math::colorRGBA::BLACK();
+        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
+        mathy::colorRGBA color = mathy::colorRGBA::BLACK();
         float size {};
 
-        unsigned int VBO, VAO, vertex_count;
+        unsigned int VBO, VAO, vertex_count; 
 
-        square(math::vec3<float> position, float size, math::colorRGBA color);
+        square(mathy::vec3<float> position, float size, mathy::colorRGBA color);
 
-        void draw() {
+        void render_square() {
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
         }
 
-        void del() {
+        void remove_data() {
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
+
+            std::cerr << "The object's data has been successfully removed" << std::endl;
         }
     };
 
-    square::square(math::vec3<float> position, float size, math::colorRGBA color) {
+    square::square(mathy::vec3<float> position, float size, mathy::colorRGBA color) {
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
         //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
@@ -41,16 +43,16 @@ namespace rsq {
         //};
 
         data = {
-                position.a + -size/*0-x*/, position.b + -size /*1-y*/, position.c/*2-z*/,
+                position.x + -size/*0-x*/, position.y + -size /*1-y*/, position.z/*2-z*/,
                 color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
 
-                position.a + size/*6-x*/, position.b + -size/*7-y*/, position.c/*8-z*/,
+                position.x + size/*6-x*/, position.y + -size/*7-y*/, position.z/*8-z*/,
                 color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
 
-                position.a + -size/*12-x*/, position.b + size/*13-y*/, position.c/*14-z*/,
+                position.x + -size/*12-x*/, position.y + size/*13-y*/, position.z/*14-z*/,
                 color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
 
-                position.a + size/*18-x*/, position.b + size/*19-y*/, position.c/*20-z*/,
+                position.x + size/*18-x*/, position.y + size/*19-y*/, position.z/*20-z*/,
                 color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/
         };
 

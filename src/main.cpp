@@ -4,6 +4,8 @@
 #include "engine/render/square.h"
 #include "engine/render/texture.h"
 
+#include "engine/input/input.h"
+
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
@@ -13,10 +15,11 @@ int main() {
     GLFWwindow* window;
 
     if (!glfwInit()) {
+        std::cerr << ">> ERROR::GLFW::INITIALIZATION >> " << std::endl;
         return -1;
     }
     else {
-        std::cout << "glfw initialized correctly.\n";
+        std::cout << "- glfw initialized correctly.\n";
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,17 +31,17 @@ int main() {
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Couldn't load opengl" << std::endl;
+        std::cerr << ">> ERROR::OPENGL::COULDN'T LOAD >> " << std::endl;
         glfwTerminate();
         return -1;
     }
     else {
-        std::cout << "opengl loaded correctly.\n";
+        std::cout << "- opengl loaded correctly.\n";
     }
 #pragma endregion initialize
-    setColor(math::colorRGBA::BLACK());
+    setColor(mathy::colorRGBA::BLACK());
 
-    //SHADERS
+    // SHADERS
 #pragma region shaders
 
     // VERTEX SHADER
@@ -47,19 +50,21 @@ int main() {
         ;
 
     unsigned int vertexShader;
+
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     int  success;
     char infoLog[512];
+
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if(!success) {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cerr << ">> ERROR::SHADER::VERTEX::COMPILATION_FAILED >> " << infoLog << std::endl;
     }
     else {
-        std::cout << "VERTEX SHADER LOADED CORRECTLY\n";
+        std::cout << "- vertex shader loaded correctly.\n";
     }
 
     // FRAGMENT SHADER
@@ -68,54 +73,64 @@ int main() {
     ;
 
     unsigned int fragmentShader;
+
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
+    // COMPLETE SHADER
+    unsigned int shader;
 
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    shader = glCreateProgram();
 
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    glAttachShader(shader, vertexShader);
+    glAttachShader(shader, fragmentShader);
+    glLinkProgram(shader);
+
+    glGetProgramiv(shader, GL_LINK_STATUS, &success);
     if(!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glGetProgramInfoLog(shader, 512, NULL, infoLog);
+        std::cerr << ">> ERROR::SHADER::FRAGMENT::COMPILATION_FAILED >> " << infoLog << std::endl;
     }
     else {
-        std::cout << "FRAGMENT SHADER LOADED CORRECTLY\n";
+        std::cout << "- fragment shader loaded correctly.\n";
     }
 
 #pragma endregion shaders
+    // END SHADERS
 
     // TRIANGLE
-
-    // TEXTURES
-    rsq::square sq = rsq::square(
-            math::vec3<float>::CUSTOM(0.4f, -0.2f, 0.0f),
-            0.4f,
-            math::colorRGBA::GREEN()
-	);
-
+    render::triangle triangle_object = render::triangle(
+            mathy::vec3<float>::ZERO(),
+            mathy::colorRGBA::WHITE(),
+            0.4f
+    );
 
     // MAIN LOOP
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shaderProgram);
+        if (input::isKeyClicked('E')) {
+            std::cerr << "- closing program..." << std::endl;
+            break;
+        }
 
-        sq.draw();
+        glClear(GL_COLOR_BUFFER_BIT);
+        glUseProgram(shader);
+
+        // RENDER OBJECTS
+        triangle_object.render_triangle();
+
         glfwSwapBuffers(window);
     }
 
     // DE-INITIALIZE
+    std::cerr << "- program has been closed." << std::endl;
+
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    sq.del();
+    triangle_object.remove_data();
 
     glfwTerminate();
     return 0;

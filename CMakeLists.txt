@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-project(YumeGL)
+project(yumegl)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -9,9 +9,9 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         dep/glad/glad.c
         src/config.h
-        src/engine/source/yume_math.h
+        src/engine/math/mathy.h
         src/engine/input/input.h
-        src/engine/source/gl_improvements.h
+        src/engine/source/glImprovements.h
         dep/stb/stb_image.h
         dep/stb/stb.cpp
         src/engine/render/triangle.h

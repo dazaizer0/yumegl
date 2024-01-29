@@ -8,7 +8,8 @@ void main()
 {
     screenColor = vec4(fragmentColor, 1.0);
 }
-/*
+
+/* WITH TEXTURES
 #version 330 core
 out vec4 FragColor;
 
