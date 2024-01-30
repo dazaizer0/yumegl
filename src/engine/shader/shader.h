@@ -38,8 +38,6 @@ namespace shader {
         glDeleteShader(id);
     }
 
-    /*{}*/
-
     unsigned int makeShaderModule(const std::string& filepath, unsigned int module_type) {
         std::ifstream file;
         std::stringstream bufferedLines;
@@ -106,6 +104,6 @@ namespace shader {
             glDeleteShader(shaderModule);
         }
 
-        return shader;
+        return shader; // RETURN FINAL SHADER
     }
 }

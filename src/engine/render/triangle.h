@@ -35,13 +35,13 @@ namespace render {
         // CREATE DATA
         data = {
                 position.x + -size, position.y + -size, position.z,
-                color.r, color.g, color.b,
+                color.r + 0.4f/*FOR ORIENTATION*/, color.g, color.b,
 
                 position.x + size, position.y + -size, position.z,
                 color.r, color.g, color.b,
 
                 position.x + size, position.y + size, position.z,
-                color.r + 0.4f /*FOR ORIENTATION*/, color.g, color.b,
+                color.r + 0.4f/*FOR ORIENTATION*/, color.g, color.b,
         };
 
         // GENERATE OBJECT

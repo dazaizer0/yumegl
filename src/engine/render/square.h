@@ -61,17 +61,21 @@ namespace render {
         //};
 
         data = {
+                // down-left
                 position.x + -size/*0-x*/, position.y + -size /*1-y*/, position.z/*2-z*/,
-                color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
+                color.r + 0.4f/*3-r temporary + 0.4f*/, color.g/*4-g*/, color.b/*5-b*/,
 
+                // down-right
                 position.x + size/*6-x*/, position.y + -size/*7-y*/, position.z/*8-z*/,
                 color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
 
+                // top-left
                 position.x + -size/*12-x*/, position.y + size/*13-y*/, position.z/*14-z*/,
                 color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
 
+                // top-right
                 position.x + size/*18-x*/, position.y + size/*19-y*/, position.z/*20-z*/,
-                color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/
+                color.r + 0.4f/*21-r temporary + 0.4f*/, color.g/*22-g*/, color.b/*23-b*/
         };
 
         vertex_count = 4;
