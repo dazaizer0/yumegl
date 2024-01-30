@@ -3,27 +3,24 @@
 #include "../../config.h"
 
 namespace input {
-    bool isKeyPressed(char key) {
-        if (GetAsyncKeyState(key) & 0x8000) {
-            return true;
-        }
-        else {
-            return false;
+    bool keyPressedBool[372];
+    bool keyDownBool[372];
+    bool keyDownLastFrame[372];
+
+    void updateInput() {
+        GLFWwindow* window = GL::getWindowPointer();
+        for (int i = 30; i < 350; i++) {
+            keyDownBool[i] = (glfwGetKey(window, i) == GLFW_PRESS);
+            keyPressedBool[i] = (keyDownBool[i] && !keyDownLastFrame[i]);
+            keyDownLastFrame[i] = keyDownBool[i];
         }
     }
 
-    bool isKeyClicked(char key) {
-        static bool keyState = false;
-        bool currentKeyState = GetAsyncKeyState(key) & 0x8001;
+    bool keyPressed(unsigned int keycode) {
+        return keyPressedBool[keycode];
+    }
 
-        if (currentKeyState && !keyState) {
-            keyState = true;
-            return true;
-        }
-        else if (!currentKeyState) {
-            keyState = false;
-        }
-
-        return false;
+    bool keyDown(unsigned int keycode) {
+        return keyDownBool[keycode];
     }
 }

@@ -14,12 +14,12 @@ namespace render {
         // CONSTRUCTOR
         Square(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
 
-        void render_square() const; /* {
+        void renderSquare() const; /* {
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
         }*/
 
-        void remove_data(); /*{
+        void deleteData(); /*{
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
 
@@ -97,16 +97,14 @@ namespace render {
     }
 
     // RENDER
-    void Square::render_square() const {
+    void Square::renderSquare() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
     }
 
-    // REMOVE
-    void Square::remove_data() {
+    // DELETE
+    void Square::deleteData() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
-
-        std::cerr << "The object's data has been successfully removed" << std::endl;
     }
 }

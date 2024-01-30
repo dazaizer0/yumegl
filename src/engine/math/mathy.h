@@ -105,13 +105,7 @@ namespace mathy {
         colorRGB(float rValue, float gValue, float bValue)
             : r(rValue), g(gValue), b(bValue) {}
 
-        colorRGB& operator=(const colorRGB& other) {
-            r = other.r;
-            g = other.g;
-            b = other.b;
-
-            return *this;
-        }
+        colorRGB& operator=(const colorRGB& other) = default;
 
         static colorRGB BLACK() { return {0.0f, 0.0f, 0.0f}; };
         static colorRGB WHITE() { return {1.0f, 1.0f, 1.0f}; };
@@ -132,14 +126,6 @@ namespace mathy {
                 : r(rValue), g(gValue), b(bValue), a(aValue) {}
 
         colorRGBA& operator=(const colorRGBA& other) = default;
-        /*colorRGBA& operator=(const colorRGBA& other) {
-            r = other.r;
-            g = other.g;
-            b = other.b;
-            a = other.a;
-
-            return *this;
-        }*/
 
         static colorRGBA BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
         static colorRGBA WHITE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };

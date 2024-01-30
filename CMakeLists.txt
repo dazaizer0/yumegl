@@ -4,6 +4,7 @@ project(yumegl)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(glfw)
+add_subdirectory(glm)
 
 # project
 add_executable(${PROJECT_NAME}
@@ -18,7 +19,7 @@ add_executable(${PROJECT_NAME}
         src/engine/input/input.h
 
         # other
-        src/engine/source/glImprovements.h
+        src/engine/source/yume_kernel.h
 
         # deps
         dep/glad/glad.c
@@ -40,6 +41,11 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         glfw
+)
+
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        glm
 )
 
 

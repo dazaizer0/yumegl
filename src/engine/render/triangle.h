@@ -15,8 +15,8 @@ namespace render {
         Triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
         // FUNCTIONS
-        void render_triangle() const;
-        void remove_data();
+        void renderTriangle() const;
+        void deleteData();
 
     private:
         // MAIN DATA VECTOR
@@ -65,16 +65,14 @@ namespace render {
     }
 
     // RENDER
-    void Triangle::render_triangle() const {
+    void Triangle::renderTriangle() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
-    // REMOVE
-    void Triangle::remove_data() {
+    // DELETE
+    void Triangle::deleteData() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
-
-        std::cerr << "- object's data has been successfully removed" << std::endl;
     }
 }
