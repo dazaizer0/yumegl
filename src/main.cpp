@@ -3,6 +3,7 @@
 #include "engine/render/triangle.h"
 #include "engine/render/square.h"
 #include "engine/input/input.h"
+#include "engine/shader/shader.h"
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -37,75 +38,25 @@ int main() {
         std::cout << "- opengl loaded correctly.\n";
     }
 #pragma endregion initialize
+
+    // SCREEN COLOR
     setColor(mathy::colorRGBA::BLACK());
 
     // SHADERS
-#pragma region shaders
-
-    // VERTEX SHADER
-    const char *vertexShaderSource =
-#include "engine/shader/vertex.vs"
-        ;
-
-    unsigned int vertex_shader;
-
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertex_shader);
-
-    int  success;
-    char infoLog[512];
-
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(vertex_shader, 512, nullptr, infoLog);
-        std::cerr << ">> ERROR::SHADER::VERTEX::COMPILATION_FAILED >> " << infoLog << std::endl;
-    }
-    else {
-        std::cout << "- vertex shader loaded correctly.\n";
-    }
-
-    // FRAGMENT SHADER
-    const char *fragment_shader_source =
-#include "engine/shader/fragment.vs"
-    ;
-
-    unsigned int fragment_shader;
-
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
-    glCompileShader(fragment_shader);
-
-    // COMPLETE SHADER
-    unsigned int shader;
-
-    shader = glCreateProgram();
-
-    glAttachShader(shader, vertex_shader);
-    glAttachShader(shader, fragment_shader);
-    glLinkProgram(shader);
-
-    glGetProgramiv(shader, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shader, 512, nullptr, infoLog);
-        std::cerr << ">> ERROR::SHADER::FRAGMENT::COMPILATION_FAILED >> " << infoLog << std::endl;
-    }
-    else {
-        std::cout << "- fragment shader loaded correctly.\n";
-    }
-
-#pragma endregion shaders
-    // END SHADERS
+    unsigned int shader = shader::make_shader(
+            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/vertex.txt",
+            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/fragment.txt"
+    );
 
     // TRIANGLE
-    render::triangle triangle_obj = render::triangle(
+    render::Triangle triangle_obj = render::Triangle(
             mathy::vec3 {0.5f, -0.2f, 0.0f},
             mathy::colorRGBA::GREEN(),
             0.4f
     );
 
     // SQUARE
-    render::square square_obj = render::square(
+    render::Square square_obj = render::Square(
         mathy::vec3 {-0.5f, 0.2f, 0.0f},
         mathy::colorRGBA::BLUE(),
         0.4f
@@ -114,6 +65,9 @@ int main() {
     // MAIN LOOP
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+
+        // INPUT
+        if (input::isKeyClicked('P')) { break; }
 
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shader);
@@ -129,8 +83,7 @@ int main() {
     std::cout << std::endl;
     std::cerr << "- program has been closed.\n";
 
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    glDeleteShader(shader);
 
     triangle_obj.remove_data();
     square_obj.remove_data();

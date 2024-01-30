@@ -4,14 +4,7 @@
 
 namespace render {
     // TRIANGLE
-    class triangle {
-    private:
-        // MAIN DATA VECTOR
-        std::vector<float> data;
-
-        // VBO, VAO
-        unsigned int VBO{}, VAO{};
-
+    class Triangle {
     public:
         // PROPERTIES
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
@@ -19,14 +12,21 @@ namespace render {
         float size{};
 
         // CONSTRUCTOR
-        triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        Triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
         // FUNCTIONS
         void render_triangle() const;
         void remove_data();
+
+    private:
+        // MAIN DATA VECTOR
+        std::vector<float> data;
+
+        // VBO, VAO
+        unsigned int VBO{}, VAO{};
     };
 
-    triangle::triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Triangle::Triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;
@@ -65,13 +65,13 @@ namespace render {
     }
 
     // RENDER
-    void triangle::render_triangle() const {
+    void Triangle::render_triangle() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
     // REMOVE
-    void triangle::remove_data() {
+    void Triangle::remove_data() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 

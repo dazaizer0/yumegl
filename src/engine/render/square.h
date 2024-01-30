@@ -4,22 +4,15 @@
 
 namespace render {
     // SQUARE
-    class square {
-    private:
-        // MAIN DATA VECTOR
-        std::vector<float> data;
-
-        // VBO, VAO
-        unsigned int VBO, VAO, vertex_count;
-
+    class Square {
     public:
         // PROPERTIES
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
-        float size {};
+        float size{};
 
         // CONSTRUCTOR
-        square(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
+        Square(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
 
         void render_square() const; /* {
             glBindVertexArray(VAO);
@@ -32,9 +25,17 @@ namespace render {
 
             std::cerr << "The object's data has been successfully removed" << std::endl;
         }*/
+
+    private:
+        // MAIN DATA VECTOR
+        std::vector<float> data;
+
+        // VBO, VAO
+        unsigned int VBO{}, VAO{};
+        int vertex_count;
     };
 
-    square::square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Square::Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;
@@ -44,19 +45,19 @@ namespace render {
         //data = {
         //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
         //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
-                    // TEXTURE VERTICASES
+        // TEXTURE VERTICASES
 
         //        position.a + size/*6-x*/, position.b - size/*7-y*/, position.c/*8-z*/,
         //        color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
-                    // TEXTURE VERTICASES
+        // TEXTURE VERTICASES
 
         //        position.a - size/*12-x*/,  position.b + size/*13-y*/, position.c/*14-z*/,
         //        color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
-                    // TEXTURE VERTICASES
+        // TEXTURE VERTICASES
 
         //        position.a + size/*18-x*/,  position.b + size/*19-y*/, position.c/*20-z*/,
         //        color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/
-                    // TEXTURE VERTICASES
+        // TEXTURE VERTICASES
         //};
 
         data = {
@@ -96,13 +97,13 @@ namespace render {
     }
 
     // RENDER
-    void square::render_square() const {
+    void Square::render_square() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
     }
 
     // REMOVE
-    void square::remove_data() {
+    void Square::remove_data() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 
