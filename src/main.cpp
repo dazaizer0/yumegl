@@ -1,8 +1,8 @@
 #include "config.h"
 
 #include "engine/render/triangle.h"
+#include "engine/render/square.h"
 #include "engine/input/input.h"
-#include "engine/render/material.h"
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -29,7 +29,7 @@ int main() {
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << ">> ERROR::OPENGL::COULDN'T LOAD >> " << std::endl;
+        std::cerr << ">> ERROR::OPENGL::COULDN'T_LOAD >> " << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -98,10 +98,17 @@ int main() {
     // END SHADERS
 
     // TRIANGLE
-    render::triangle triangle_object = render::triangle(
+    render::triangle triangle_obj = render::triangle(
             mathy::vec3 {0.5f, -0.2f, 0.0f},
             mathy::colorRGBA::GREEN(),
             0.4f
+    );
+
+    // SQUARE
+    render::square square_obj = render::square(
+        mathy::vec3 {-0.5f, 0.2f, 0.0f},
+        mathy::colorRGBA::BLUE(),
+        0.4f
     );
 
     // MAIN LOOP
@@ -112,7 +119,8 @@ int main() {
         glUseProgram(shader);
 
         // RENDER OBJECTS
-        triangle_object.render_triangle();
+        triangle_obj.render_triangle();
+        square_obj.render_square();
 
         glfwSwapBuffers(window);
     }
@@ -124,7 +132,8 @@ int main() {
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
-    triangle_object.remove_data();
+    triangle_obj.remove_data();
+    square_obj.remove_data();
 
     glfwTerminate();
     return 0;
