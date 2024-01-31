@@ -5,6 +5,9 @@
 #include "engine/input/input.h"
 #include "engine/shader/shader.h"
 
+const int WINDOW_WIDTH = 640;
+const int WINDOW_HEIGHT = 480;
+
 namespace yumeEngine {
     void gameInit() {
 
@@ -46,15 +49,21 @@ int main() {
 
     // MAIN LOOP
     while (GL::windowIsOpen()) {
-        glfwPollEvents();
         // UPDATE
         // TODO: SOME COOL STUFF
 
         // INPUT
         input::updateInput();
 
-        if (input::keyDown(GLFW_KEY_ESCAPE)) {
+        if (input::keyPressed(GLFW_KEY_ESCAPE)) {
             GL::setWindowShouldClose(true);
+        }
+
+        if (input::keyPressed(GLFW_KEY_1)) {
+            std::cerr << "Key pressed: 1\n";
+        }
+        else if (input::keyDown(GLFW_KEY_2)) {
+            std::cerr << "Key down: 2\n";
         }
 
         // RENDER
