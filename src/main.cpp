@@ -28,7 +28,7 @@ int main() {
     render::Square sq = render::Square(
         mathy::vec3{ -0.5f, -0.2f, 0.0f },
         mathy::colorRGBA::BLUE(),
-        0.4f
+        0.2f
     );
 
     // TEXTURE
@@ -56,6 +56,27 @@ int main() {
         }
         else if (input::keyDown(GLFW_KEY_2)) {
             std::cerr << "Key down: 2\n";
+        }
+
+        if (input::keyPressed(GLFW_KEY_D)) {
+            sq.position.x += 0.1f;
+            sq.updatePosition();
+            sq.refreshSquare();
+        }
+        else if (input::keyPressed(GLFW_KEY_A)) {
+            sq.position.x -= 0.1f;
+            sq.updatePosition();
+            sq.refreshSquare();
+        }
+        if (input::keyPressed(GLFW_KEY_W)) {
+            sq.position.y += 0.1f;
+            sq.updatePosition();
+            sq.refreshSquare();
+        }
+        else if (input::keyPressed(GLFW_KEY_S)) {
+            sq.position.y -= 0.1f;
+            sq.updatePosition();
+            sq.refreshSquare();
         }
 
         // RENDER

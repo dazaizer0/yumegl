@@ -15,7 +15,9 @@ namespace render {
         Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
         // FUNCTIONS
-        void renderSquare(unsigned int shader);
+        void updatePosition();
+        void refreshSquare();
+        void renderSquare(unsigned int shader) const;
 
         void deleteData();
 
@@ -75,8 +77,50 @@ namespace render {
         glEnableVertexAttribArray(1);
     }
 
+    // FUNCS
+    void Square::updatePosition() { // TO OPTIMIZE
+        data = {
+                // down-left
+                position.x + -size, position.y + -size, position.z,
+                color.r, color.g, color.b,
+
+                // down-right
+                position.x + size, position.y + -size, position.z,
+                color.r, color.g, color.b,
+
+                // top-left
+                position.x + -size, position.y + size, position.z,
+                color.r, color.g, color.b,
+
+                // top-right
+                position.x + size, position.y + size, position.z,
+                color.r, color.g, color.b,
+        };
+    }
+
+    void Square::refreshSquare() { // TO OPTIMIZE
+        // GENERATE OBJECT
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        // SEND DATA TO BUFFER
+        auto buffer_size = static_cast<GLsizeiptr>(data.size() * sizeof(float));
+        glBufferData(GL_ARRAY_BUFFER, buffer_size, data.data(), GL_STATIC_DRAW);
+
+        // POSITION
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)nullptr);
+        glEnableVertexAttribArray(0);
+
+        // COLOR
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
+        glEnableVertexAttribArray(1);
+    }
+
     // RENDER
-    void Square::renderSquare(unsigned int shader) {
+    void Square::renderSquare(unsigned int shader) const {
         glUseProgram(shader);
 
         glBindVertexArray(VAO);
