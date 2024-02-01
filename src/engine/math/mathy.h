@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // IN DEVELOPMENT
 
 #include <iostream>
 
@@ -7,15 +7,14 @@ namespace mathy {
     template <typename T>
     class vec2 {
     public:
-        T x {};
-        T y {};
+        T x{};
+        T y{};
 
         vec2(T xValue, T yValue)
                 : x(xValue), y(yValue) {}
 
         void out() {
-            std::cout << "x: " << x << "\n";
-            std::cout << "y: " << y << "\n";
+            std::cout << "x: " << x << ", y: " << y << "\n";
         }
 
         vec2<T>& operator=(const vec2<T>& other) {
@@ -54,17 +53,15 @@ namespace mathy {
     template <typename T>
     class vec3 {
     public:
-        T x {};
-        T y {};
-        T z {};
+        T x{};
+        T y{};
+        T z{};
 
         vec3(T xValue, T yValue, T zValue)
                 : x(xValue), y(yValue), z(zValue) {}
 
         void out() {
-            std::cout << "x: " << x << "\n";
-            std::cout << "y: " << y << "\n";
-            std::cout << "z: " << z << "\n";
+            std::cout << "x: " << x << ", y: " << y << ", z: " << z << "\n";
         }
 
         vec3<T>& operator=(const vec3<T>& other) {
@@ -98,9 +95,9 @@ namespace mathy {
     // RGB
     class colorRGB {
     public:
-        float r {};
-        float g {};
-        float b {};
+        float r{};
+        float g{};
+        float b{};
 
         colorRGB(float rValue, float gValue, float bValue)
             : r(rValue), g(gValue), b(bValue) {}
@@ -117,10 +114,10 @@ namespace mathy {
     // RGBA
     class colorRGBA {
     public:
-        float r {};
-        float g {};
-        float b {};
-        float a {};
+        float r{};
+        float g{};
+        float b{};
+        float a{};
 
         colorRGBA(float rValue, float gValue, float bValue, float aValue)
                 : r(rValue), g(gValue), b(bValue), a(aValue) {}

@@ -1,14 +1,15 @@
-#pragma once
+#pragma once // IN DEVELOPMENT
 
 #include "../../config.h"
 
 namespace input {
+    // PROPERTIES
     bool keyPressedBool[372];
     bool keyDownBool[372];
     bool keyDownLastFrame[372];
 
     void updateInput() {
-        GLFWwindow* window = GL::getWindowPointer();
+        GLFWwindow* window = gl::getWindowPointer();
         for (int i = 30; i < 350; i++) {
             keyDownBool[i] = (glfwGetKey(window, i) == GLFW_PRESS);
             keyPressedBool[i] = (keyDownBool[i] && !keyDownLastFrame[i]);

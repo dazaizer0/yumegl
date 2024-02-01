@@ -1,10 +1,8 @@
 #include "config.h"
-
 #include "engine/render/triangle.h"
 #include "engine/render/square.h"
 #include "engine/input/input.h"
 #include "engine/shader/shader.h"
-
 #include "engine/render/texture.h"
 
 const int WINDOW_WIDTH = 640;
@@ -12,36 +10,37 @@ const int WINDOW_HEIGHT = 480;
 
 int main() {
     // INITIALIZATION
-    GL::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
+    gl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
     setColor(mathy::colorRGBA::BLACK());
 
     // SHADERS
     shader::Shader shader = shader::Shader(
-            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/vertex.glsl",
-            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/fragment.glsl"
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment.glsl"
     );
 
     shader::Shader texturesShader = shader::Shader(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/vertex_t.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/fragment_t.glsl"
-    );
-
-    // LOAD TEXTURE
-    render::Texture tex = render::Texture(
-            mathy::vec3 {-0.5f, 0.2f, 0.0f},
-            mathy::colorRGBA::BLUE(),
-            0.4f
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
     );
 
     // SQUARE
-    render::Square squ = render::Square(
+    render::Square sq = render::Square(
         mathy::vec3{ -0.5f, -0.2f, 0.0f },
         mathy::colorRGBA::BLUE(),
         0.4f
     );
 
+    // TEXTURE
+    render::Texture tex = render::Texture(
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+        mathy::vec3<float>::ZERO(),
+        mathy::colorRGBA::WHITE(),
+        0.8f
+    );
+
     // MAIN LOOP
-    while (GL::windowIsOpen()) {
+    while (gl::isWindowOpen()) {
         // UPDATE
         // TODO: SOME COOL STUFF
 
@@ -49,7 +48,7 @@ int main() {
         input::updateInput();
 
         if (input::keyPressed(GLFW_KEY_ESCAPE)) {
-            GL::setWindowShouldClose(true);
+            gl::setWindowStatus(false);
         }
 
         if (input::keyPressed(GLFW_KEY_1)) {
@@ -61,22 +60,21 @@ int main() {
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
-        shader.useShader();
-        squ.renderSquare();
 
-        texturesShader.useShader();
-        tex.renderTexture();
-
-        GL::swapBuffersPollEvents();
+        tex.renderTexture(texturesShader.getShader()); // TEXTURE
+        sq.renderSquare(shader.getShader()); // SQUARE
+        
+        gl::swapBuffersPollEvents();
     }
 
     // DE-INITIALIZATION
     shader.deleteShader();
+    texturesShader.deleteShader();
 
-    squ.deleteData();
+    sq.deleteData();
     tex.deleteData();
 
-    GL::cleanup();
+    gl::close();
 
     return 0;
 }

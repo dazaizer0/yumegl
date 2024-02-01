@@ -16,6 +16,7 @@ namespace render {
 
         // FUNCTIONS
         void renderTriangle() const;
+
         void deleteData();
 
     private:
@@ -32,19 +33,18 @@ namespace render {
         color = color_value;
         size = size_value;
 
-        // CREATE DATA
+        // SET UP VERTEX DATA AND BUFFERS DATA
         data = {
                 position.x + -size, position.y + -size, position.z,
-                color.r + 0.4f/*FOR ORIENTATION*/, color.g, color.b,
+                color.r, color.g, color.b,
 
                 position.x + size, position.y + -size, position.z,
                 color.r, color.g, color.b,
 
                 position.x + size, position.y + size, position.z,
-                color.r + 0.4f/*FOR ORIENTATION*/, color.g, color.b,
+                color.r, color.g, color.b,
         };
 
-        // GENERATE OBJECT
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
 
@@ -72,6 +72,8 @@ namespace render {
 
     // DELETE
     void Triangle::deleteData() {
+        std::cerr << "Triangles data successfully deleted" << std::endl;
+
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
     }

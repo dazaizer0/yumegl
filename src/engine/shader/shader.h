@@ -1,3 +1,5 @@
+#pragma once // IN DEVELOPMENT
+
 #include "../../config.h"
 
 namespace shader {
@@ -35,6 +37,7 @@ namespace shader {
     }
 
     void Shader::deleteShader() const {
+        std::cerr << "Shader successfully deleted" << std::endl;
         glDeleteShader(id);
     }
 
@@ -61,45 +64,45 @@ namespace shader {
         if (!success) {
             char errorLog[1024];
             glGetShaderInfoLog(shaderModule, 1024, nullptr, errorLog);
-            std::cerr << "Shader Module compilation error:\n" << errorLog << std::endl;
+            std::cerr << "Shader Module compilation error:\n" << errorLog << '\n';
+            std::cerr << "Shader path: " << filepath << std::endl;
         }
         else {
             std::cout << "Shader Module compiled correctly\n";
+            std::cerr << "Shader path: " << filepath << "\n\n";
+
         }
 
         return shaderModule;
     }
 
     unsigned int makeFinalShader(const std::string& vertex_filepath, const std::string& fragment_filepath) {
-        //To store all the shader modules
+        // CREATE FINAL SHADER
         std::vector<unsigned int> modules;
 
-        //Add a vertex shader module
+        // ADD
         modules.push_back(makeShaderModule(vertex_filepath, GL_VERTEX_SHADER));
-
-        //Add a fragment shader module
         modules.push_back(makeShaderModule(fragment_filepath, GL_FRAGMENT_SHADER));
 
-        //Attach all the modules then link the program
+        // LINK
         unsigned int shader = glCreateProgram();
         for (unsigned int shaderModule : modules) {
             glAttachShader(shader, shaderModule);
         }
         glLinkProgram(shader);
 
-        //Check the linking worked
+        // CHECK
         int success;
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success) {
             char errorLog[1024];
             glGetProgramInfoLog(shader, 1024, nullptr, errorLog);
-            std::cerr << "Shader linking error:\n" << errorLog << '\n';
+            std::cerr << "Final shader linking error:\n" << errorLog << std::endl;
         }
         else {
-            std::cout << "Shader linked correctly\n";
+            std::cout << "Final shader linked correctly\n\n";
         }
 
-        //Modules are now unneeded and can be freed
         for (unsigned int shaderModule : modules) {
             glDeleteShader(shaderModule);
         }

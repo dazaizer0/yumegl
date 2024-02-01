@@ -1,4 +1,4 @@
-#pragma once // IN DEVELOPMENT HERE IS A LOT OF MESSSSS
+#pragma once
 
 #include "../../config.h"
 
@@ -12,19 +12,12 @@ namespace render {
         float size{};
 
         // CONSTRUCTOR
-        Square(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
+        Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
-        void renderSquare() const; /* {
-            glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
-        }*/
+        // FUNCTIONS
+        void renderSquare(unsigned int shader);
 
-        void deleteData(); /*{
-            glDeleteVertexArrays(1, &VAO);
-            glDeleteBuffers(1, &VBO);
-
-            std::cerr << "The object's data has been successfully removed" << std::endl;
-        }*/
+        void deleteData();
 
     private:
         // MAIN DATA VECTOR
@@ -41,41 +34,23 @@ namespace render {
         color = color_value;
         size = size_value;
 
-        // CREATE DATA
-        //data = {
-        //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
-        //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
-        // TEXTURE VERTICASES
-
-        //        position.a + size/*6-x*/, position.b - size/*7-y*/, position.c/*8-z*/,
-        //        color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
-        // TEXTURE VERTICASES
-
-        //        position.a - size/*12-x*/,  position.b + size/*13-y*/, position.c/*14-z*/,
-        //        color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
-        // TEXTURE VERTICASES
-
-        //        position.a + size/*18-x*/,  position.b + size/*19-y*/, position.c/*20-z*/,
-        //        color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/
-        // TEXTURE VERTICASES
-        //};
-
+        // SET UP VERTEX DATA AND BUFFERS DATA
         data = {
                 // down-left
-                position.x + -size/*0-x*/, position.y + -size /*1-y*/, position.z/*2-z*/,
-                color.r + 0.4f/*3-r temporary + 0.4f*/, color.g/*4-g*/, color.b/*5-b*/,
+                position.x + -size, position.y + -size, position.z,
+                color.r, color.g, color.b,
 
                 // down-right
-                position.x + size/*6-x*/, position.y + -size/*7-y*/, position.z/*8-z*/,
-                color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
+                position.x + size, position.y + -size, position.z,
+                color.r, color.g, color.b,
 
                 // top-left
-                position.x + -size/*12-x*/, position.y + size/*13-y*/, position.z/*14-z*/,
-                color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
+                position.x + -size, position.y + size, position.z,
+                color.r, color.g, color.b,
 
                 // top-right
-                position.x + size/*18-x*/, position.y + size/*19-y*/, position.z/*20-z*/,
-                color.r + 0.4f/*21-r temporary + 0.4f*/, color.g/*22-g*/, color.b/*23-b*/,
+                position.x + size, position.y + size, position.z,
+                color.r, color.g, color.b,
         };
 
         vertex_count = 4;
@@ -101,13 +76,17 @@ namespace render {
     }
 
     // RENDER
-    void Square::renderSquare() const {
+    void Square::renderSquare(unsigned int shader) {
+        glUseProgram(shader);
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
     }
 
     // DELETE
     void Square::deleteData() {
+        std::cerr << "Squares data successfully deleted" << std::endl;
+
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
     }

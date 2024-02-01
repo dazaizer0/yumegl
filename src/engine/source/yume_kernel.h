@@ -6,7 +6,7 @@ void setColor(const mathy::colorRGBA& color) {
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-namespace GL {
+namespace gl {
     GLFWwindow* _window;
 
     void init(int width, int height, const std::string& title) {
@@ -42,12 +42,12 @@ namespace GL {
         return _window;
     }
 
-    bool windowIsOpen() {
+    bool isWindowOpen() {
         return !glfwWindowShouldClose(_window);
     }
 
-    void setWindowShouldClose(bool value) {
-        glfwSetWindowShouldClose(_window, value);
+    void setWindowStatus(bool value) {
+        glfwSetWindowShouldClose(_window, !value);
     }
 
     void swapBuffersPollEvents() {
@@ -55,7 +55,8 @@ namespace GL {
         glfwPollEvents();
     }
 
-    void cleanup() {
+    void close() {
+        std::cerr << "Opengl has been successfully closed" << std::endl;
         glfwTerminate();
     }
 }

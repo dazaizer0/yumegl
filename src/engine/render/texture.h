@@ -1,4 +1,4 @@
-#pragma once // IN DEVELOPMENT HERE IS A LOT OF MESSSSS
+#pragma once // IN DEVELOPMENT
 
 #include "../../config.h"
 
@@ -14,129 +14,125 @@ namespace render {
         float size{};
 
         // CONSTRUCTOR
-        Texture(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
+        Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
-        void renderTexture() const; /* {
-            glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
-        }*/
+        void renderTexture(unsigned int shader) const;
 
-        void deleteData(); /*{
-            glDeleteVertexArrays(1, &VAO);
-            glDeleteBuffers(1, &VBO);
+        void deleteData();
 
-            std::cerr << "The object's data has been successfully removed" << std::endl;
-        }*/
+    private:
+        unsigned int VBO, VAO, EBO;
 
-        // MAIN DATA VECTOR
-        std::vector<float> data;
-        unsigned int _texture;
-
-        // VBO, VAO
-        unsigned int VBO{}, VAO{};
-        int vertex_count;
+        const char *texPath;
+        unsigned int tex;
+        unsigned char* texData;
     };
 
-    Texture::Texture(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
+        texPath = path;
         position = position_value;
         color = color_value;
         size = size_value;
 
-        // CREATE DATA
-        //data = {
-        //        position.a - size/*0-x*/, position.b - size /*1-y*/,position.c/*2-z*/,
-        //        color.r/*3-r*/, color.g/*4-g*/, color.b/*5-b*/,
-        // TEXTURE VERTICASES
+        // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
+        float vertices[] = {
+            // position, position, position
+            // color, color, color
+            // tex coords, tex coords, tex coords
 
-        //        position.a + size/*6-x*/, position.b - size/*7-y*/, position.c/*8-z*/,
-        //        color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
-        // TEXTURE VERTICASES
+             position.x + size, position.y + size, position.z,
+             color.r, color.g, color.b,
+             1.0f, 1.0f,
 
-        //        position.a - size/*12-x*/,  position.b + size/*13-y*/, position.c/*14-z*/,
-        //        color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
-        // TEXTURE VERTICASES
+             position.x + size, position.y + -size, position.z,
+             0.0f, 1.0f, 0.0f,
+             1.0f, 0.0f,
 
-        //        position.a + size/*18-x*/,  position.b + size/*19-y*/, position.c/*20-z*/,
-        //        color.r/*21-r*/, color.g/*22-g*/, color.b/*23-b*/
-        // TEXTURE VERTICASES
-        //};
+            position.x + -size, position.y + -size, position.z,
+            color.r, color.g, color.b,
+            0.0f, 0.0f,
 
-        data = {
-                // positions          // colors           // texture coords
-                0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-                0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-                -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-                -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
+            position.x + -size, position.y + size, position.z,
+            color.r, color.g, color.b,
+            0.0f, 1.0f
+        };
+        unsigned int indices[] = {
+            // triangle 1
+            // triangle 2
+
+            0, 1, 3,
+            1, 2, 3
         };
 
-        vertex_count = 4;
-
-        // GENERATE OBJECT
         glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+
         glBindVertexArray(VAO);
 
-        glGenBuffers(1, &VBO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-        // SEND DATA TO BUFFER
-        auto buffer_size = static_cast<GLsizeiptr>(data.size() * sizeof(float));
-        glBufferData(GL_ARRAY_BUFFER, buffer_size, data.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-        // POSITION
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)nullptr);
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
-
-        // COLOR
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
+        // color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+        // texture coord attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
 
-        // TEXTURE
-        glGenTextures(1, &_texture);
-        glBindTexture(GL_TEXTURE_2D, _texture);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        // LOADING TEXTURE
+        glGenTextures(1, &tex);
+        glBindTexture(GL_TEXTURE_2D, tex); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+        // set the texture wrapping parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        // set texture filtering parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
+        // load image, create texture and generate mipmaps
         int width, height, nrChannels;
-        unsigned char* data2 = stbi_load(
-            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+        // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+        texData = stbi_load(
+            //"C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+            texPath,
             &width,
             &height,
             &nrChannels,
             0
         );
 
-        if (data2)
-        {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
+        if (texData) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
-        else
-        {
+        else {
             std::cout << "Failed to load texture" << std::endl;
         }
-        stbi_image_free(data2);
-
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
+        stbi_image_free(texData);
     }
 
     // RENDER
-    void Texture::renderTexture() const {
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
+    void Texture::renderTexture(unsigned int shader) const {
+        glBindTexture(GL_TEXTURE_2D, tex);
 
-        glBindTexture(GL_TEXTURE_2D, _texture);
+        glUseProgram(shader);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
     // DELETE
     void Texture::deleteData() {
+        std::cerr << "Textures data successfully deleted" << std::endl;
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &EBO);
     }
 }
+// path example: "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png"
