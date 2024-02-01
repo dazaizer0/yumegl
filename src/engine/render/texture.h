@@ -2,6 +2,8 @@
 
 #include "../../config.h"
 
+#include "stb/stb_image.h"
+
 namespace render {
     // SQUARE
     class Texture {
@@ -28,6 +30,7 @@ namespace render {
 
         // MAIN DATA VECTOR
         std::vector<float> data;
+        unsigned int _texture;
 
         // VBO, VAO
         unsigned int VBO{}, VAO{};
@@ -87,12 +90,48 @@ namespace render {
         // COLOR
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
         glEnableVertexAttribArray(1);
+
+        // TEXTURE
+        glGenTextures(1, &_texture);
+        glBindTexture(GL_TEXTURE_2D, _texture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        int width, height, nrChannels;
+        unsigned char* data2 = stbi_load(
+            "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+            &width,
+            &height,
+            &nrChannels,
+            0
+        );
+
+        if (data2)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data2);
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
     }
 
     // RENDER
     void Texture::renderTexture() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
+
+        glBindTexture(GL_TEXTURE_2D, _texture);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
     }
 
     // DELETE
