@@ -1,26 +1,15 @@
 #include "config.h"
+#include "stb/stb_image.h"
 
 #include "engine/render/triangle.h"
 #include "engine/render/square.h"
 #include "engine/input/input.h"
 #include "engine/shader/shader.h"
 
+#include "engine/render/texture.h"
+
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
-
-namespace yumeEngine {
-    void gameInit() {
-
-    }
-
-    void gameUpdate() {
-
-    }
-
-    void gameDeInit() {
-
-    }
-}
 
 int main() {
     // INITIALIZATION
@@ -33,19 +22,45 @@ int main() {
             "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/shader_scripts/fragment.glsl"
     );
 
-    // TRIANGLE
-    render::Triangle triangle_obj = render::Triangle(
-            mathy::vec3 {0.5f, -0.2f, 0.0f},
-            mathy::colorRGBA::GREEN(),
-            0.4f
-    );
-
     // SQUARE
-    render::Square square_obj = render::Square(
+    render::Texture tex = render::Texture(
             mathy::vec3 {-0.5f, 0.2f, 0.0f},
             mathy::colorRGBA::BLUE(),
             0.4f
     );
+
+    // TEXTURE
+    unsigned int _texture;
+    glGenTextures(1, &_texture);
+    glBindTexture(GL_TEXTURE_2D, _texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    int width, height, nrChannels;
+    unsigned char *data2 = stbi_load(
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+        &width,
+        &height,
+        &nrChannels,
+        0
+    );
+
+    if (data2)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data2);
+
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     // MAIN LOOP
     while (GL::windowIsOpen()) {
@@ -70,9 +85,11 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         shader.useShader();
 
-        // RENDER OBJECTS
-        triangle_obj.renderTriangle();
-        square_obj.renderSquare();
+        glBindTexture(GL_TEXTURE_2D, _texture);
+        glBindVertexArray(tex.VAO);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
+
+        tex.renderTexture();
 
         GL::swapBuffersPollEvents();
     }
@@ -80,8 +97,7 @@ int main() {
     // DE-INITIALIZATION
     shader.deleteShader();
 
-    triangle_obj.deleteData();
-    square_obj.deleteData();
+    tex.deleteData();
 
     GL::cleanup();
 

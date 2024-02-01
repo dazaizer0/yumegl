@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME}
         src/engine/render/triangle.h
         src/engine/render/square.h
         src/engine/shader/shader.h
+        src/engine/render/texture.h
 )
 
 # OPENGL

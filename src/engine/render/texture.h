@@ -4,7 +4,7 @@
 
 namespace render {
     // SQUARE
-    class Square {
+    class Texture {
     public:
         // PROPERTIES
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
@@ -12,9 +12,9 @@ namespace render {
         float size{};
 
         // CONSTRUCTOR
-        Square(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
+        Texture(mathy::vec3<float> position_valuE, mathy::colorRGBA color_value, float size_value);
 
-        void renderSquare() const; /* {
+        void renderTexture() const; /* {
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
         }*/
@@ -26,7 +26,6 @@ namespace render {
             std::cerr << "The object's data has been successfully removed" << std::endl;
         }*/
 
-    private:
         // MAIN DATA VECTOR
         std::vector<float> data;
 
@@ -35,7 +34,7 @@ namespace render {
         int vertex_count;
     };
 
-    Square::Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;
@@ -61,21 +60,11 @@ namespace render {
         //};
 
         data = {
-                // down-left
-                position.x + -size/*0-x*/, position.y + -size /*1-y*/, position.z/*2-z*/,
-                color.r + 0.4f/*3-r temporary + 0.4f*/, color.g/*4-g*/, color.b/*5-b*/,
-
-                // down-right
-                position.x + size/*6-x*/, position.y + -size/*7-y*/, position.z/*8-z*/,
-                color.r/*9-r*/, color.g/*10-g*/, color.b/*11-b*/,
-
-                // top-left
-                position.x + -size/*12-x*/, position.y + size/*13-y*/, position.z/*14-z*/,
-                color.r/*15-r*/, color.g/*16-g*/, color.b/*17-b*/,
-
-                // top-right
-                position.x + size/*18-x*/, position.y + size/*19-y*/, position.z/*20-z*/,
-                color.r + 0.4f/*21-r temporary + 0.4f*/, color.g/*22-g*/, color.b/*23-b*/,
+                // positions          // colors           // texture coords
+                0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+                0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+                -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+                -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
         };
 
         vertex_count = 4;
@@ -101,13 +90,13 @@ namespace render {
     }
 
     // RENDER
-    void Square::renderSquare() const {
+    void Texture::renderTexture() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
     }
 
     // DELETE
-    void Square::deleteData() {
+    void Texture::deleteData() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
     }
