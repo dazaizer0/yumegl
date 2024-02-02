@@ -15,7 +15,7 @@ namespace render {
         Triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
         // FUNCTIONS
-        void renderTriangle() const;
+        void render() const;
 
         void deleteData();
 
@@ -65,7 +65,7 @@ namespace render {
     }
 
     // RENDER
-    void Triangle::renderTriangle() const {
+    void Triangle::render() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }

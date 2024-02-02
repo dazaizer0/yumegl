@@ -61,29 +61,29 @@ int main() {
         if (input::keyDown(GLFW_KEY_D)) {
             sq.position.x += 0.001f;
             sq.updatePosition();
-            sq.refreshSquare();
+            sq.refresh();
         }
         else if (input::keyDown(GLFW_KEY_A)) {
             sq.position.x -= 0.001f;
             sq.updatePosition();
-            sq.refreshSquare();
+            sq.refresh();
         }
         if (input::keyDown(GLFW_KEY_W)) {
             sq.position.y += 0.001f;
             sq.updatePosition();
-            sq.refreshSquare();
+            sq.refresh();
         }
         else if (input::keyDown(GLFW_KEY_S)) {
             sq.position.y -= 0.001f;
             sq.updatePosition();
-            sq.refreshSquare();
+            sq.refresh();
         }
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
 
-        tex.renderTexture(texturesShader.getShader()); // TEXTURE
-        sq.renderSquare(shader.getShader()); // SQUARE
+        tex.render(texturesShader.getShader()); // TEXTURE
+        sq.render(shader.getShader()); // SQUARE
         
         gl::swapBuffersPollEvents();
     }

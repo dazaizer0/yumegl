@@ -16,8 +16,10 @@ namespace render {
         // CONSTRUCTOR
         Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
 
-        void renderTexture(unsigned int shader) const;
-
+        //FUNCTIONS
+        void updatePosition();
+        void refresh();
+        void render(unsigned int shader) const;
         void deleteData();
 
     private:
@@ -121,8 +123,17 @@ namespace render {
         stbi_image_free(texData);
     }
 
+    // FUNCTIONS
+    void Texture::updatePosition() {
+
+    }
+
+    void Texture::refresh() {
+
+    }
+
     // RENDER
-    void Texture::renderTexture(unsigned int shader) const {
+    void Texture::render(unsigned int shader) const {
         glBindTexture(GL_TEXTURE_2D, tex);
 
         glUseProgram(shader);

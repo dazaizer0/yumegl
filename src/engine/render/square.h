@@ -16,9 +16,8 @@ namespace render {
 
         // FUNCTIONS
         void updatePosition();
-        void refreshSquare();
-        void renderSquare(unsigned int shader) const;
-
+        void refresh();
+        void render(unsigned int shader) const;
         void deleteData();
 
     private:
@@ -98,7 +97,7 @@ namespace render {
         };
     }
 
-    void Square::refreshSquare() { // TO OPTIMIZE
+    void Square::refresh() { // TO OPTIMIZE
         // GENERATE OBJECT
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -120,7 +119,7 @@ namespace render {
     }
 
     // RENDER
-    void Square::renderSquare(unsigned int shader) const {
+    void Square::render(unsigned int shader) const {
         glUseProgram(shader);
 
         glBindVertexArray(VAO);
