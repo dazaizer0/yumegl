@@ -58,23 +58,23 @@ int main() {
             std::cerr << "Key down: 2\n";
         }
 
-        if (input::keyPressed(GLFW_KEY_D)) {
-            sq.position.x += 0.1f;
+        if (input::keyDown(GLFW_KEY_D)) {
+            sq.position.x += 0.001f;
             sq.updatePosition();
             sq.refreshSquare();
         }
-        else if (input::keyPressed(GLFW_KEY_A)) {
-            sq.position.x -= 0.1f;
+        else if (input::keyDown(GLFW_KEY_A)) {
+            sq.position.x -= 0.001f;
             sq.updatePosition();
             sq.refreshSquare();
         }
-        if (input::keyPressed(GLFW_KEY_W)) {
-            sq.position.y += 0.1f;
+        if (input::keyDown(GLFW_KEY_W)) {
+            sq.position.y += 0.001f;
             sq.updatePosition();
             sq.refreshSquare();
         }
-        else if (input::keyPressed(GLFW_KEY_S)) {
-            sq.position.y -= 0.1f;
+        else if (input::keyDown(GLFW_KEY_S)) {
+            sq.position.y -= 0.001f;
             sq.updatePosition();
             sq.refreshSquare();
         }
