@@ -23,11 +23,14 @@ namespace render {
         void deleteData();
 
     private:
-        unsigned int VBO, VAO, EBO;
+        unsigned int VBO{}, VAO{}, EBO{};
 
         const char *texPath;
-        unsigned int tex;
+        unsigned int tex{};
         unsigned char* texData;
+
+        std::vector<float> vertices;
+        std::vector<unsigned int> indices;
     };
 
     Texture::Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
@@ -38,9 +41,8 @@ namespace render {
         size = size_value;
 
         // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
-        float vertices[] = {
+        vertices = {
             // position, position, position
-            // color, color, color
             // tex coords, tex coords, tex coords
 
              position.x + size, position.y + size, position.z,
@@ -59,7 +61,7 @@ namespace render {
             color.r, color.g, color.b,
             0.0f, 1.0f
         };
-        unsigned int indices[] = {
+        indices = {
             // triangle 1
             // triangle 2
 
@@ -74,13 +76,13 @@ namespace render {
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
 
         // POSITION
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr);
         glEnableVertexAttribArray(0);
 
         // COLOR
@@ -125,11 +127,35 @@ namespace render {
 
     // FUNCTIONS
     void Texture::updatePosition() {
+        vertices = {
+                position.x + size, position.y + size, position.z,
+                color.r, color.g, color.b,
+                1.0f, 1.0f,
 
+                position.x + size, position.y + -size, position.z,
+                0.0f, 1.0f, 0.0f,
+                1.0f, 0.0f,
+
+                position.x + -size, position.y + -size, position.z,
+                color.r, color.g, color.b,
+                0.0f, 0.0f,
+
+                position.x + -size, position.y + size, position.z,
+                color.r, color.g, color.b,
+                0.0f, 1.0f
+        };
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
     }
 
     void Texture::refresh() {
-
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
     // RENDER

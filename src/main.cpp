@@ -36,7 +36,7 @@ int main() {
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
         mathy::vec3<float>::ZERO(),
         mathy::colorRGBA::WHITE(),
-        0.8f
+        1.0f
     );
 
     // MAIN LOOP
@@ -53,27 +53,31 @@ int main() {
 
         if (input::keyPressed(GLFW_KEY_1)) {
             std::cerr << "Key pressed: 1\n";
+
+            tex.position.x += 0.1f;
+            tex.updatePosition();
+            tex.refresh();
         }
         else if (input::keyDown(GLFW_KEY_2)) {
             std::cerr << "Key down: 2\n";
         }
 
-        if (input::keyDown(GLFW_KEY_D)) {
+        if (input::keyDown(GLFW_KEY_D) && sq.position.x < 1.0f - sq.size) {
             sq.position.x += 0.001f;
             sq.updatePosition();
             sq.refresh();
         }
-        else if (input::keyDown(GLFW_KEY_A)) {
+        else if (input::keyDown(GLFW_KEY_A) && sq.position.x > -1.0f + sq.size) {
             sq.position.x -= 0.001f;
             sq.updatePosition();
             sq.refresh();
         }
-        if (input::keyDown(GLFW_KEY_W)) {
+        if (input::keyDown(GLFW_KEY_W) && sq.position.y < 1.0f - sq.size) {
             sq.position.y += 0.001f;
             sq.updatePosition();
             sq.refresh();
         }
-        else if (input::keyDown(GLFW_KEY_S)) {
+        else if (input::keyDown(GLFW_KEY_S) && sq.position.y > -1.0f + sq.size) {
             sq.position.y -= 0.001f;
             sq.updatePosition();
             sq.refresh();
@@ -82,7 +86,8 @@ int main() {
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
 
-        tex.render(texturesShader.getShader()); // TEXTURE
+        // render container
+        tex.render(texturesShader.getShader());
         sq.render(shader.getShader()); // SQUARE
         
         gl::swapBuffersPollEvents();
