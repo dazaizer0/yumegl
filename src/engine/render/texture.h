@@ -50,7 +50,7 @@ namespace render {
              1.0f, 1.0f,
 
              position.x + size, position.y + -size, position.z,
-             0.0f, 1.0f, 0.0f,
+             color.r, color.g, color.b,
              1.0f, 0.0f,
 
             position.x + -size, position.y + -size, position.z,

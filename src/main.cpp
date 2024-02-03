@@ -14,14 +14,24 @@ int main() {
     setColor(mathy::colorRGBA::BLACK());
 
     // SHADERS
-    shader::Shader shader = shader::Shader(
+    /*shader::Shader shader = shader::Shader(
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex.glsl",
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment.glsl"
     );
 
-    shader::Shader texturesShader = shader::Shader(
+    shader::Shader textureShader = shader::Shader(
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
+    );*/
+
+    Shader textureShader(
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
+    );
+
+    Shader basicShader(
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment.glsl"
     );
 
     // SQUARE
@@ -86,16 +96,14 @@ int main() {
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // render container
-        tex.render(texturesShader.getShader());
-        sq.render(shader.getShader()); // SQUARE
+        tex.render(textureShader.ID);
+
+        sq.render(basicShader.ID);
         
         gl::swapBuffersPollEvents();
     }
 
     // DE-INITIALIZATION
-    shader.deleteShader();
-    texturesShader.deleteShader();
 
     sq.deleteData();
     tex.deleteData();
