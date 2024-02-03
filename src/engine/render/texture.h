@@ -1,8 +1,10 @@
-#pragma once // IN DEVELOPMENT
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include "../../config.h"
 
 #include "stb/stb_image.h"
+#include "src/engine/shader/shader.h"
 
 namespace render {
     // SQUARE
@@ -20,13 +22,13 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
-        void rotateTemporaryVoid(Shader shader);
+        void rotateAroundOwnAxis(glm::vec3 rotationAxis, Shader shader, float rotationSpeed);
         void deleteData();
 
     private:
         unsigned int VBO{}, VAO{}, EBO{};
 
-        const char *texPath;
+        const char* texPath;
         unsigned int tex{};
         unsigned char* texData;
 
@@ -159,20 +161,18 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotateTemporaryVoid(Shader shader) {
+    void Texture::rotateAroundOwnAxis(glm::vec3 rotationAxis, Shader shader, float rotationSpeed) {
         glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        // UPDATE TEXTURE
+        transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
+        transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), rotationAxis);
+        transform = glm::translate(transform, -glm::vec3(position.x, position.y, position.z));
+
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
+
 
     // RENDER
     void Texture::render(unsigned int shader) const {
@@ -192,3 +192,4 @@ namespace render {
         glDeleteBuffers(1, &EBO);
     }
 }
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
 
 #include "../../config.h"
 
@@ -78,3 +79,4 @@ namespace render {
         glDeleteBuffers(1, &VBO);
     }
 }
+#endif

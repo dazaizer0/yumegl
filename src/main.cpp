@@ -5,6 +5,7 @@
 #include "engine/shader/shader.h"
 #include "engine/render/texture.h"
 
+
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 
@@ -27,15 +28,15 @@ int main() {
     render::Square sq = render::Square(
         mathy::vec3{ -0.5f, -0.2f, 0.0f },
         mathy::colorRGBA::BLUE(),
-        0.2f
+        0.1f
     );
 
-    // TEXTURE
+    // TEXTURE 
     render::Texture tex = render::Texture(
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
-        mathy::vec3<float>::ZERO(),
+        mathy::vec3<float>{ -1.0f, 0.7f, 0.0f },
         mathy::colorRGBA::WHITE(),
-        0.25f
+        0.2f
     );
 
     // MAIN LOOP
@@ -83,7 +84,17 @@ int main() {
         }
 
         // TEXTURE TRANSFORMATIONS
-        tex.rotateTemporaryVoid(textureShader);
+        if (tex.position.x < 0.7f) {
+            tex.position.x += 0.0001f;
+            tex.updatePosition();
+            tex.refresh();
+        }
+        tex.rotateAroundOwnAxis(
+            glm::vec3{ 0.0f, 0.0f, 1.0f },
+            textureShader,
+            1.0f
+        );
+        tex.refresh();
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);

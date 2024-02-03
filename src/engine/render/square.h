@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SQUARE_H
+#define SQUARE_H
 
 #include "../../config.h"
 
@@ -123,3 +124,4 @@ namespace render {
         glDeleteBuffers(1, &VBO);
     }
 }
+#endif
