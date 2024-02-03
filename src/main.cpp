@@ -13,17 +13,6 @@ int main() {
     gl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
     setColor(mathy::colorRGBA::BLACK());
 
-    // SHADERS
-    /*shader::Shader shader = shader::Shader(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment.glsl"
-    );
-
-    shader::Shader textureShader = shader::Shader(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
-    );*/
-
     Shader textureShader(
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
@@ -46,7 +35,7 @@ int main() {
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
         mathy::vec3<float>::ZERO(),
         mathy::colorRGBA::WHITE(),
-        1.0f
+        0.25f
     );
 
     // MAIN LOOP
@@ -93,11 +82,13 @@ int main() {
             sq.refresh();
         }
 
+        // TEXTURE TRANSFORMATIONS
+        tex.rotateTemporaryVoid(textureShader);
+
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
 
         tex.render(textureShader.ID);
-
         sq.render(basicShader.ID);
         
         gl::swapBuffersPollEvents();

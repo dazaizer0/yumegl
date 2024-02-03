@@ -20,6 +20,7 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
+        void rotateTemporaryVoid(Shader shader);
         void deleteData();
 
     private:
@@ -153,6 +154,21 @@ namespace render {
     }
 
     void Texture::refresh() {
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    }
+
+    void Texture::rotateTemporaryVoid(Shader shader) {
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        // UPDATE TEXTURE
+        shader.use();
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
