@@ -8,7 +8,11 @@ namespace yumegl {
 
     void init(int width, int height, const std::string& title) {
         // GAME WINDOW INITIALIZATION
-        glfwInit();
+        if (!glfwInit()) {
+            std::cerr << "Failed to initialize GLFW" << std::endl;
+            return;
+        }
+
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -26,6 +30,7 @@ namespace yumegl {
         }
 
         glfwMakeContextCurrent(_window);
+
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cout << "Failed to initialize GLAD\n";
             return;
@@ -33,7 +38,15 @@ namespace yumegl {
         else {
             std::cout << "GLAD initialized correctly\n";
         }
+
+        //IMGUI_CHECKVERSION();
+        //ImGui::CreateContext();
+        //ImGuiIO& io = ImGui::GetIO(); (void)io;
+        //ImGui::StyleColorsDark();
+        //ImGui_ImplGlfw_InitForOpenGL(_window, true);
+        //ImGui_ImplOpenGL3_Init("#version 330");
     }
+
 
     GLFWwindow* getWindowPointer() {
         return _window;

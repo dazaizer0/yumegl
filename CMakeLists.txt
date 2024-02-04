@@ -31,6 +31,7 @@ add_executable(${PROJECT_NAME}
         src/engine/render/square.h
         src/engine/shader/shader.h
         src/engine/render/texture.h
+        src/engine/render/cube.h
 )
 
 # OPENGL
@@ -42,11 +43,5 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         glfw
-)
-
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE
         glm
 )
-
-

@@ -14,6 +14,7 @@ namespace render {
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
         float size{};
+        bool enable{};
 
         // CONSTRUCTOR
         Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
@@ -25,6 +26,7 @@ namespace render {
         void refresh();
         void render(unsigned int shader) const;
         void rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed);
+        void setRotation(glm::vec3 rotationAxis, Shader shader, float angle);
         void deleteData();
 
     private:
@@ -175,7 +177,7 @@ namespace render {
     }
 
     void Texture::rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed) {
-        glm::mat4 transform = glm::mat4(1.0f);
+        auto transform = glm::mat4(1.0f);
 
         transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
         transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), rotationAxis);
@@ -188,6 +190,16 @@ namespace render {
         Texture::refresh();
     }
 
+    void Texture::setRotation(glm::vec3 rotationAxis, Shader shader, float angle) {
+        auto transform = glm::mat4(1.0f);
+
+        transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
+        //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+        shader.use();
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+    }
 
     // RENDER
     void Texture::render(unsigned int shader) const {
@@ -195,7 +207,7 @@ namespace render {
 
         glUseProgram(shader);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
     // DELETE

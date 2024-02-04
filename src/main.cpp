@@ -12,14 +12,14 @@ int main() {
     yumegl::setColor(mathy::colorRGBA::BLACK());
 
     // SHADER
-    Shader textureShader( // path, path
+    Shader textureShader(
         "texture/vertex_t.glsl",
         "texture/fragment_t.glsl"
     );
 
     // TEXTURE 
     render::Texture tex = render::Texture(
-        "textures/sonic_grass.png", // win path
+        "textures/sonic_grass.png",
         mathy::vec3<float>::ZERO(),
         mathy::colorRGBA::WHITE(),
         0.6f
@@ -33,9 +33,8 @@ int main() {
             yumegl::setWindowStatus(false);
         }
 
-        // TEXTURE ROTATION
         tex.rotate(
-                glm::vec3{0.2f , 0.4f, 0.2f},
+                glm::vec3{0.25f, 0.5f, 0.25f},
                 textureShader,
                 1.2f
         );

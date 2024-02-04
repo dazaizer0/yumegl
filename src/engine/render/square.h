@@ -11,6 +11,7 @@ namespace render {
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
         float size{};
+        bool enable{};
 
         // CONSTRUCTOR
         Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
@@ -19,7 +20,7 @@ namespace render {
 
         // FUNCTIONS
         void updatePosition();
-        void refresh();
+        void refresh() const;
         void render(unsigned int shader) const;
         void deleteData();
 
@@ -104,7 +105,7 @@ namespace render {
         glBufferData(GL_ARRAY_BUFFER, buffer_size, data.data(), GL_STATIC_DRAW);
     }
 
-    void Square::refresh() { // TO OPTIMIZE
+    void Square::refresh() const { // TO OPTIMIZE
         // GENERATE OBJECT
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);

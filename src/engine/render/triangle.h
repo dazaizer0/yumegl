@@ -11,6 +11,7 @@ namespace render {
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
         mathy::colorRGBA color = mathy::colorRGBA::WHITE();
         float size{};
+        bool enable{};
 
         // CONSTRUCTOR
         Triangle(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
