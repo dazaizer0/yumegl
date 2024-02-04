@@ -5,7 +5,7 @@
 #include "engine/shader/shader.h"
 #include "engine/render/texture.h"
 
-// SWITCH TO GLM, CREATE ENGINE FILE SYSTEM
+// TODO: SWITCH TO GLM, CREATE ENGINE FILE SYSTEM, BETTER SHADER SYSTEM
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -15,14 +15,14 @@ int main() {
     yumegl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
     yumegl::setColor(mathy::colorRGBA::BLACK());
 
-    Shader textureShader(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment_t.glsl"
+    Shader textureShader( // path, path
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/texture/vertex_t.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/texture/fragment_t.glsl"
     );
 
-    Shader basicShader(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/fragment.glsl"
+    Shader basicShader( // path, path
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/shape/vertex.glsl",
+        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/shape/fragment.glsl"
     );
 
     // SQUARE
@@ -34,7 +34,7 @@ int main() {
 
     // TEXTURE 
     render::Texture tex = render::Texture(
-        "C:\\Users\\mydat\\Documents\\_active_c\\_cpp\\YumeGl\\yumegl\\assets\\sonic.png",
+        "C:\\Users\\mydat\\Documents\\_active_c\\_cpp\\YumeGl\\yumegl\\assets\\sonic.png", // win path
         mathy::vec3<float>{ -1.0f, 0.7f, 0.0f },
         mathy::colorRGBA::WHITE(),
         0.2f
@@ -44,9 +44,6 @@ int main() {
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
-        // UPDATE
-        // TODO: SOME COOL STUFF
-
         // INPUT
         input::updateInput();
 

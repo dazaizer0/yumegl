@@ -14,6 +14,8 @@ namespace render {
 
         // CONSTRUCTOR
         Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
+        // Shader shader;
 
         // FUNCTIONS
         void updatePosition();
