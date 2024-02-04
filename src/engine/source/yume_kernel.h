@@ -76,4 +76,18 @@ namespace yumegl {
 
         return result;
     }
+
+    const char* convertToAsssetsPath(std::string path) {
+        std::string path2 = yumegl::yumePath() + "/assets/" + path;
+        const char* result = path2.c_str();
+
+        if (result == nullptr) {
+            std::cerr << "ERROR:CONVERTING:PATH" << std::endl;
+        }
+        else {
+            std::cout << "path converted correctly\n";
+        }
+
+        return result;
+    }
 }

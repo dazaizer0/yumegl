@@ -24,7 +24,7 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
-        void rotateAroundOwnAxis(glm::vec3 rotationAxis, Shader shader, float rotationSpeed);
+        void rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed);
         void deleteData();
 
     private:
@@ -40,7 +40,7 @@ namespace render {
 
     Texture::Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
-        std::string path2 = yumegl::yumePath() + path;
+        std::string path2 = yumegl::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
 
         if (texPath == nullptr) {
@@ -49,6 +49,8 @@ namespace render {
         else {
             std::cout << "texture loaded correctly\n";
         }
+
+        // texPath = yumegl::convertToAsssetsPath(path);
 
         position = position_value;
         color = color_value;
@@ -172,7 +174,7 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotateAroundOwnAxis(glm::vec3 rotationAxis, Shader shader, float rotationSpeed) {
+    void Texture::rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed) {
         glm::mat4 transform = glm::mat4(1.0f);
 
         transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
@@ -182,6 +184,8 @@ namespace render {
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+        Texture::refresh();
     }
 
 
