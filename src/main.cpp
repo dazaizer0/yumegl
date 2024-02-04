@@ -5,14 +5,15 @@
 #include "engine/shader/shader.h"
 #include "engine/render/texture.h"
 
+// SWITCH TO GLM, CREATE ENGINE FILE SYSTEM
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 
 int main() {
     // INITIALIZATION
-    gl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
-    setColor(mathy::colorRGBA::BLACK());
+    yumegl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
+    yumegl::setColor(mathy::colorRGBA::BLACK());
 
     Shader textureShader(
         "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/vertex_t.glsl",
@@ -33,14 +34,16 @@ int main() {
 
     // TEXTURE 
     render::Texture tex = render::Texture(
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
+        "C:\\Users\\mydat\\Documents\\_active_c\\_cpp\\YumeGl\\yumegl\\assets\\sonic.png",
         mathy::vec3<float>{ -1.0f, 0.7f, 0.0f },
         mathy::colorRGBA::WHITE(),
         0.2f
     );
 
+    std::cout << yumegl::yumePath() << '\n';
+
     // MAIN LOOP
-    while (gl::isWindowOpen()) {
+    while (yumegl::isWindowOpen()) {
         // UPDATE
         // TODO: SOME COOL STUFF
 
@@ -48,13 +51,13 @@ int main() {
         input::updateInput();
 
         if (input::keyPressed(GLFW_KEY_ESCAPE)) {
-            gl::setWindowStatus(false);
+            yumegl::setWindowStatus(false);
         }
 
         if (input::keyPressed(GLFW_KEY_1)) {
             std::cerr << "Key pressed: 1\n";
 
-            tex.position.x += 0.1f;
+            tex.position.x -= 0.1f;
             tex.updatePosition();
             tex.refresh();
         }
@@ -84,17 +87,18 @@ int main() {
         }
 
         // TEXTURE TRANSFORMATIONS
-        if (tex.position.x < 0.7f) {
+        if (tex.position.x < 0.8f) {
             tex.position.x += 0.0001f;
+
+            tex.rotateAroundOwnAxis(
+                glm::vec3{ 0.0f, 0.5f, 0.0f },
+                textureShader,
+                1.32f
+            );
+
             tex.updatePosition();
             tex.refresh();
         }
-        tex.rotateAroundOwnAxis(
-            glm::vec3{ 0.0f, 0.0f, 1.0f },
-            textureShader,
-            1.0f
-        );
-        tex.refresh();
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
@@ -102,15 +106,16 @@ int main() {
         tex.render(textureShader.ID);
         sq.render(basicShader.ID);
         
-        gl::swapBuffersPollEvents();
+        yumegl::swapBuffersPollEvents();
     }
 
     // DE-INITIALIZATION
-
     sq.deleteData();
     tex.deleteData();
 
-    gl::close();
+    glDeleteShader(textureShader.ID);
+    glDeleteShader(basicShader.ID);
 
+    yumegl::close();
     return 0;
 }

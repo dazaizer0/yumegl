@@ -2,11 +2,8 @@
 
 #include "../../config.h"
 
-void setColor(const mathy::colorRGBA& color) {
-    glClearColor(color.r, color.g, color.b, color.a);
-}
-
-namespace gl {
+namespace yumegl {
+    // WINDOW
     GLFWwindow* _window;
 
     void init(int width, int height, const std::string& title) {
@@ -58,5 +55,17 @@ namespace gl {
     void close() {
         std::cerr << "Opengl has been successfully closed" << std::endl;
         glfwTerminate();
+    }
+
+    // OTHER
+    void setColor(const mathy::colorRGBA& color) {
+        glClearColor(color.r, color.g, color.b, color.a);
+    }
+
+    std::string yumePath() {
+        std::filesystem::path executablePath = std::filesystem::absolute(std::filesystem::path(__FILE__));
+        std::filesystem::path folderPath = executablePath.parent_path().parent_path().parent_path().parent_path();
+
+        return folderPath.string();
     }
 }
