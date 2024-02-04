@@ -1,4 +1,4 @@
-#pragma once // IN DEVELOPMENT
+#pragma once // IN DEVELOPMENT | SWITCHING TO GLM
 
 #include <iostream>
 

@@ -5,7 +5,7 @@
 #include "engine/shader/shader.h"
 #include "engine/render/texture.h"
 
-// TODO: SWITCH TO GLM, CREATE ENGINE FILE SYSTEM, BETTER SHADER SYSTEM
+// TODO: SWITCH TO GLM
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -16,13 +16,13 @@ int main() {
     yumegl::setColor(mathy::colorRGBA::BLACK());
 
     Shader textureShader( // path, path
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/texture/vertex_t.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/texture/fragment_t.glsl"
+        "/src/engine/shader/glshaders/texture/vertex_t.glsl",
+        "/src/engine/shader/glshaders/texture/fragment_t.glsl"
     );
 
     Shader basicShader( // path, path
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/shape/vertex.glsl",
-        "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/src/engine/shader/glshaders/shape/fragment.glsl"
+        "/src/engine/shader/glshaders/shape/vertex.glsl",
+        "/src/engine/shader/glshaders/shape/fragment.glsl"
     );
 
     // SQUARE
@@ -34,11 +34,12 @@ int main() {
 
     // TEXTURE 
     render::Texture tex = render::Texture(
-        "C:\\Users\\mydat\\Documents\\_active_c\\_cpp\\YumeGl\\yumegl\\assets\\sonic.png", // win path
+        "/assets/sonic.png", // win path
         mathy::vec3<float>{ -1.0f, 0.7f, 0.0f },
         mathy::colorRGBA::WHITE(),
         0.2f
     );
+    bool right{true};
 
     std::cout << yumegl::yumePath() << '\n';
 
@@ -84,18 +85,28 @@ int main() {
         }
 
         // TEXTURE TRANSFORMATIONS
-        if (tex.position.x < 0.8f) {
+        if (right) {
             tex.position.x += 0.0001f;
+        } else {
+            tex.position.x -= 0.0001f;
+        }
 
-            tex.rotateAroundOwnAxis(
-                glm::vec3{ 0.0f, 0.5f, 0.0f },
+        tex.rotateAroundOwnAxis(
+                glm::vec3{(right ? 0.25f : -0.25f), (right ? 0.5f : -0.5f), (right ? 0.25f : -0.25f)},
                 textureShader,
                 1.32f
-            );
+        );
 
-            tex.updatePosition();
-            tex.refresh();
+        tex.updatePosition();
+        tex.refresh();
+
+        if (right && tex.position.x > 0.8f) {
+            right = false;
         }
+        else if (!right && tex.position.x < -0.8f) {
+            right = true;
+        }
+
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);

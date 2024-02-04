@@ -66,6 +66,14 @@ namespace yumegl {
         std::filesystem::path executablePath = std::filesystem::absolute(std::filesystem::path(__FILE__));
         std::filesystem::path folderPath = executablePath.parent_path().parent_path().parent_path().parent_path();
 
-        return folderPath.string();
+        std::string result = folderPath.string();
+
+        for (char & i : result) {
+            if (i == '\\') {
+                i = '/';
+            }
+        }
+
+        return result;
     }
 }

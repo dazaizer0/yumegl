@@ -1,4 +1,4 @@
-// FROM LEARN_OPENGL
+// FROM LEARN_OPENGL | during reconstruction
 #ifndef SHADER_H
 #define SHADER_H
 
@@ -16,8 +16,22 @@ public:
     unsigned int ID;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Shader(const char* vertexPath, const char* fragmentPath)
+    Shader(std::string vertPath, std::string fragPath)
     {
+        // CONVERT PATH
+        std::string vpath = yumegl::yumePath() + vertPath; // VERTEX
+        const char* vertexPath = vpath.c_str();
+
+        std::string fpath = yumegl::yumePath() + fragPath; // FRAGMENT
+        const char* fragmentPath = fpath.c_str();
+
+        if (vertexPath == nullptr || fragmentPath == nullptr) {
+            std::cerr << "ERROR:LOADING:FRAGMENT?VERTEX:SHADER" << std::endl;
+        }
+        else {
+            std::cout << "fragment ? vertex shader: loaded correctly\n";
+        }
+
         // 1. retrieve the vertex/fragment source code from filePath
         std::string vertexCode;
         std::string fragmentCode;
@@ -41,6 +55,8 @@ public:
             // convert stream into string
             vertexCode = vShaderStream.str();
             fragmentCode = fShaderStream.str();
+
+            std::cout << "shader compiled correctly\n";
         }
         catch (std::ifstream::failure& e)
         {

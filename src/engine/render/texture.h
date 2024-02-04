@@ -16,7 +16,7 @@ namespace render {
         float size{};
 
         // CONSTRUCTOR
-        Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
         // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
         // Shader shader;
 
@@ -38,9 +38,18 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
-        texPath = path;
+        std::string path2 = yumegl::yumePath() + path;
+        texPath = path2.c_str();
+
+        if (texPath == nullptr) {
+            std::cerr << "ERROR:LOADING:TEXTURE" << std::endl;
+        }
+        else {
+            std::cout << "texture loaded correctly\n";
+        }
+
         position = position_value;
         color = color_value;
         size = size_value;
