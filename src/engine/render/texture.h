@@ -16,8 +16,10 @@ namespace render {
         float size{};
         bool enable{};
 
+        const char* name;
+
         // CONSTRUCTOR
-        Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
         // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
         // Shader shader;
 
@@ -40,9 +42,9 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
-        std::string path2 = yumegl::yumePath() + "/assets/" + path;
+        std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
 
         if (texPath == nullptr) {
@@ -57,6 +59,7 @@ namespace render {
         position = position_value;
         color = color_value;
         size = size_value;
+        name = namev;
 
         // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
         vertices = {

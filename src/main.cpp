@@ -1,7 +1,5 @@
 #include "config.h"
-#include "engine/input/input.h"
-#include "engine/shader/shader.h"
-#include "engine/render/texture.h"
+#include "yume_objects.h"
 
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
@@ -9,17 +7,10 @@ const int WINDOW_HEIGHT = 720;
 int main() {
     // INITIALIZATION
     yumegl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
-    yumegl::setColor(mathy::colorRGBA::BLACK());
+    yumegl::eFunc::setColor(mathy::colorRGBA::BLACK());
 
-    // IMGUI INITIALIZATION TEST
-#pragma region imgui_test
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-#pragma endregion
+    // IMGUI INITIALIZATION
+    yumeImGui::init();
 
     // SHADER
     Shader textureShader(
@@ -29,12 +20,14 @@ int main() {
 
     // TEXTURE 
     render::Texture tex = render::Texture(
+        "sonic_grass",
         "textures/sonic_grass.png",
         mathy::vec3<float>::ZERO(),
         mathy::colorRGBA::WHITE(),
         0.6f
     );
-    bool rotating = true;
+
+    float angle = 0.0f;
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
@@ -45,46 +38,32 @@ int main() {
             yumegl::setWindowStatus(false);
         }
 
-        if (rotating) {
-            tex.rotate(
-                    mathy::vec3{0.4f, 0.4f, 0.3f},
-                    textureShader,
-                    1.5f
-            );
-        }
+        /*tex.rotate(
+            mathy::vec3{ 0.4f, 0.4f, 0.3f },
+            textureShader,
+            1.5f
+        );*/
+
+        tex.setRotation(mathy::vec3<float>{0.0f, 0.0f, 1.0f}, textureShader, 180.0f);
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
         tex.render(textureShader.ID);
-
-        ImGui::Begin("Texture");
-        ImGui::Text("Change texture rotation");
-
-        if (ImGui::Button("rotating", ImVec2{100.0f, 25.0f})) {
-            rotating = !rotating;
-        }
-
-        ImGui::End();
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
+        // YUMEIMGUI
+        yumeImGui::yumeImGui_GenTexFrame(tex);
+
+        // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();
     }
 
     // DE-INITIALIZATION
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    yumeImGui::clear();
 
     tex.deleteData();
     glDeleteShader(textureShader.ID);
 
-    yumegl::close();
+    yumegl::eExit::close();
     return 0;
 }

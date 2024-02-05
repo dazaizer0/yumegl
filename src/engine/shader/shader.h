@@ -19,10 +19,10 @@ public:
     Shader(const std::string& vertPath, const std::string& fragPath)
     {
         // CONVERT PATH
-        std::string vpath = yumegl::yumePath() + "/src/engine/shader/glshaders/" + vertPath; // VERTEX
+        std::string vpath = yumegl::eFunc::yumePath() + "/src/engine/shader/glshaders/" + vertPath; // VERTEX
         const char* vertexPath = vpath.c_str();
 
-        std::string fpath = yumegl::yumePath() + "/src/engine/shader/glshaders/" + fragPath; // FRAGMENT
+        std::string fpath = yumegl::eFunc::yumePath() + "/src/engine/shader/glshaders/" + fragPath; // FRAGMENT
         const char* fragmentPath = fpath.c_str();
 
         if (vertexPath == nullptr || fragmentPath == nullptr) {

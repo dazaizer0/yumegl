@@ -58,42 +58,47 @@ namespace yumegl {
         glfwPollEvents();
     }
 
-    void close() {
-        std::cerr << "Opengl has been successfully closed" << std::endl;
-        glfwTerminate();
-    }
+    namespace eFunc {
+        void setColor(const mathy::colorRGBA& color) {
+            glClearColor(color.r, color.g, color.b, color.a);
+        }
 
-    // OTHER
-    void setColor(const mathy::colorRGBA& color) {
-        glClearColor(color.r, color.g, color.b, color.a);
-    }
+        std::string yumePath() {
+            std::filesystem::path executablePath = std::filesystem::absolute(std::filesystem::path(__FILE__));
+            std::filesystem::path folderPath = executablePath.parent_path().parent_path().parent_path().parent_path();
 
-    std::string yumePath() {
-        std::filesystem::path executablePath = std::filesystem::absolute(std::filesystem::path(__FILE__));
-        std::filesystem::path folderPath = executablePath.parent_path().parent_path().parent_path().parent_path();
+            std::string result = folderPath.string();
 
-        std::string result = folderPath.string();
-
-        for (char & i : result) {
-            if (i == '\\') {
-                i = '/';
+            for (char& i : result) {
+                if (i == '\\') {
+                    i = '/';
+                }
             }
+
+            return result;
         }
 
-        return result;
+        [[maybe_unused]] const char* convertToAsssetsPath(const std::string& path) {
+            std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
+            const char* result = path2.c_str();
+
+            if (result == nullptr) {
+                std::cerr << "ERROR:CONVERTING:PATH" << std::endl;
+            }
+            else {
+                std::cout << "path converted correctly\n";
+            }
+
+            return result;
+        }
     }
 
-    [[maybe_unused]] const char* convertToAsssetsPath(const std::string& path) {
-        std::string path2 = yumegl::yumePath() + "/assets/" + path;
-        const char* result = path2.c_str();
-
-        if (result == nullptr) {
-            std::cerr << "ERROR:CONVERTING:PATH" << std::endl;
-        }
-        else {
-            std::cout << "path converted correctly\n";
+    namespace eExit {
+        void close() {
+            std::cerr << "Opengl has been successfully closed" << std::endl;
+            glfwTerminate();
         }
 
-        return result;
+        // void delete...(...) { ... }
     }
 }
