@@ -38,13 +38,6 @@ namespace yumegl {
         else {
             std::cout << "GLAD initialized correctly\n";
         }
-
-        //IMGUI_CHECKVERSION();
-        //ImGui::CreateContext();
-        //ImGuiIO& io = ImGui::GetIO(); (void)io;
-        //ImGui::StyleColorsDark();
-        //ImGui_ImplGlfw_InitForOpenGL(_window, true);
-        //ImGui_ImplOpenGL3_Init("#version 330");
     }
 
 
@@ -90,7 +83,7 @@ namespace yumegl {
         return result;
     }
 
-    const char* convertToAsssetsPath(std::string path) {
+    [[maybe_unused]] const char* convertToAsssetsPath(const std::string& path) {
         std::string path2 = yumegl::yumePath() + "/assets/" + path;
         const char* result = path2.c_str();
 

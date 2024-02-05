@@ -25,8 +25,8 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
-        void rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed);
-        void setRotation(glm::vec3 rotationAxis, Shader shader, float angle);
+        void rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) const;
+        static void setRotation(mathy::vec3<float> axis, Shader shader, float angle);
         void deleteData();
 
     private:
@@ -176,8 +176,9 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotate(glm::vec3 rotationAxis, Shader shader, float rotationSpeed) {
+    void Texture::rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) const {
         auto transform = glm::mat4(1.0f);
+        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
 
         transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
         transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), rotationAxis);
@@ -186,12 +187,11 @@ namespace render {
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-        Texture::refresh();
     }
 
-    void Texture::setRotation(glm::vec3 rotationAxis, Shader shader, float angle) {
+    void Texture::setRotation(mathy::vec3<float> axis, Shader shader, float angle) {
         auto transform = glm::mat4(1.0f);
+        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
 
         transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
         //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));

@@ -130,4 +130,14 @@ namespace mathy {
         static colorRGBA GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
         static colorRGBA BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
     };
+
+    namespace func {
+        glm::vec2 convertVec2(const mathy::vec2<float>& other) {
+            return {other.x, other.y};
+        }
+
+        glm::vec3 convertVec3(const mathy::vec3<float>& other) {
+            return {other.x, other.y, other.z};
+        }
+    }
 }

@@ -105,8 +105,7 @@ namespace render {
         glBufferData(GL_ARRAY_BUFFER, buffer_size, data.data(), GL_STATIC_DRAW);
     }
 
-    void Square::refresh() const { // TO OPTIMIZE
-        // GENERATE OBJECT
+    void Square::refresh() const {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
     }

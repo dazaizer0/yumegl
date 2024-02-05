@@ -16,6 +16,9 @@ _deps
 
 # BUILD
 out
+cmake
+cmake-build-debug
+build
 
 # LIBS
 dep

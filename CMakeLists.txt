@@ -32,6 +32,7 @@ add_executable(${PROJECT_NAME}
         src/engine/shader/shader.h
         src/engine/render/texture.h
         src/engine/render/cube.h
+        src/engine/gui/yume_imgui.h
 )
 
 # OPENGL
@@ -40,8 +41,16 @@ target_include_directories(${PROJECT_NAME}
         dep
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
+target_sources(${PROJECT_NAME}
         PRIVATE
-        glfw
-        glm
+        dep/imgui/backends/imgui_impl_glfw.cpp
+        dep/imgui/backends/imgui_impl_opengl3.cpp
+        dep/imgui/imgui.cpp
+        dep/imgui/imgui_draw.cpp
+        dep/imgui/imgui_demo.cpp
+        dep/imgui/imgui_tables.cpp
+        dep/imgui/imgui_widgets.cpp
 )
+
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm)
