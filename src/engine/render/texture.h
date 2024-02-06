@@ -16,10 +16,13 @@ namespace render {
         float size{};
         bool enable{};
 
+        mathy::vec3<float> axis = mathy::vec3<float>{ 0.0f, 0.0f, 1.0f };
+        float angle{360.0f};
+
         const char* name;
 
         // CONSTRUCTOR
-        Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, Shader shader, float size_value);
         // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
         // Shader shader;
 
@@ -27,8 +30,9 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
-        void rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) const;
-        static void setRotation(mathy::vec3<float> axis, Shader shader, float angle);
+        void rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed);
+        void setRotation(mathy::vec3<float> axis, Shader shader, float angle);
+        void updateRotation(Shader shader);
         void deleteData();
 
     private:
@@ -42,7 +46,7 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, Shader shader, float size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -144,6 +148,8 @@ namespace render {
             std::cout << "Failed to load texture" << std::endl;
         }
         stbi_image_free(texData);
+
+        updateRotation(shader);
     }
 
     // FUNCTIONS
@@ -179,7 +185,7 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) const {
+    void Texture::rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) {
         auto transform = glm::mat4(1.0f);
         glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
 
@@ -192,12 +198,26 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::setRotation(mathy::vec3<float> axis, Shader shader, float angle) {
+    void Texture::setRotation(mathy::vec3<float> axis_value, Shader shader, float angle_value) {
         auto transform = glm::mat4(1.0f);
+        axis = axis_value;
+        angle = angle_value;
+
         glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
 
         transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
         //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+        shader.use();
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+    }
+
+    void Texture::updateRotation(Shader shader) {
+        auto transform = glm::mat4(1.0f);
+
+        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
+        transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
 
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");

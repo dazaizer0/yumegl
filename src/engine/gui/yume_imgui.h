@@ -2,7 +2,7 @@
 #define YUMEGL_YUME_IMGUI_H
 
 #include "../../config.h"
-#include "../../yume_objects.h"
+#include "../../yume.h"  
 
 namespace yumeImGui {
 	void init() {
@@ -14,25 +14,28 @@ namespace yumeImGui {
         ImGui_ImplOpenGL3_Init("#version 330");
 	}
 
-    void yumeImGui_GenTexFrame(render::Texture tex) {
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+    namespace texture {
+        void yumeImGui_CreateFrame(render::Texture tex) {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
 
-        ImGui::Begin(tex.name);
+            ImGui::Begin(tex.name);
 
-        ImGui::SliderFloat("size", &tex.size, 0.0f, 1.0f);
+            ImGui::Text("Transform");
 
-        ImGui::SliderFloat("pos_x", &tex.position.x, -1.0f, 1.0f);
-        ImGui::SliderFloat("pos_y", &tex.position.y, -1.0f, 1.0f);
-        ImGui::SliderFloat("pos_z", &tex.position.z, -1.0f, 1.0f);
+            ImGui::SliderFloat("size", &tex.size, 0.0f, 1.0f);
 
-        tex.updatePosition();
+            ImGui::SliderFloat("pos_x", &tex.position.x, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_y", &tex.position.y, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_z", &tex.position.z, -1.0f, 1.0f);
 
-        ImGui::End();
+            tex.updatePosition();
 
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            ImGui::End();
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }
     }
 
     void clear() {
