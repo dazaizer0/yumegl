@@ -22,9 +22,14 @@ namespace render {
         const char* name;
 
         // CONSTRUCTOR
-        Texture(const char* namev, std::string path, mathy::vec3<float> position_value, mathy::colorRGBA color_value, Shader shader, float size_value);
-        // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
-        // Shader shader;
+        Texture(
+            const char* namev,
+            std::string path,
+            mathy::vec3<float> position_value,
+            mathy::colorRGBA color_value,
+            Shader shader,
+            float size_value
+        );
 
         //FUNCTIONS
         void updatePosition();
@@ -38,8 +43,8 @@ namespace render {
     private:
         unsigned int VBO{}, VAO{}, EBO{};
 
-        const char* texPath;
         unsigned int tex{};
+        const char* texPath;
         unsigned char* texData;
 
         std::vector<float> vertices;
