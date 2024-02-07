@@ -47,9 +47,12 @@ namespace yumeImGui {
             ImGui::Begin("Cube");
 
             ImGui::Text("Transform");
+            ImGui::Text("size");
+            ImGui::SliderFloat("size_x", &obj.size.x, 0.0f, 1.0f);
+            ImGui::SliderFloat("size_y", &obj.size.y, 0.0f, 1.0f);
+            ImGui::SliderFloat("size_z", &obj.size.z, 0.0f, 1.0f);
 
-            ImGui::SliderFloat("size", &obj.size, 0.0f, 1.0f);
-
+            ImGui::Text("position");
             ImGui::SliderFloat("pos_x", &obj.position.x, -1.0f, 1.0f);
             ImGui::SliderFloat("pos_y", &obj.position.y, -1.0f, 1.0f);
             ImGui::SliderFloat("pos_z", &obj.position.z, -1.0f, 1.0f);

@@ -8,9 +8,10 @@ namespace render {
 	class Cube { // IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public:
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
-        float size{};
+        mathy::vec3<float> size = mathy::vec3<float>::ZERO();
+        //float size{};
 
-        Cube(std::string path, float size_value);
+        Cube(std::string path, mathy::vec3<float> position_value, mathy::vec3<float> size_value);
         void updatePosition();
         void refresh();
         void render(Shader shader);
@@ -32,7 +33,7 @@ namespace render {
         std::vector<float> vertices;
 	};
 
-	Cube::Cube(std::string path, float size_value) {
+	Cube::Cube(std::string path, mathy::vec3<float> position_value, mathy::vec3<float> size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -45,50 +46,96 @@ namespace render {
         }
 
         size = size_value;
+        position = position_value;
 
         // CUBE
+        /*
+         * vertices = {
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 0.0f,
+
+                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
+
+                position.x + -size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
+
+                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f
+        };*/
+
         vertices = {
-            -size, -size, -size,  0.0f, 0.0f,
-            size, -size, -size,  1.0f, 0.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            -size,  size, -size,  0.0f, 1.0f,
-            -size, -size, -size,  0.0f, 0.0f,
+                -size.x, -size.y, -size.z,  0.0f, 0.0f,
+                size.x, -size.y, -size.z,  1.0f, 0.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                -size.x,  size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 0.0f,
 
-            -size, -size,  size,  0.0f, 0.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            size,  size,  size,  1.0f, 1.0f,
-            size,  size,  size,  1.0f, 1.0f,
-            -size,  size,  size,  0.0f, 1.0f,
-            -size, -size,  size,  0.0f, 0.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 1.0f,
+                size.x,  size.y,  size.z,  1.0f, 1.0f,
+                -size.x,  size.y,  size.z,  0.0f, 1.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
 
-            -size,  size,  size,  1.0f, 0.0f,
-            -size,  size, -size,  1.0f, 1.0f,
-            -size, -size, -size,  0.0f, 1.0f,
-            -size, -size, -size,  0.0f, 1.0f,
-            -size, -size,  size,  0.0f, 0.0f,
-            -size,  size,  size,  1.0f, 0.0f,
+                -size.x,  size.y,  size.z,  1.0f, 0.0f,
+                -size.x,  size.y, -size.z,  1.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                -size.x,  size.y,  size.z,  1.0f, 0.0f,
 
-            size,  size,  size,  1.0f, 0.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size, -size, -size,  0.0f, 1.0f,
-            size, -size, -size,  0.0f, 1.0f,
-            size, -size,  size,  0.0f, 0.0f,
-            size,  size,  size,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y,  size.z,  0.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
 
-            -size, -size, -size,  0.0f, 1.0f,
-            size, -size, -size,  1.0f, 1.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            -size, -size,  size,  0.0f, 0.0f,
-            -size, -size, -size,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y, -size.z,  1.0f, 1.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
 
-            -size,  size, -size,  0.0f, 1.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size,  size,  size,  1.0f, 0.0f,
-            size,  size,  size,  1.0f, 0.0f,
-            -size,  size,  size,  0.0f, 0.0f,
-            -size,  size, -size,  0.0f, 1.0f
+                -size.x,  size.y, -size.z,  0.0f, 1.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                -size.x,  size.y,  size.z,  0.0f, 0.0f,
+                -size.x,  size.y, -size.z,  0.0f, 1.0f
         };
 
         // CREATE CUBE
@@ -141,47 +188,47 @@ namespace render {
 
     void Cube::updatePosition() {
         vertices = {
-            -size, -size, -size,  0.0f, 0.0f,
-            size, -size, -size,  1.0f, 0.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            -size,  size, -size,  0.0f, 1.0f,
-            -size, -size, -size,  0.0f, 0.0f,
+                -size.x, -size.y, -size.z,  0.0f, 0.0f,
+                size.x, -size.y, -size.z,  1.0f, 0.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                -size.x,  size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 0.0f,
 
-            -size, -size,  size,  0.0f, 0.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            size,  size,  size,  1.0f, 1.0f,
-            size,  size,  size,  1.0f, 1.0f,
-            -size,  size,  size,  0.0f, 1.0f,
-            -size, -size,  size,  0.0f, 0.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 1.0f,
+                size.x,  size.y,  size.z,  1.0f, 1.0f,
+                -size.x,  size.y,  size.z,  0.0f, 1.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
 
-            -size,  size,  size,  1.0f, 0.0f,
-            -size,  size, -size,  1.0f, 1.0f,
-            -size, -size, -size,  0.0f, 1.0f,
-            -size, -size, -size,  0.0f, 1.0f,
-            -size, -size,  size,  0.0f, 0.0f,
-            -size,  size,  size,  1.0f, 0.0f,
+                -size.x,  size.y,  size.z,  1.0f, 0.0f,
+                -size.x,  size.y, -size.z,  1.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                -size.x,  size.y,  size.z,  1.0f, 0.0f,
 
-            size,  size,  size,  1.0f, 0.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size, -size, -size,  0.0f, 1.0f,
-            size, -size, -size,  0.0f, 1.0f,
-            size, -size,  size,  0.0f, 0.0f,
-            size,  size,  size,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y,  size.z,  0.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
 
-            -size, -size, -size,  0.0f, 1.0f,
-            size, -size, -size,  1.0f, 1.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            size, -size,  size,  1.0f, 0.0f,
-            -size, -size,  size,  0.0f, 0.0f,
-            -size, -size, -size,  0.0f, 1.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                size.x, -size.y, -size.z,  1.0f, 1.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                size.x, -size.y,  size.z,  1.0f, 0.0f,
+                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                -size.x, -size.y, -size.z,  0.0f, 1.0f,
 
-            -size,  size, -size,  0.0f, 1.0f,
-            size,  size, -size,  1.0f, 1.0f,
-            size,  size,  size,  1.0f, 0.0f,
-            size,  size,  size,  1.0f, 0.0f,
-            -size,  size,  size,  0.0f, 0.0f,
-            -size,  size, -size,  0.0f, 1.0f
+                -size.x,  size.y, -size.z,  0.0f, 1.0f,
+                size.x,  size.y, -size.z,  1.0f, 1.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                -size.x,  size.y,  size.z,  0.0f, 0.0f,
+                -size.x,  size.y, -size.z,  0.0f, 1.0f
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);

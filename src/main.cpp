@@ -23,7 +23,8 @@ int main() {
     // CUBE
     render::Cube cube = render::Cube(
         "textures/sonic_dirt.png",
-        0.6f
+        mathy::vec3<float> {0.0f, 0.0f, 0.0f},
+        mathy::vec3<float> {0.5f, 0.5f, 0.5f}
     );
 
     cube.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
