@@ -21,7 +21,12 @@ int main() {
     );
 
     // CUBE
-    render::Cube cube = render::Cube("textures\\sonic_grass.png");
+    render::Cube cube = render::Cube(
+        "textures/sonic_grass.png",
+        0.6f
+    );
+
+    cube.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
@@ -34,33 +39,8 @@ int main() {
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // BIND TEXTURE -- TEMPORARY MANUAL SOLUTION OF RENDERING AND ROTATEING CUBE
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, cube.tex);
-
-        // RENDER TEXTURE
-        glBindVertexArray(cube.VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        // ACTIVATE SHADER
-        glUseProgram(cubeShader.ID);
-
-        // ROTATE
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
-
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        projection = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
-
-        unsigned int modelLoc = glGetUniformLocation(cubeShader.ID, "model");
-        unsigned int viewLoc  = glGetUniformLocation(cubeShader.ID, "view");
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-
-        cubeShader.setMat4("projection", projection);
+        cube.render(cubeShader);
+        cube.setRotation(cubeShader);
 
         // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();
@@ -69,10 +49,8 @@ int main() {
     // DE-INITIALIZATION
     yumeImGui::clear();
 
-    glDeleteVertexArrays(1, &cube.VAO);
-    glDeleteBuffers(1, &cube.VBO);
-
     glDeleteShader(cubeShader.ID);
+    cube.deleteData();
 
     yumegl::eExit::close();
     return 0;

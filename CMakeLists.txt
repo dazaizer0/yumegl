@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME}
         # main
         src/main.cpp
         src/config.h
+        src/yume.h
 
         # math
         src/engine/math/mathy.h
@@ -32,7 +33,6 @@ add_executable(${PROJECT_NAME}
         src/engine/shader/shader.h
         src/engine/render/texture.h
         src/engine/gui/yume_imgui.h
-        src/yume.h
         src/engine/render/cube.h
 )
 
@@ -54,4 +54,8 @@ target_sources(${PROJECT_NAME}
         dep/imgui/imgui_widgets.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm)
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        glfw
+        glm
+)
