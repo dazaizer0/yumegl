@@ -22,7 +22,7 @@ int main() {
 
     // CUBE
     render::Cube cube = render::Cube(
-        "textures/sonic_grass.png",
+        "textures/sonic_dirt.png",
         0.6f
     );
 
@@ -40,7 +40,9 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         cube.render(cubeShader);
-        cube.setRotation(cubeShader);
+        cube.rotate(cubeShader);
+
+        yumeImGui::cube::yumeImGui_CreateFrame(cube);
 
         // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();

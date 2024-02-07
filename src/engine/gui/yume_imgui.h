@@ -15,22 +15,46 @@ namespace yumeImGui {
 	}
 
     namespace texture {
-        void yumeImGui_CreateFrame(render::Texture tex) {
+        void yumeImGui_CreateFrame(render::Texture obj) {
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            ImGui::Begin(tex.name);
+            ImGui::Begin(obj.name);
 
             ImGui::Text("Transform");
 
-            ImGui::SliderFloat("size", &tex.size, 0.0f, 1.0f);
+            ImGui::SliderFloat("size", &obj.size, 0.0f, 1.0f);
 
-            ImGui::SliderFloat("pos_x", &tex.position.x, -1.0f, 1.0f);
-            ImGui::SliderFloat("pos_y", &tex.position.y, -1.0f, 1.0f);
-            ImGui::SliderFloat("pos_z", &tex.position.z, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_x", &obj.position.x, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_y", &obj.position.y, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_z", &obj.position.z, -1.0f, 1.0f);
 
-            tex.updatePosition();
+            obj.updatePosition();
+
+            ImGui::End();
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }
+    }
+
+    namespace cube {
+        void yumeImGui_CreateFrame(render::Cube obj) {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            ImGui::Begin("Cube");
+
+            ImGui::Text("Transform");
+
+            ImGui::SliderFloat("size", &obj.size, 0.0f, 1.0f);
+
+            ImGui::SliderFloat("pos_x", &obj.position.x, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_y", &obj.position.y, -1.0f, 1.0f);
+            ImGui::SliderFloat("pos_z", &obj.position.z, -1.0f, 1.0f);
+
+            obj.updatePosition();
 
             ImGui::End();
             ImGui::Render();

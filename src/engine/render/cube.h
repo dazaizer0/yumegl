@@ -11,6 +11,8 @@ namespace render {
         float size{};
 
         Cube(std::string path, float size_value);
+        void updatePosition();
+        void refresh();
         void render(Shader shader);
         void rotate(Shader shader);
         void setRotation(Shader shader);
@@ -89,7 +91,6 @@ namespace render {
             -size,  size, -size,  0.0f, 1.0f
         };
 
-
         // CREATE CUBE
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -138,6 +139,63 @@ namespace render {
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
+    void Cube::updatePosition() {
+        vertices = {
+            -size, -size, -size,  0.0f, 0.0f,
+            size, -size, -size,  1.0f, 0.0f,
+            size,  size, -size,  1.0f, 1.0f,
+            size,  size, -size,  1.0f, 1.0f,
+            -size,  size, -size,  0.0f, 1.0f,
+            -size, -size, -size,  0.0f, 0.0f,
+
+            -size, -size,  size,  0.0f, 0.0f,
+            size, -size,  size,  1.0f, 0.0f,
+            size,  size,  size,  1.0f, 1.0f,
+            size,  size,  size,  1.0f, 1.0f,
+            -size,  size,  size,  0.0f, 1.0f,
+            -size, -size,  size,  0.0f, 0.0f,
+
+            -size,  size,  size,  1.0f, 0.0f,
+            -size,  size, -size,  1.0f, 1.0f,
+            -size, -size, -size,  0.0f, 1.0f,
+            -size, -size, -size,  0.0f, 1.0f,
+            -size, -size,  size,  0.0f, 0.0f,
+            -size,  size,  size,  1.0f, 0.0f,
+
+            size,  size,  size,  1.0f, 0.0f,
+            size,  size, -size,  1.0f, 1.0f,
+            size, -size, -size,  0.0f, 1.0f,
+            size, -size, -size,  0.0f, 1.0f,
+            size, -size,  size,  0.0f, 0.0f,
+            size,  size,  size,  1.0f, 0.0f,
+
+            -size, -size, -size,  0.0f, 1.0f,
+            size, -size, -size,  1.0f, 1.0f,
+            size, -size,  size,  1.0f, 0.0f,
+            size, -size,  size,  1.0f, 0.0f,
+            -size, -size,  size,  0.0f, 0.0f,
+            -size, -size, -size,  0.0f, 1.0f,
+
+            -size,  size, -size,  0.0f, 1.0f,
+            size,  size, -size,  1.0f, 1.0f,
+            size,  size,  size,  1.0f, 0.0f,
+            size,  size,  size,  1.0f, 0.0f,
+            -size,  size,  size,  0.0f, 0.0f,
+            -size,  size, -size,  0.0f, 1.0f
+        };
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    }
+
+    void Cube::refresh() {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tex);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    }
+
     void Cube::rotate(Shader shader) {
         // ROTATE
         glm::mat4 model = glm::mat4(1.0f);
@@ -168,8 +226,8 @@ namespace render {
         shader.setMat4("view", view);
 
         glm::mat4 model = glm::mat4(1.0f);
-        float angle = 20.0f * 1.0f;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        float angle = 45.0f;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
         shader.setMat4("model", model);
     }
 
