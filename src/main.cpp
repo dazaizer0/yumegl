@@ -23,7 +23,7 @@ int main() {
     // CUBE
     render::Cube cube = render::Cube(
         "textures/sonic_dirt.png",
-        mathy::vec3<float> {0.0f, 0.0f, 0.0f},
+        mathy::vec3<float> {0.0f, 0.0f, -3.0f},
         mathy::vec3<float> {0.5f, 0.5f, 0.5f}
     );
 
@@ -41,7 +41,17 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         cube.render(cubeShader);
-        cube.rotate(cubeShader);
+        /*cube.rotate(
+                mathy::vec3<float>{0.3f, 0.4f, 0.3f},
+                cubeShader,
+                1.2f
+        );*/
+
+        cube.setRotation(
+                mathy::vec3<float>{1.0f, 0.0f, 0.2f},
+                cubeShader,
+                30.0f
+        );
 
         yumeImGui::cube::yumeImGui_CreateFrame(cube);
 

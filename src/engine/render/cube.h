@@ -5,7 +5,7 @@
 #include "../../yume.h"
 
 namespace render {
-	class Cube { // IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public:
         mathy::vec3<float> position = mathy::vec3<float>::ZERO();
         mathy::vec3<float> size = mathy::vec3<float>::ZERO();
@@ -15,8 +15,8 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(Shader shader);
-        void rotate(Shader shader);
-        void setRotation(Shader shader);
+        void rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed);
+        void setRotation(mathy::vec3<float> axis, Shader shader, float angle);
         void setWindowSize(const unsigned int window_w, const unsigned int window_h);
         void deleteData();
 
@@ -95,47 +95,47 @@ namespace render {
         };*/
 
         vertices = {
-                -size.x, -size.y, -size.z,  0.0f, 0.0f,
-                size.x, -size.y, -size.z,  1.0f, 0.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                -size.x,  size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
 
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 1.0f,
-                size.x,  size.y,  size.z,  1.0f, 1.0f,
-                -size.x,  size.y,  size.z,  0.0f, 1.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
 
-                -size.x,  size.y,  size.z,  1.0f, 0.0f,
-                -size.x,  size.y, -size.z,  1.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                -size.x,  size.y,  size.z,  1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
 
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y,  size.z,  0.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
 
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y, -size.z,  1.0f, 1.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
 
-                -size.x,  size.y, -size.z,  0.0f, 1.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                -size.x,  size.y,  size.z,  0.0f, 0.0f,
-                -size.x,  size.y, -size.z,  0.0f, 1.0f
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f
         };
 
         // CREATE CUBE
@@ -188,47 +188,47 @@ namespace render {
 
     void Cube::updatePosition() {
         vertices = {
-                -size.x, -size.y, -size.z,  0.0f, 0.0f,
-                size.x, -size.y, -size.z,  1.0f, 0.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                -size.x,  size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
 
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 1.0f,
-                size.x,  size.y,  size.z,  1.0f, 1.0f,
-                -size.x,  size.y,  size.z,  0.0f, 1.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
 
-                -size.x,  size.y,  size.z,  1.0f, 0.0f,
-                -size.x,  size.y, -size.z,  1.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                -size.x,  size.y,  size.z,  1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
 
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y,  size.z,  0.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
 
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
-                size.x, -size.y, -size.z,  1.0f, 1.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                size.x, -size.y,  size.z,  1.0f, 0.0f,
-                -size.x, -size.y,  size.z,  0.0f, 0.0f,
-                -size.x, -size.y, -size.z,  0.0f, 1.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + -size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 1.0f,
 
-                -size.x,  size.y, -size.z,  0.0f, 1.0f,
-                size.x,  size.y, -size.z,  1.0f, 1.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                size.x,  size.y,  size.z,  1.0f, 0.0f,
-                -size.x,  size.y,  size.z,  0.0f, 0.0f,
-                -size.x,  size.y, -size.z,  0.0f, 1.0f
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + size.z, 0.0f, 0.0f,
+                position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -243,14 +243,22 @@ namespace render {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
     }
 
-    void Cube::rotate(Shader shader) {
+    void Cube::rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) {
         // ROTATE
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
 
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
+
+
+        model = glm::translate(model, glm::vec3(position.x, position.y, position.z));
+
+        model = glm::rotate(model, (float)glfwGetTime() * rotationSpeed, rotationAxis);
+
+        model = glm::translate(model, -glm::vec3(position.x, position.y, position.z));
+
+        view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
         projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
 
         unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
@@ -262,19 +270,20 @@ namespace render {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(Shader shader) {
+    void Cube::setRotation(mathy::vec3<float> axis, Shader shader, float angle) {
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
 
+        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
+
         projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
 
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
 
         glm::mat4 model = glm::mat4(1.0f);
-        float angle = 45.0f;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(angle), rotationAxis);
         shader.setMat4("model", model);
     }
 
