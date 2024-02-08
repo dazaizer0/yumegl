@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME}
         src/engine/render/texture.h
         src/engine/gui/yume_imgui.h
         src/engine/render/cube.h
+        src/engine/objects/camera.h
 )
 
 # OPENGL

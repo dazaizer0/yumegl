@@ -53,9 +53,9 @@ namespace yumeImGui {
             ImGui::SliderFloat("size_z", &obj.size.z, 0.0f, 2.0f);
 
             ImGui::Text("position");
-            ImGui::SliderFloat("pos_x", &obj.position.x, -5.0f, 5.0f);
-            ImGui::SliderFloat("pos_y", &obj.position.y, -5.0f, 5.0f);
-            ImGui::SliderFloat("pos_z", &obj.position.z, -5.0f, 5.0f);
+            ImGui::SliderFloat("pos_x", &obj.position.x, -15.0f, 15.0f);
+            ImGui::SliderFloat("pos_y", &obj.position.y, -15.0f, 15.0f);
+            ImGui::SliderFloat("pos_z", &obj.position.z, -15.0f, 15.0f);
 
             obj.updatePosition();
 

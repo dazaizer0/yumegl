@@ -8,13 +8,13 @@ namespace render {
     class Square {
     public:
         // PROPERTIES
-        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
+        glm::vec3 position = {0.0f, 0.0f, 0.0f};
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
         float size{};
         bool enable{};
 
         // CONSTRUCTOR
-        Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value);
+        Square(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value);
         // TODO: ADD SHADER AS TEXTURE ESSENTIAL COMPONENT
         // Shader shader;
 
@@ -33,7 +33,7 @@ namespace render {
         int vertex_count;
     };
 
-    Square::Square(mathy::vec3<float> position_value, mathy::colorRGBA color_value, float size_value) {
+    Square::Square(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;

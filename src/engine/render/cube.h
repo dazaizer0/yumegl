@@ -7,17 +7,16 @@
 namespace render {
 	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public:
-        mathy::vec3<float> position = mathy::vec3<float>::ZERO();
-        mathy::vec3<float> size = mathy::vec3<float>::ZERO();
-        //float size{};
+        glm::vec3 position = {0.0f, 0.0f, 0.0f};
+        glm::vec3 size = {0.0f, 0.0f, 0.0f};
 
-        Cube(std::string path, mathy::vec3<float> position_value, mathy::vec3<float> size_value);
+        Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
         void updatePosition();
-        void refresh();
-        void render(Shader shader);
-        void rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed);
-        void setRotation(mathy::vec3<float> axis, Shader shader, float angle);
-        void setWindowSize(const unsigned int window_w, const unsigned int window_h);
+        void refresh() const;
+        void render(Shader shader) const;
+        void rotate(glm::vec3 axis, Shader shader, float rotationSpeed) const;
+        void setRotation(glm::vec3 axis, Shader shader, float angle) const;
+        void setWindowSize(unsigned int window_w, unsigned int window_h);
         void deleteData();
 
     private:
@@ -33,7 +32,7 @@ namespace render {
         std::vector<float> vertices;
 	};
 
-	Cube::Cube(std::string path, mathy::vec3<float> position_value, mathy::vec3<float> size_value) {
+	Cube::Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -49,51 +48,6 @@ namespace render {
         position = position_value;
 
         // CUBE
-        /*
-         * vertices = {
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 0.0f,
-                position.x + size.x, position.y + -size.y, position.z + -size.z,  1.0f, 0.0f,
-                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 0.0f,
-
-                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
-                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 1.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 1.0f,
-                position.x + -size.x, position.y + size.y, position.z + size.z,  0.0f, 1.0f,
-                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
-
-                position.x + -size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + -size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
-                position.x + -size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + size.x, position.y + -size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + size.x, position.y + -size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + -size.x, position.y + -size.y, position.z + size.z,  0.0f, 0.0f,
-                position.x + -size.x, position.y + -size.y, position.z + -size.z,  0.0f, 1.0f,
-
-                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f,
-                position.x + size.x, position.y + size.y, position.z + -size.z,  1.0f, 1.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z,  1.0f, 0.0f,
-                position.x + -size.x, position.y + size.y, position.z + size.z,  0.0f, 0.0f,
-                position.x + -size.x, position.y + size.y, position.z + -size.z,  0.0f, 1.0f
-        };*/
-
         vertices = {
                 position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
                 position.x + size.x, position.y + -size.y, position.z + -size.z, 1.0f, 0.0f,
@@ -173,7 +127,7 @@ namespace render {
         stbi_image_free(texData);
     }
 
-    void Cube::render(Shader shader) {
+    void Cube::render(Shader shader) const {
         // ACTIVATE SHADER
         glUseProgram(shader.ID);
 
@@ -235,7 +189,7 @@ namespace render {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
     }
 
-    void Cube::refresh() {
+    void Cube::refresh() const {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -243,14 +197,13 @@ namespace render {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
     }
 
-    void Cube::rotate(mathy::vec3<float> axis, Shader shader, float rotationSpeed) {
+    void Cube::rotate(glm::vec3 axis, Shader shader, float rotationSpeed) const {
         // ROTATE
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
+        auto model = glm::mat4(1.0f);
+        auto view = glm::mat4(1.0f);
+        auto projection = glm::mat4(1.0f);
 
-        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
-
+        auto rotationAxis = axis;
 
         model = glm::translate(model, glm::vec3(position.x, position.y, position.z));
 
@@ -270,11 +223,11 @@ namespace render {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(mathy::vec3<float> axis, Shader shader, float angle) {
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
+    void Cube::setRotation(glm::vec3 axis, Shader shader, float angle) const {
+        auto view = glm::mat4(1.0f);
+        auto projection = glm::mat4(1.0f);
 
-        glm::vec3 rotationAxis = mathy::func::convertVec3(axis);
+        auto rotationAxis = axis;
 
         projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
         view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
@@ -282,7 +235,7 @@ namespace render {
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
 
-        glm::mat4 model = glm::mat4(1.0f);
+        auto model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(angle), rotationAxis);
         shader.setMat4("model", model);
     }

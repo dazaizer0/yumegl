@@ -5,7 +5,7 @@
 namespace mathy {
     // VECTOR 2
     template <typename T>
-    class vec2 {
+    class vec2 { // TRANSFER TO GLM IN PROGRESS
     public:
         T x{};
         T y{};
@@ -51,7 +51,7 @@ namespace mathy {
 
     // VECTOR 3
     template <typename T>
-    class vec3 {
+    class vec3 { // TRANSFER TO GLM IN PROGRESS
     public:
         T x{};
         T y{};
@@ -90,6 +90,8 @@ namespace mathy {
 
         static vec3<T> ZERO() { return {T(0), T(0), T(0)}; };
         static vec3<T> ONE() { return {T(1), T(1), T(1)}; };
+
+        static vec3<T> UP() { return {T(0), T(1), T(0)}; };
     };
 
     // RGB
@@ -130,14 +132,4 @@ namespace mathy {
         static colorRGBA GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
         static colorRGBA BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
     };
-
-    namespace func {
-        glm::vec2 convertVec2(const mathy::vec2<float>& other) {
-            return {other.x, other.y};
-        }
-
-        glm::vec3 convertVec3(const mathy::vec3<float>& other) {
-            return {other.x, other.y, other.z};
-        }
-    }
 }
