@@ -17,7 +17,7 @@ namespace render {
         bool enable{};
 
         glm::vec3 axis = {0.0f, 0.0f, 0.0f};
-        float angle{360.0f};
+        float angle{ 360.0f };
 
         const char* name;
 

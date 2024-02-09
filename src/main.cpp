@@ -1,9 +1,8 @@
 #include "config.h"
 #include "yume.h"
-#include "engine/objects/camera.h"
 
-const unsigned int WINDOW_WIDTH = 1280;
-const unsigned int WINDOW_HEIGHT = 720;
+const unsigned int WINDOW_WIDTH{ 1280 };
+const unsigned int WINDOW_HEIGHT{ 720 };
 
 int main() {
     // INITIALIZATION
@@ -20,7 +19,7 @@ int main() {
         "texture/vertex_t3d.glsl",
         "texture/fragment_t3d.glsl"
     );
-    Shader dirtShader(
+    Shader roomShader(
         "texture/vertex_t3d.glsl",
         "texture/fragment_t3d.glsl"
     );
@@ -32,14 +31,14 @@ int main() {
         glm::vec3 {1.0f, 1.0f, 1.0f}
     );
 
-    render::Cube dirt = render::Cube(
+    render::Cube room = render::Cube(
         "textures/sonic_dirt.png",
-        glm::vec3 {0.0f, 0.0f, -7.0f},
-        glm::vec3 {1.0f, 1.0f, 1.0f}
+        glm::vec3 {0.0f, 5.0f, 0.0f},
+        glm::vec3 {20.0f, 10.0f, 20.0f}
     );
 
     ice.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    dirt.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    room.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
@@ -70,12 +69,12 @@ int main() {
         );
 
         // DIRT CUBE
-        cam.update(dirtShader);
-        dirt.render(dirtShader);
-        dirt.setRotation(
-            glm::vec3{0.4f, 0.5f, 0.4f},
-            dirtShader,
-            1.0f
+        cam.update(roomShader);
+        room.render(roomShader);
+        room.setRotation(
+            glm::vec3{0.1f, 0.1f, 0.1f},
+            roomShader,
+            0.1f
         );
 
         // SWAP POLL EVENTS
@@ -83,10 +82,10 @@ int main() {
     }
     // DE-INITIALIZATION
     glDeleteShader(iceShader.ID);
-    glDeleteShader(dirtShader.ID);
+    glDeleteShader(roomShader.ID);
 
     ice.deleteData();
-    dirt.deleteData();
+    room.deleteData();
 
     yumegl::eExit::close();
 

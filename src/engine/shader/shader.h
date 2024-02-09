@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <src/engine/source/yume_kernel.h>
 
 class Shader
 {

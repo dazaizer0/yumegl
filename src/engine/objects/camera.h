@@ -11,7 +11,7 @@ namespace object {
         glm::vec3 front = {0.0f, 0.0f, -1.0f};
         glm::vec3 up = {0.0f, 1.0f, 0.0f};
 
-        float sensitivity = 0.3f;
+        float sensitivity{ 0.3f };
 
         bool firstMouse = true;
 
@@ -49,7 +49,7 @@ namespace object {
     }
 
     void Camera3D::updateCameraInput(float deltaTime) {
-        auto cameraSpeed = static_cast<float>(5.0 * deltaTime);
+        auto cameraSpeed = static_cast<float>(16.0f * deltaTime);
 
         if (input::keyDown(GLFW_KEY_W))
             position += cameraSpeed * front;
