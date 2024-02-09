@@ -5,6 +5,8 @@
 namespace yumegl {
     // WINDOW
     GLFWwindow* _window;
+    float deltaTime{};
+    float lastFrame{};
 
     void init(int width, int height, const std::string& title) {
         // GAME WINDOW INITIALIZATION
@@ -40,6 +42,11 @@ namespace yumegl {
         }
     }
 
+    void update() {
+        auto currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+    }
 
     GLFWwindow* getWindowPointer() {
         return _window;

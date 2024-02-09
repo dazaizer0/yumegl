@@ -12,12 +12,14 @@ namespace object {
         glm::vec3 up = {0.0f, 1.0f, 0.0f};
 
         float sensitivity = 0.3f;
+
         bool firstMouse = true;
 
         Camera3D(unsigned int window_width, unsigned int window_height);
 
         void updateCameraInput(float deltaTime);
         static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
+        void changeCursorVisibility();
         void setWindowSize(unsigned int width, unsigned int height);
         void update(Shader shader) const;
 
@@ -27,6 +29,8 @@ namespace object {
         float lastX = 800.0f / 2.0;
         float lastY = 600.0f / 2.0;
         float fov = 45.0f;
+
+        bool cursorVisible = true;
 
         float windowWidth{};
         float windowHeight{};
@@ -100,6 +104,12 @@ namespace object {
 
         glm::mat4 view = glm::lookAt(position, position + front, up);
         shader.setMat4("view", view);
+
+        glfwSetInputMode(yumegl::_window, GLFW_CURSOR, cursorVisible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+    }
+
+    void Camera3D::changeCursorVisibility() {
+        cursorVisible = !cursorVisible;
     }
 }
 #endif
