@@ -12,23 +12,18 @@ int main() {
     // CAMERA
     object::Camera3D cam = object::Camera3D(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // DEPTH AND SHADERS
+    // DEPTH
     glEnable(GL_DEPTH_TEST);
 
-    Shader iceShader(
-        "texture/vertex_t3d.glsl",
-        "texture/fragment_t3d.glsl"
-    );
-    Shader roomShader(
-        "texture/vertex_t3d.glsl",
-        "texture/fragment_t3d.glsl"
-    );
-
     // OBJECTS
-    render::Cube ice = render::Cube(
-        "textures/sonic_ice.png",
+    render::Cube cube = render::Cube(
+        "textures/sonic_warning.png",
         glm::vec3 {0.0f, 0.0f, -3.0f},
         glm::vec3 {1.0f, 1.0f, 1.0f}
+    );
+    cube.shader.genShader(
+        "texture/vertex_t3d.glsl",
+        "texture/fragment_t3d.glsl"
     );
 
     render::Cube room = render::Cube(
@@ -36,8 +31,12 @@ int main() {
         glm::vec3 {0.0f, 5.0f, 0.0f},
         glm::vec3 {20.0f, 10.0f, 20.0f}
     );
+    room.shader.genShader(
+        "texture/vertex_t3d.glsl",
+        "texture/fragment_t3d.glsl"
+    );
 
-    ice.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    cube.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     room.setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // MAIN LOOP
@@ -60,20 +59,18 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // ICE CUBE
-        cam.update(iceShader);
-        ice.render(iceShader);
-        ice.rotate(
+        cam.update(cube.shader);
+        cube.render();
+        cube.rotate(
             glm::vec3{0.4f, 0.5f, 0.4f},
-            iceShader,
             1.0f
         );
 
         // DIRT CUBE
-        cam.update(roomShader);
-        room.render(roomShader);
+        cam.update(room.shader);
+        room.render();
         room.setRotation(
             glm::vec3{0.1f, 0.1f, 0.1f},
-            roomShader,
             0.1f
         );
 
@@ -81,10 +78,10 @@ int main() {
         yumegl::swapBuffersPollEvents();
     }
     // DE-INITIALIZATION
-    glDeleteShader(iceShader.ID);
-    glDeleteShader(roomShader.ID);
+    glDeleteShader(cube.shader.ID);
+    glDeleteShader(room.shader.ID);
 
-    ice.deleteData();
+    cube.deleteData();
     room.deleteData();
 
     yumegl::eExit::close();

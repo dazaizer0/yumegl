@@ -9,13 +9,14 @@ namespace render {
     public:
         glm::vec3 position = {0.0f, 0.0f, 0.0f};
         glm::vec3 size = {0.0f, 0.0f, 0.0f};
+        Shader shader;
 
         Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
         void updatePosition();
-        void refresh() const;
-        void render(Shader shader) const;
-        void rotate(glm::vec3 axis, Shader shader, float rotationSpeed) const;
-        void setRotation(glm::vec3 axis, Shader shader, float angle) const;
+        void refresh();
+        void render();
+        void rotate(glm::vec3 axis, float rotationSpeed);
+        void setRotation(glm::vec3 axis, float angle);
         void setWindowSize(unsigned int window_w, unsigned int window_h);
         void deleteData();
 
@@ -114,8 +115,8 @@ namespace render {
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // GL_NEAREST
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // GL_NEAREST
 
         int width, height, nrChannels;
         texData = stbi_load(texPath, &width, &height, &nrChannels, 0);
@@ -127,7 +128,7 @@ namespace render {
         stbi_image_free(texData);
     }
 
-    void Cube::render(Shader shader) const {
+    void Cube::render() {
         // ACTIVATE SHADER
         glUseProgram(shader.ID);
 
@@ -189,7 +190,7 @@ namespace render {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
     }
 
-    void Cube::refresh() const {
+    void Cube::refresh() {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -197,7 +198,7 @@ namespace render {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
     }
 
-    void Cube::rotate(glm::vec3 axis, Shader shader, float rotationSpeed) const {
+    void Cube::rotate(glm::vec3 axis, float rotationSpeed) {
         // ROTATE
         auto model = glm::mat4(1.0f);
         auto view = glm::mat4(1.0f);
@@ -223,7 +224,7 @@ namespace render {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(glm::vec3 axis, Shader shader, float angle) const {
+    void Cube::setRotation(glm::vec3 axis, float angle) {
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
 

@@ -17,8 +17,11 @@ public:
     unsigned int ID;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Shader(const std::string& vertPath, const std::string& fragPath)
-    {
+    Shader() {
+        
+    }
+    // generate shader
+    void genShader(const std::string& vertPath, const std::string& fragPath) {
         // CONVERT PATH
         std::string vpath = yumegl::eFunc::yumePath() + "/src/engine/shader/glshaders/" + vertPath; // VERTEX
         const char* vertexPath = vpath.c_str();
@@ -86,7 +89,6 @@ public:
         // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(vertex);
         glDeleteShader(fragment);
-
     }
     // activate the shader
     // ------------------------------------------------------------------------
