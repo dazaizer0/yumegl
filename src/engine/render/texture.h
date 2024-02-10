@@ -13,6 +13,7 @@ namespace render {
         // PROPERTIES
         glm::vec3 position = {0.0f, 0.0f, 0.0f};
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
+        shaderSystem::Shader _shader;
         float size{};
         bool enable{};
 
@@ -27,7 +28,7 @@ namespace render {
             std::string path,
             glm::vec3 position_value,
             mathy::colorRGBA color_value,
-            Shader shader,
+            shaderSystem::Shader shader,
             float size_value
         );
 
@@ -35,9 +36,9 @@ namespace render {
         void updatePosition();
         void refresh();
         void render(unsigned int shader) const;
-        void rotate(glm::vec3 axis, Shader shader, float rotationSpeed);
-        void setRotation(glm::vec3 axis, Shader shader, float angle);
-        void updateRotation(Shader shader);
+        void rotate(glm::vec3 axis, shaderSystem::Shader shader, float rotationSpeed);
+        void setRotation(glm::vec3 axis, shaderSystem::Shader shader, float angle);
+        void updateRotation(shaderSystem::Shader shader);
         void deleteData();
 
     private:
@@ -51,7 +52,7 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::colorRGBA color_value, Shader shader, float size_value) {
+    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::colorRGBA color_value, shaderSystem::Shader shader, float size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -190,7 +191,7 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotate(glm::vec3 axis, Shader shader, float rotationSpeed) {
+    void Texture::rotate(glm::vec3 axis, shaderSystem::Shader shader, float rotationSpeed) {
         auto transform = glm::mat4(1.0f);
         auto rotationAxis = axis;
 
@@ -203,7 +204,7 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::setRotation(glm::vec3 axis_value, Shader shader, float angle_value) {
+    void Texture::setRotation(glm::vec3 axis_value, shaderSystem::Shader shader, float angle_value) {
         auto transform = glm::mat4(1.0f);
         axis = axis_value;
         angle = angle_value;
@@ -218,7 +219,7 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::updateRotation(Shader shader) {
+    void Texture::updateRotation(shaderSystem::Shader shader) {
         auto transform = glm::mat4(1.0f);
 
         auto rotationAxis = axis;

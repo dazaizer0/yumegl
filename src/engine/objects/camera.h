@@ -11,7 +11,7 @@ namespace object {
         glm::vec3 front = {0.0f, 0.0f, -1.0f};
         glm::vec3 up = {0.0f, 1.0f, 0.0f};
 
-        float sensitivity{ 0.3f };
+        float sensitivity{ 0.16f };
 
         bool firstMouse = true;
 
@@ -21,14 +21,15 @@ namespace object {
         static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
         void changeCursorVisibility();
         void setWindowSize(unsigned int width, unsigned int height);
-        void update(Shader shader) const;
+        void update(shaderSystem::Shader shader) const;
 
     private:
-        float yaw = -90.0f;
-        float pitch = 0.0f;
-        float lastX = 800.0f / 2.0;
-        float lastY = 600.0f / 2.0;
-        float fov = 45.0f;
+        float posY{ 0.0f };
+        float yaw{ -90.0f };
+        float pitch{ 0.0f };
+        float lastX{ 800.0f / 2.0 };
+        float lastY{600.0f / 2.0 };
+        float fov{ 45.0f };
 
         bool cursorVisible = true;
 
@@ -60,8 +61,18 @@ namespace object {
         if (input::keyDown(GLFW_KEY_D))
             position += glm::normalize(glm::cross(front, up)) * cameraSpeed;
 
+        if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_UP))
+            posY += cameraSpeed;
+        else if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_DOWN))
+            posY -= cameraSpeed;
+
+        if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_UP))
+            sensitivity += 0.001;
+        else if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_DOWN))
+            sensitivity -= 0.001;
+
         // -------------- fps style
-        position.y = 0.0f;
+        position.y = posY;
     }
 
     void Camera3D::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
@@ -98,7 +109,7 @@ namespace object {
         camera->front = glm::normalize(front);
     }
 
-    void Camera3D::update(Shader shader) const {
+    void Camera3D::update(shaderSystem::Shader shader) const {
         glm::mat4 projection = glm::perspective(glm::radians(fov), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
 
