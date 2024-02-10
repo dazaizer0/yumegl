@@ -20,7 +20,7 @@ namespace object {
         static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
         void changeCursorVisibility();
         void setWindowSize(unsigned int width, unsigned int height);
-        void update(shaderSystem::Shader shader) const;
+        void update(const shaderSystem::Shader& shader) const;
 
     private:
         float posY{ 0.0f };
@@ -53,6 +53,7 @@ namespace object {
     void Camera3D::update(float deltaTime) {
         auto cameraSpeed = static_cast<float>(16.0f * deltaTime);
 
+        // MOVEMENT
         if (input::keyDown(GLFW_KEY_W))
             position += cameraSpeed * front;
         if (input::keyDown(GLFW_KEY_S))
@@ -62,6 +63,7 @@ namespace object {
         if (input::keyDown(GLFW_KEY_D))
             position += glm::normalize(glm::cross(front, up)) * cameraSpeed;
 
+        // SHORTCUTS
         if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_UP))
             posY += cameraSpeed;
         else if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_DOWN))
@@ -109,7 +111,7 @@ namespace object {
         camera->front = glm::normalize(front);
     }
 
-    void Camera3D::update(shaderSystem::Shader shader) const {
+    void Camera3D::update(const shaderSystem::Shader& shader) const {
         glm::mat4 projection = glm::perspective(glm::radians(fov), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
         shader.setMat4("projection", projection);
 

@@ -14,19 +14,18 @@
 namespace shaderSystem {
     class Shader {
     public:
-        unsigned int ID;
+        unsigned int ID{};
 
         std::string vertPath{};
         std::string fragPath{};
 
-        Shader() {}
+        Shader() = default;
 
         // FUNCTIONS
         void genShader(const std::string& vertex_path, const std::string& fragment_path) {
             // SET 
             vertPath = vertex_path;
             fragPath = fragment_path;
-
 
             // CONVERT SHADERS PATHS
 
@@ -42,14 +41,14 @@ namespace shaderSystem {
                 std::cerr << "ERROR:LOADING:VERTEX:SHADER" << std::endl;
             }
             else {
-                std::cout << "vertex shader: loaded correctly\n";
+                std::cout << "vertex shader loaded correctly\n";
             }
 
             if (fragmentPath == nullptr) {
                 std::cerr << "ERROR:LOADING:FRAGMENT:SHADER" << std::endl;
             }
             else {
-                std::cout << "fragment shader: loaded correctly\n";
+                std::cout << "fragment shader loaded correctly\n";
             }
 
             std::string vertexCode;
@@ -164,7 +163,7 @@ namespace shaderSystem {
         }
 
     private:
-        void checkCompileErrors(GLuint shader, std::string type) {
+        static void checkCompileErrors(GLuint shader, const std::string& type) {
             GLint success;
             GLchar infoLog[1024];
             if (type != "PROGRAM") {

@@ -15,9 +15,9 @@ namespace render {
 
         void updatePosition();
         void refresh();
-        void render();
+        void render() const;
         void rotate(glm::vec3 axis, float rotationSpeed);
-        void setRotation(glm::vec3 axis, float angle);
+        void setRotation(glm::vec3 axis, float angle) const;
         void setWindowSize(unsigned int window_w, unsigned int window_h);
         void deleteData();
 
@@ -129,7 +129,7 @@ namespace render {
         stbi_image_free(texData);
     }
 
-    void Cube::render() {
+    void Cube::render() const {
         // ACTIVATE SHADER
         glUseProgram(shader.ID);
 
@@ -225,7 +225,7 @@ namespace render {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(glm::vec3 axis, float angle) {
+    void Cube::setRotation(glm::vec3 axis, float angle) const {
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
 
