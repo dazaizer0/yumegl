@@ -10,7 +10,7 @@ int main() {
     yumegl::eFunc::setColor(mathy::colorRGBA::BLACK());
 
     // CAMERA
-    object::Camera3D cam(WINDOW_WIDTH, WINDOW_HEIGHT);
+    object::Camera3D cam({0.0f, 0.0f, 3.0f}, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // DEPTH
     glEnable(GL_DEPTH_TEST);
@@ -27,8 +27,9 @@ int main() {
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
-        // UPDATE YUMEGL
+        // UPDATE
         yumegl::update();
+        cam.update(yumegl::deltaTime);
 
         // INPUT SYSTEM
         input::updateInput();
@@ -39,17 +40,15 @@ int main() {
             cam.changeCursorVisibility();
         }
 
-        cam.updateCameraInput(yumegl::deltaTime);
-
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // ICE CUBE
+        // CUBE
         cam.update(cube.shader);
         cube.render();
         cube.rotate(glm::vec3(0.4f, 0.5f, 0.4f), 1.0f);
         
-        // DIRT CUBE
+        // ROOM
         cam.update(room.shader);
         room.render();
         room.setRotation(glm::vec3(0.1f, 0.1f, 0.1f), 0.1f);

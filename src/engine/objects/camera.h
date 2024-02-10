@@ -5,19 +5,18 @@
 #include "../../yume.h"
 
 namespace object {
-    class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT <<<<<<<< learning from learn opengl
+    class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT learning from learn opengl <<<<<<<<
     public:
         glm::vec3 position = {0.0f, 0.0f, 3.0f};
         glm::vec3 front = {0.0f, 0.0f, -1.0f};
         glm::vec3 up = {0.0f, 1.0f, 0.0f};
 
         float sensitivity{ 0.16f };
-
         bool firstMouse = true;
 
-        Camera3D(unsigned int window_width, unsigned int window_height);
+        Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height);
 
-        void updateCameraInput(float deltaTime);
+        void update(float deltaTime);
         static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
         void changeCursorVisibility();
         void setWindowSize(unsigned int width, unsigned int height);
@@ -37,9 +36,11 @@ namespace object {
         float windowHeight{};
     };
 
-    Camera3D::Camera3D(unsigned int window_width, unsigned int window_height) {
+    Camera3D::Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height) {
         glfwSetCursorPosCallback(yumegl::_window, Camera3D::mouseCallback);
         glfwSetWindowUserPointer(yumegl::_window, this);
+
+        position = position_value;
 
         setWindowSize(window_width, window_height);
     }
@@ -49,7 +50,7 @@ namespace object {
         windowHeight = (float)height;
     }
 
-    void Camera3D::updateCameraInput(float deltaTime) {
+    void Camera3D::update(float deltaTime) {
         auto cameraSpeed = static_cast<float>(16.0f * deltaTime);
 
         if (input::keyDown(GLFW_KEY_W))
@@ -67,11 +68,10 @@ namespace object {
             posY -= cameraSpeed;
 
         if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_UP))
-            sensitivity += 0.001;
+            sensitivity += 0.0005f;
         else if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_DOWN))
-            sensitivity -= 0.001;
+            sensitivity -= 0.0005f;
 
-        // -------------- fps style
         position.y = posY;
     }
 

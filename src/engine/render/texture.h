@@ -13,7 +13,7 @@ namespace render {
         // PROPERTIES
         glm::vec3 position = {0.0f, 0.0f, 0.0f};
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
-        shaderSystem::Shader _shader;
+        shaderSystem::Shader shader;
         float size{};
         bool enable{};
 
@@ -28,17 +28,16 @@ namespace render {
             std::string path,
             glm::vec3 position_value,
             mathy::colorRGBA color_value,
-            shaderSystem::Shader shader,
             float size_value
         );
 
         //FUNCTIONS
         void updatePosition();
         void refresh();
-        void render(unsigned int shader) const;
-        void rotate(glm::vec3 axis, shaderSystem::Shader shader, float rotationSpeed);
-        void setRotation(glm::vec3 axis, shaderSystem::Shader shader, float angle);
-        void updateRotation(shaderSystem::Shader shader);
+        void render() const;
+        void rotate(glm::vec3 axis, float rotationSpeed);
+        void setRotation(glm::vec3 axis, float angle);
+        void updateRotation();
         void deleteData();
 
     private:
@@ -52,7 +51,7 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::colorRGBA color_value, shaderSystem::Shader shader, float size_value) {
+    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::colorRGBA color_value, float size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -138,7 +137,6 @@ namespace render {
 
         int width, height, nrChannels;
         texData = stbi_load(
-            //example: "C:/Users/mydat/Documents/_active_c/_cpp/YumeGl/yumegl/assets/sonic.png",
             texPath,
             &width,
             &height,
@@ -155,7 +153,7 @@ namespace render {
         }
         stbi_image_free(texData);
 
-        updateRotation(shader);
+        setRotation({ 0.0f, 0.0f, 1.0f }, 180.0f);
     }
 
     // FUNCTIONS
@@ -191,7 +189,7 @@ namespace render {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
-    void Texture::rotate(glm::vec3 axis, shaderSystem::Shader shader, float rotationSpeed) {
+    void Texture::rotate(glm::vec3 axis, float rotationSpeed) {
         auto transform = glm::mat4(1.0f);
         auto rotationAxis = axis;
 
@@ -204,7 +202,7 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::setRotation(glm::vec3 axis_value, shaderSystem::Shader shader, float angle_value) {
+    void Texture::setRotation(glm::vec3 axis_value, float angle_value) {
         auto transform = glm::mat4(1.0f);
         axis = axis_value;
         angle = angle_value;
@@ -219,7 +217,7 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::updateRotation(shaderSystem::Shader shader) {
+    void Texture::updateRotation() {
         auto transform = glm::mat4(1.0f);
 
         auto rotationAxis = axis;
@@ -231,10 +229,10 @@ namespace render {
     }
 
     // RENDER
-    void Texture::render(unsigned int shader) const {
+    void Texture::render() const {
         glBindTexture(GL_TEXTURE_2D, tex);
 
-        glUseProgram(shader);
+        glUseProgram(shader.ID);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
