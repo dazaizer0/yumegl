@@ -1,5 +1,5 @@
-#ifndef YUMEGL_YUME_IMGUI_H
-#define YUMEGL_YUME_IMGUI_H
+#ifndef YUMEGL_YUME_IMGUI_HPP
+#define YUMEGL_YUME_IMGUI_HPP
 
 #include "../../config.h"
 #include "../../yume.h"  
@@ -72,4 +72,4 @@ namespace yumeImGui {
     }
 }
 
-#endif //YUMEGL_YUME_IMGUI_H
+#endif //YUMEGL_YUME_IMGUI_HPP

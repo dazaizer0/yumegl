@@ -1,5 +1,5 @@
-#ifndef YUMEGL_CAMERA_H
-#define YUMEGL_CAMERA_H
+#ifndef YUMEGL_CAMERA_HPP
+#define YUMEGL_CAMERA_HPP
 
 #include "../../config.h"
 #include "../../yume.h"

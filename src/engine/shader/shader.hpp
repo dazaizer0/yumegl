@@ -9,7 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <src/engine/source/yume_kernel.h>
+#include <src/engine/source/yume_kernel.hpp>
 
 namespace shaderSystem {
     class Shader {

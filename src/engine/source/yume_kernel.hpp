@@ -34,12 +34,14 @@ namespace yumegl {
         glfwMakeContextCurrent(_window);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-            std::cout << "Failed to initialize GLAD\n";
+            std::cerr << "Failed to initialize GLAD\n";
             return;
         }
         else {
             std::cout << "GLAD initialized correctly\n";
         }
+
+        glfwSwapInterval(1);
     }
 
     void update() {

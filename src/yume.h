@@ -1,8 +1,9 @@
 #pragma once
 
-#include "engine/input/input.h"
-#include "engine/shader/shader.h"
-#include "engine/render/texture.h"
-#include "engine/render/cube.h"
-#include "engine/gui/yume_imgui.h"
-#include "engine/objects/camera.h"
+// YUME
+#include "yumegl/src/engine/input/input.hpp"
+#include "yumegl/src/engine/shader/shader.hpp"
+#include "engine/render/texture.hpp"
+#include "engine/render/cube.hpp"
+#include "engine/gui/yume_imgui.hpp"
+#include "engine/objects/camera.hpp"

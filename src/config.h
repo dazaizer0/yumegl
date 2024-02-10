@@ -13,8 +13,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // YUME ESSENTIAL HEADLINES
-#include "engine/math/mathy.h"
-#include "engine/source/yume_kernel.h"
+#include "engine/math/mathy.hpp"
+#include "engine/source/yume_kernel.hpp"
 
 // BASIC
 #include <iostream>

@@ -4,7 +4,7 @@
 #include "../../config.h"
 
 #include "stb/stb_image.h"
-#include "src/engine/shader/shader.h"
+#include "src/engine/shader/shader.hpp"
 
 namespace render {
     // SQUARE
@@ -30,6 +30,7 @@ namespace render {
             mathy::colorRGBA color_value,
             float size_value
         );
+        ~Texture();
 
         //FUNCTIONS
         void updatePosition();
@@ -37,8 +38,7 @@ namespace render {
         void render() const;
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation(glm::vec3 axis, float angle);
-        void updateRotation();
-        void deleteData();
+        void updateRotation() const;
 
     private:
         unsigned int VBO{}, VAO{}, EBO{};
@@ -217,7 +217,7 @@ namespace render {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::updateRotation() {
+    void Texture::updateRotation() const {
         auto transform = glm::mat4(1.0f);
 
         auto rotationAxis = axis;
@@ -238,12 +238,12 @@ namespace render {
     }
 
     // DELETE
-    void Texture::deleteData() {
-        std::cerr << "Textures data successfully deleted" << std::endl;
-
+    Texture::~Texture() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
+
+        std::cerr << "Textures data successfully deleted" << std::endl;
     }
 }
 #endif

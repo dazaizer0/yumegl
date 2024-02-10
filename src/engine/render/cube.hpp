@@ -1,5 +1,5 @@
-#ifndef YUMEGL_CUBE_H
-#define YUMEGL_CUBE_H
+#ifndef YUMEGL_CUBE_HPP
+#define YUMEGL_CUBE_HPP
 
 #include "../../config.h"
 #include "../../yume.h"
@@ -12,6 +12,7 @@ namespace render {
         shaderSystem::Shader shader;
 
         Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
+        ~Cube();
 
         void updatePosition();
         void refresh();
@@ -19,7 +20,6 @@ namespace render {
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation(glm::vec3 axis, float angle) const;
         void setWindowSize(unsigned int window_w, unsigned int window_h);
-        void deleteData();
 
     private:
         unsigned int VBO{}, VAO{};
@@ -116,8 +116,8 @@ namespace render {
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // GL_NEAREST
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // GL_NEAREST
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         int width, height, nrChannels;
         texData = stbi_load(texPath, &width, &height, &nrChannels, 0);
@@ -247,9 +247,13 @@ namespace render {
         window_height = window_h;
     }
 
-    void Cube::deleteData() {
+    Cube::~Cube() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
+
+        glDeleteShader(shader.ID);
+
+        std::cerr << "textures data successfully deleted" << std::endl;
     }
 }
-#endif //YUMEGL_CUBE_H
+#endif //YUMEGL_CUBE_HPP

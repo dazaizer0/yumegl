@@ -15,6 +15,7 @@ namespace render {
 
         // CONSTRUCTOR
         Triangle(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value);
+        ~Triangle();
 
         // FUNCTIONS
         void render() const;
@@ -73,11 +74,11 @@ namespace render {
     }
 
     // DELETE
-    void Triangle::deleteData() {
-        std::cerr << "Triangles data successfully deleted" << std::endl;
-
+    Triangle::~Triangle() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
+
+        std::cerr << "Triangles data successfully deleted" << std::endl;
     }
 }
 #endif

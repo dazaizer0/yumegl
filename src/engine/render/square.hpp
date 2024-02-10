@@ -15,12 +15,12 @@ namespace render {
 
         // CONSTRUCTOR
         Square(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value);
+        ~Square();
 
         // FUNCTIONS
         void updatePosition();
         void refresh() const;
         void render(unsigned int shader) const;
-        void deleteData();
 
     private:
         // MAIN DATA VECTOR
@@ -117,11 +117,11 @@ namespace render {
     }
 
     // DELETE
-    void Square::deleteData() {
-        std::cerr << "Squares data successfully deleted" << std::endl;
-
+    Square::~Square() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
+
+        std::cerr << "squares data successfully deleted" << std::endl;
     }
 }
 #endif

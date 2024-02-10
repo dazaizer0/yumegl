@@ -14,13 +14,13 @@ add_executable(${PROJECT_NAME}
         src/yume.h
 
         # math
-        src/engine/math/mathy.h
+        src/engine/math/mathy.hpp
 
         # input
-        src/engine/input/input.h
+        src/engine/input/input.hpp
 
         # other
-        src/engine/source/yume_kernel.h
+        src/engine/source/yume_kernel.hpp
 
         # deps
         dep/glad/glad.c
@@ -28,13 +28,13 @@ add_executable(${PROJECT_NAME}
         dep/stb/stb.cpp
 
         # render
-        src/engine/render/triangle.h
-        src/engine/render/square.h
-        src/engine/shader/shader.h
-        src/engine/render/texture.h
-        src/engine/gui/yume_imgui.h
-        src/engine/render/cube.h
-        src/engine/objects/camera.h
+        src/engine/render/triangle.hpp
+        src/engine/render/square.hpp
+        src/engine/shader/shader.hpp
+        src/engine/render/texture.hpp
+        src/engine/gui/yume_imgui.hpp
+        src/engine/render/cube.hpp
+        src/engine/objects/camera.hpp
 )
 
 # OPENGL
