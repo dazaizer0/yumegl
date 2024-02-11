@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME}
         src/engine/gui/yume_imgui.hpp
         src/engine/render/cube.hpp
         src/engine/objects/camera.hpp
+        src/engine/gui/yumeGui.hpp
 )
 
 # OPENGL

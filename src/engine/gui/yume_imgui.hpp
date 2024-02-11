@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../yume.h"  
 
-namespace yumeImGui {
+namespace yumeImGui { // TRMPORARY SHIT
 	void init() {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -39,7 +39,7 @@ namespace yumeImGui {
     }
 
     namespace cube {
-        void yumeImGui_CreateFrame(render::Cube obj) {
+        void yumeImGui_CreateFrame(render::Cube* obj) {
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
@@ -48,16 +48,16 @@ namespace yumeImGui {
 
             ImGui::Text("Transform");
             ImGui::Text("size");
-            ImGui::SliderFloat("size_x", &obj.size.x, 0.0f, 2.0f);
-            ImGui::SliderFloat("size_y", &obj.size.y, 0.0f, 2.0f);
-            ImGui::SliderFloat("size_z", &obj.size.z, 0.0f, 2.0f);
+            ImGui::SliderFloat("size_x", &obj->size.x, 0.0f, 2.0f);
+            ImGui::SliderFloat("size_y", &obj->size.y, 0.0f, 2.0f);
+            ImGui::SliderFloat("size_z", &obj->size.z, 0.0f, 2.0f);
 
             ImGui::Text("position");
-            ImGui::SliderFloat("pos_x", &obj.position.x, -15.0f, 15.0f);
-            ImGui::SliderFloat("pos_y", &obj.position.y, -15.0f, 15.0f);
-            ImGui::SliderFloat("pos_z", &obj.position.z, -15.0f, 15.0f);
+            ImGui::SliderFloat("pos_x", &obj->position.x, -15.0f, 15.0f);
+            ImGui::SliderFloat("pos_y", &obj->position.y, -15.0f, 15.0f);
+            ImGui::SliderFloat("pos_z", &obj->position.z, -15.0f, 15.0f);
 
-            obj.updatePosition();
+            obj->updatePosition();
 
             ImGui::End();
             ImGui::Render();
@@ -65,7 +65,7 @@ namespace yumeImGui {
         }
     }
 
-    void clear() {
+    void close() {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();

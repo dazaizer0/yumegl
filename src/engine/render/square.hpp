@@ -10,6 +10,7 @@ namespace render {
         // PROPERTIES
         glm::vec3 position = {0.0f, 0.0f, 0.0f};
         mathy::colorRGBA color = mathy::colorRGBA::BLACK();
+        shaderSystem::Shader shader;
         float size{};
         bool enable{};
 
@@ -20,7 +21,7 @@ namespace render {
         // FUNCTIONS
         void updatePosition();
         void refresh() const;
-        void render(unsigned int shader) const;
+        void render() const;
 
     private:
         // MAIN DATA VECTOR
@@ -109,8 +110,8 @@ namespace render {
     }
 
     // RENDER
-    void Square::render(unsigned int shader) const {
-        glUseProgram(shader);
+    void Square::render() const {
+        glUseProgram(shader.ID);
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);

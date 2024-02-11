@@ -12,7 +12,8 @@ namespace object {
         glm::vec3 up = {0.0f, 1.0f, 0.0f};
 
         float sensitivity{ 0.16f };
-        bool firstMouse = true;
+        bool firstMouse{ true };
+        bool active{ true };
 
         Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height);
 
@@ -74,6 +75,9 @@ namespace object {
         else if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_DOWN))
             sensitivity -= 0.0005f;
 
+        if (input::keyPressed(GLFW_KEY_P))
+            active = !active;
+
         position.y = posY;
     }
 
@@ -82,33 +86,35 @@ namespace object {
         if (camera == nullptr)
             return;
 
-        if (camera->firstMouse) {
+        if (camera->active) {
+            if (camera->firstMouse) {
+                camera->lastX = (float)xPos;
+                camera->lastY = (float)yPos;
+
+                camera->firstMouse = false;
+            }
+
+            float xOffset = ((float)xPos - camera->lastX) * camera->sensitivity;
+            float yOffset = (camera->lastY - (float)yPos) * camera->sensitivity;
+
             camera->lastX = (float)xPos;
             camera->lastY = (float)yPos;
 
-            camera->firstMouse = false;
+            camera->yaw += xOffset;
+            camera->pitch += yOffset;
+
+            if (camera->pitch > 89.0f)
+                camera->pitch = 89.0f;
+            if (camera->pitch < -89.0f)
+                camera->pitch = -89.0f;
+
+            glm::vec3 front;
+            front.x = cos(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
+            front.y = sin(glm::radians(camera->pitch));
+            front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
+
+            camera->front = glm::normalize(front);
         }
-
-        float xOffset = ((float)xPos - camera->lastX) * camera->sensitivity;
-        float yOffset = (camera->lastY - (float)yPos) * camera->sensitivity;
-
-        camera->lastX = (float)xPos;
-        camera->lastY = (float)yPos;
-
-        camera->yaw += xOffset;
-        camera->pitch += yOffset;
-
-        if (camera->pitch > 89.0f)
-            camera->pitch = 89.0f;
-        if (camera->pitch < -89.0f)
-            camera->pitch = -89.0f;
-
-        glm::vec3 front;
-        front.x = cos(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-        front.y = sin(glm::radians(camera->pitch));
-        front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-
-        camera->front = glm::normalize(front);
     }
 
     void Camera3D::update(const shaderSystem::Shader& shader) const {

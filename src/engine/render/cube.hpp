@@ -16,9 +16,13 @@ namespace render {
 
         void updatePosition();
         void refresh();
-        void render() const;
+        void bindTexture();
+        void render_ownShader() const;
+        void render_setShader(const shaderSystem::Shader& other_shader) const;
+        void render_activeShader() const;
         void rotate(glm::vec3 axis, float rotationSpeed);
-        void setRotation(glm::vec3 axis, float angle) const;
+        void setRotation_ownShader(glm::vec3 axis, float angle) const;
+        void setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const;
         void setWindowSize(unsigned int window_w, unsigned int window_h);
 
     private:
@@ -129,14 +133,31 @@ namespace render {
         stbi_image_free(texData);
     }
 
-    void Cube::render() const {
-        // ACTIVATE SHADER
-        glUseProgram(shader.ID);
-
+    void Cube::bindTexture() {
         // BIND TEXTURE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
+    }
 
+    void Cube::render_ownShader() const {
+        // ACTIVATE SHADER
+        glUseProgram(shader.ID);
+
+        // RENDER TEXTURE
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    void Cube::render_setShader(const shaderSystem::Shader& other_shader) const {
+        // ACTIVATE SHADER
+        glUseProgram(other_shader.ID);
+
+        // RENDER TEXTURE
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    void Cube::render_activeShader() const {
         // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -225,7 +246,7 @@ namespace render {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(glm::vec3 axis, float angle) const {
+    void Cube::setRotation_ownShader(glm::vec3 axis, float angle) const {
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
 
@@ -240,6 +261,23 @@ namespace render {
         auto model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(angle), rotationAxis);
         shader.setMat4("model", model);
+    }
+
+    void Cube::setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const {
+        auto view = glm::mat4(1.0f);
+        auto projection = glm::mat4(1.0f);
+
+        auto rotationAxis = axis;
+
+        projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
+        view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
+
+        other_shader.setMat4("projection", projection);
+        other_shader.setMat4("view", view);
+
+        auto model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(angle), rotationAxis);
+        other_shader.setMat4("model", model);
     }
 
     void Cube::setWindowSize(const unsigned int window_w, const unsigned int window_h) {
