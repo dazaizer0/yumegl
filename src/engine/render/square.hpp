@@ -9,34 +9,38 @@ namespace render {
     class Square {
     public:
         // PROPERTIES
-        glm::vec3 position = {0.0f, 0.0f, 0.0f};
+        glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+        glm::vec2 size{ 1.0f, 1.0f };
         mathy::color color = mathy::color::BLACK();
         shaderSystem::Shader shader;
-        float size{};
+
         bool enable{};
 
         // CONSTRUCTOR
-        Square(glm::vec3 position_value, mathy::color color_value, float size_value);
-        ~Square();
+        Square(glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
 
-        // FUNCTIONS
+        //UPDATE
         void updatePosition();
         void refresh() const;
 
+        // RENDER
         void render_ownShader() const;
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
-    private:
-        // MAIN DATA VECTOR
-        std::vector<float> data;
+        // DECONSTRUCTOR
+        ~Square();
 
+    private:
         // VBO, VAO
         unsigned int VBO{}, VAO{};
         int vertex_count;
+
+        // DATA
+        std::vector<float> data;
     };
 
-    Square::Square(glm::vec3 position_value, mathy::color color_value, float size_value) {
+    Square::Square(glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;
@@ -45,19 +49,19 @@ namespace render {
         // SET UP VERTEX DATA AND BUFFERS DATA
         data = {
                 // down-left
-                position.x + -size, position.y + -size, position.z,
+                position.x + -size.x, position.y + -size.y, position.z,
                 color.r, color.g, color.b,
 
                 // down-right
-                position.x + size, position.y + -size, position.z,
+                position.x + size.x, position.y + -size.y, position.z,
                 color.r, color.g, color.b,
 
                 // top-left
-                position.x + -size, position.y + size, position.z,
+                position.x + -size.x, position.y + size.y, position.z,
                 color.r, color.g, color.b,
 
                 // top-right
-                position.x + size, position.y + size, position.z,
+                position.x + size.x, position.y + size.y, position.z,
                 color.r, color.g, color.b,
         };
 
@@ -86,21 +90,21 @@ namespace render {
     // FUNCS
     void Square::updatePosition() { // TO OPTIMIZE
         data = {
-                // down-left
-                position.x + -size, position.y + -size, position.z,
-                color.r, color.g, color.b,
+            // down-left
+            position.x + -size.x, position.y + -size.y, position.z,
+            color.r, color.g, color.b,
 
-                // down-right
-                position.x + size, position.y + -size, position.z,
-                color.r, color.g, color.b,
+            // down-right
+            position.x + size.x, position.y + -size.y, position.z,
+            color.r, color.g, color.b,
 
-                // top-left
-                position.x + -size, position.y + size, position.z,
-                color.r, color.g, color.b,
+            // top-left
+            position.x + -size.x, position.y + size.y, position.z,
+            color.r, color.g, color.b,
 
-                // top-right
-                position.x + size, position.y + size, position.z,
-                color.r, color.g, color.b,
+            // top-right
+            position.x + size.x, position.y + size.y, position.z,
+            color.r, color.g, color.b,
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);

@@ -7,36 +7,50 @@
 namespace render {
 	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public:
-        glm::vec3 position = {0.0f, 0.0f, 0.0f};
-        glm::vec3 size = {0.0f, 0.0f, 0.0f};
+        glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+        glm::vec3 size{ 0.0f, 0.0f, 0.0f };
         shaderSystem::Shader shader;
 
-        Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
-        ~Cube();
+        bool enable{};
 
+        // CONSTRUCTOR
+        Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
+
+        // UPDATE
         void updatePosition();
         void refresh();
 
+        // RENDER
         void bindTexture();
         void render_ownShader() const;
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
+        // OPERATIONS
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation_ownShader(glm::vec3 axis, float angle) const;
         void setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const;
+
+        // DATA
         void setWindowSize(unsigned int window_w, unsigned int window_h);
 
+        // DECONSTRUCTOR
+        ~Cube();
+
     private:
+        // GPU
         unsigned int VBO{}, VAO{};
 
+        // TEXTURE
         unsigned int tex{};
         const char* texPath;
         unsigned char* texData;
 
+        // ORIENTATION
         unsigned int window_width{};
         unsigned int window_height{};
 
+        // DATA
         std::vector<float> vertices;
 	};
 
@@ -135,36 +149,6 @@ namespace render {
         stbi_image_free(texData);
     }
 
-    void Cube::bindTexture() {
-        // BIND TEXTURE
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, tex);
-    }
-
-    void Cube::render_ownShader() const {
-        // ACTIVATE SHADER
-        shader.use();
-
-        // RENDER TEXTURE
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
-    void Cube::render_getShader(const shaderSystem::Shader& other_shader) const {
-        // ACTIVATE SHADER
-        other_shader.use();
-
-        // RENDER TEXTURE
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
-    void Cube::render_foregoingShader() const {
-        // RENDER TEXTURE
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
     void Cube::updatePosition() {
         vertices = {
                 position.x + -size.x, position.y + -size.y, position.z + -size.z, 0.0f, 0.0f,
@@ -220,6 +204,36 @@ namespace render {
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    }
+
+    void Cube::bindTexture() {
+        // BIND TEXTURE
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tex);
+    }
+
+    void Cube::render_ownShader() const {
+        // ACTIVATE SHADER
+        shader.use();
+
+        // RENDER TEXTURE
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    void Cube::render_getShader(const shaderSystem::Shader& other_shader) const {
+        // ACTIVATE SHADER
+        other_shader.use();
+
+        // RENDER TEXTURE
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    void Cube::render_foregoingShader() const {
+        // RENDER TEXTURE
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
     void Cube::rotate(glm::vec3 axis, float rotationSpeed) {

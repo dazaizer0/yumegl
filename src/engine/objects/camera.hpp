@@ -7,9 +7,9 @@
 namespace object {
     class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT learning from learn opengl <<<<<<<<
     public:
-        glm::vec3 position = {0.0f, 0.0f, 3.0f};
-        glm::vec3 front = {0.0f, 0.0f, -1.0f};
-        glm::vec3 up = {0.0f, 1.0f, 0.0f};
+        glm::vec3 position{ 0.0f, 0.0f, 3.0f };
+        glm::vec3 front{ 0.0f, 0.0f, -1.0f };
+        glm::vec3 up{ 0.0f, 1.0f, 0.0f };
 
         float sensitivity{ 0.16f };
         bool firstMouse{ true };

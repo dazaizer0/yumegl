@@ -25,9 +25,8 @@ int main() {
     auto* room = new render::Cube("textures/sonic_dirt.png", glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(20.0f, 10.0f, 20.0f));
     auto* room1 = new render::Cube("textures/sonic_ice.png", glm::vec3(0.0f, 5.0f, -30.1f), glm::vec3(10.0f, 10.0f, 10.0f));
 
-    auto* panel = new render::Square(glm::vec3(0.0f), {0.0f, 0.0f, 1.0f, 1.0f}, 0.5f);
+    auto* panel = new render::Square(glm::vec3{ 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f }, glm::vec2{ 0.45f, 0.8f });
     panel->shader.genShader("shape/vertex.glsl", "shape/fragment.glsl");
-    bool active{false};
 
     cube->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     room->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -35,6 +34,10 @@ int main() {
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
+        // UPDATE
+        yumegl::update();
+        cam.update(yumegl::deltaTime);
+
         // INPUT SYSTEM
         input::updateInput();
         if (input::keyPressed(GLFW_KEY_ESCAPE)) {
@@ -43,10 +46,6 @@ int main() {
         if (input::keyPressed(GLFW_KEY_C)) {
             cam.changeCursorVisibility();
         }
-
-        // UPDATE
-        yumegl::update();
-        cam.update(yumegl::deltaTime);
 
         // RENDER
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,27 +70,22 @@ int main() {
         cube->render_foregoingShader();
         cube->rotate(glm::vec3(0.4f, 0.5f, 0.4f), 1.0f);
 
-        // PANEL
+        // GUI
         if (!cam.active) {
-            panel->shader.use();
             cam.update(panel->shader);
             panel->render_ownShader();
         }
 
         // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();
-
     }
-
     // DE-INITIALIZATION
     delete cube;
     delete room;
     delete room1;
     delete panel;
-
     glDeleteProgram(default3DShader.ID);
 
     yumegl::eExit::close();
-
     return 0;
 }

@@ -9,7 +9,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-namespace yumeImGui { // TRMPORARY SHIT
+/*namespace yumeImGui { // TRMPORARY SHIT
 	void init() {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -75,6 +75,5 @@ namespace yumeImGui { // TRMPORARY SHIT
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
-}
-
+}*/
 #endif //YUMEGL_YUME_IMGUI_HPP

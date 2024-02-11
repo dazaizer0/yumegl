@@ -9,29 +9,30 @@ namespace render {
     class Triangle {
     public:
         // PROPERTIES
-        glm::vec3 position = {0.0f, 0.0f, 0.0f};
-        mathy::colorRGBA color = mathy::colorRGBA::WHITE();
+        glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+        mathy::color color = mathy::color::WHITE();
+
         float size{};
         bool enable{};
 
         // CONSTRUCTOR
-        Triangle(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value);
-        ~Triangle();
+        Triangle(glm::vec3 position_value, mathy::color color_value, float size_value);
 
-        // FUNCTIONS
+        // RENDER
         void render() const;
 
-        void deleteData();
+        // DECONSTRUCTOR
+        ~Triangle();
 
     private:
-        // MAIN DATA VECTOR
-        std::vector<float> data;
-
         // VBO, VAO
         unsigned int VBO{}, VAO{};
+
+        // DATA 
+        std::vector<float> data;
     };
 
-    Triangle::Triangle(glm::vec3 position_value, mathy::colorRGBA color_value, float size_value) {
+    Triangle::Triangle(glm::vec3 position_value, mathy::color color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;
@@ -68,13 +69,11 @@ namespace render {
         glEnableVertexAttribArray(1);
     }
 
-    // RENDER
     void Triangle::render() const {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
-    // DELETE
     Triangle::~Triangle() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);

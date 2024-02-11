@@ -3,28 +3,19 @@
 
 #include "../../config.h"
 #include "../../yume.h"
-
 #include "stb/stb_image.h"
 
 namespace render {
-    // SQUARE
     class Texture {
-    public:
-        // PROPERTIES
-        glm::vec3 position = {0.0f, 0.0f, 0.0f};
+        glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         mathy::color color = mathy::color::BLACK();
         shaderSystem::Shader shader;
 
-        float size{};
+        glm::vec2 size{};
         bool enable{};
 
-        glm::vec3 axis = {0.0f, 0.0f, 0.0f};
-        float angle{ 360.0f };
-
-        const char* name;
-
         // CONSTRUCTOR
-        Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::color color_value, float size_value);
+        Texture(std::string path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
         ~Texture();
 
         //FUNCTIONS
@@ -38,7 +29,6 @@ namespace render {
 
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation(glm::vec3 axis, float angle);
-        void updateRotation() const;
 
     private:
         unsigned int VBO{}, VAO{}, EBO{};
@@ -51,7 +41,7 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::color color_value, float size_value) {
+    Texture::Texture(std::string path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -68,26 +58,25 @@ namespace render {
         position = position_value;
         color = color_value;
         size = size_value;
-        name = namev;
 
         // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
         vertices = {
             // position, position, position
             // tex coords, tex coords, tex coords
 
-             position.x + size, position.y + size, position.z,
+             position.x + size.x, position.y + size.y, position.z,
              color.r, color.g, color.b,
              1.0f, 1.0f,
 
-             position.x + size, position.y + -size, position.z,
+             position.x + size.x, position.y + -size.y, position.z,
              color.r, color.g, color.b,
              1.0f, 0.0f,
 
-            position.x + -size, position.y + -size, position.z,
+            position.x + -size.x, position.y + -size.y, position.z,
             color.r, color.g, color.b,
             0.0f, 0.0f,
 
-            position.x + -size, position.y + size, position.z,
+            position.x + -size.x, position.y + size.y, position.z,
             color.r, color.g, color.b,
             0.0f, 1.0f
         };
@@ -159,21 +148,24 @@ namespace render {
     // FUNCTIONS
     void Texture::updatePosition() {
         vertices = {
-                position.x + size, position.y + size, position.z,
-                color.r, color.g, color.b,
-                1.0f, 1.0f,
+            // position, position, position
+            // tex coords, tex coords, tex coords
 
-                position.x + size, position.y + -size, position.z,
-                color.r, color.g, color.b,
-                1.0f, 0.0f,
+             position.x + size.x, position.y + size.y, position.z,
+             color.r, color.g, color.b,
+             1.0f, 1.0f,
 
-                position.x + -size, position.y + -size, position.z,
-                color.r, color.g, color.b,
-                0.0f, 0.0f,
+             position.x + size.x, position.y + -size.y, position.z,
+             color.r, color.g, color.b,
+             1.0f, 0.0f,
 
-                position.x + -size, position.y + size, position.z,
-                color.r, color.g, color.b,
-                0.0f, 1.0f
+            position.x + -size.x, position.y + -size.y, position.z,
+            color.r, color.g, color.b,
+            0.0f, 0.0f,
+
+            position.x + -size.x, position.y + size.y, position.z,
+            color.r, color.g, color.b,
+            0.0f, 1.0f
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -187,45 +179,6 @@ namespace render {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    }
-
-    void Texture::rotate(glm::vec3 axis, float rotationSpeed) {
-        auto transform = glm::mat4(1.0f);
-        auto rotationAxis = axis;
-
-        transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
-        transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), rotationAxis);
-        transform = glm::translate(transform, -glm::vec3(position.x, position.y, position.z));
-
-        shader.use();
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-    }
-
-    void Texture::setRotation(glm::vec3 axis_value, float angle_value) {
-        auto transform = glm::mat4(1.0f);
-        axis = axis_value;
-        angle = angle_value;
-
-        glm::vec3 rotationAxis = axis;
-
-        transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
-        //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
-
-        shader.use();
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-    }
-
-    void Texture::updateRotation() const {
-        auto transform = glm::mat4(1.0f);
-
-        auto rotationAxis = axis;
-        transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
-
-        shader.use();
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
     // RENDER
@@ -250,6 +203,32 @@ namespace render {
     void Texture::render_foregoingShader() const {
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void Texture::rotate(glm::vec3 axis, float rotationSpeed) {
+        auto transform = glm::mat4(1.0f);
+        auto rotationAxis = axis;
+
+        transform = glm::translate(transform, glm::vec3(position.x, position.y, position.z));
+        transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), rotationAxis);
+        transform = glm::translate(transform, -glm::vec3(position.x, position.y, position.z));
+
+        shader.use();
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+    }
+
+    void Texture::setRotation(glm::vec3 axis, float angle) {
+        auto transform = glm::mat4(1.0f);
+
+        glm::vec3 rotationAxis = axis;
+
+        transform = glm::rotate(transform, glm::radians(angle), rotationAxis);
+        //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+        shader.use();
+        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
     // DELETE
