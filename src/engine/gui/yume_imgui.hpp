@@ -4,6 +4,11 @@
 #include "../../config.h"
 #include "../../yume.h"  
 
+// IMGUI
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 namespace yumeImGui { // TRMPORARY SHIT
 	void init() {
         IMGUI_CHECKVERSION();

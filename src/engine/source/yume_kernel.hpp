@@ -68,7 +68,7 @@ namespace yumegl {
     }
 
     namespace eFunc {
-        void setColor(const mathy::colorRGBA& color) {
+        void setColor(const mathy::color& color) {
             glClearColor(color.r, color.g, color.b, color.a);
         }
 

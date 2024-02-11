@@ -16,10 +16,12 @@ namespace render {
 
         void updatePosition();
         void refresh();
+
         void bindTexture();
         void render_ownShader() const;
-        void render_setShader(const shaderSystem::Shader& other_shader) const;
-        void render_activeShader() const;
+        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_foregoingShader() const;
+
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation_ownShader(glm::vec3 axis, float angle) const;
         void setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const;
@@ -141,23 +143,23 @@ namespace render {
 
     void Cube::render_ownShader() const {
         // ACTIVATE SHADER
-        glUseProgram(shader.ID);
+        shader.use();
 
         // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    void Cube::render_setShader(const shaderSystem::Shader& other_shader) const {
+    void Cube::render_getShader(const shaderSystem::Shader& other_shader) const {
         // ACTIVATE SHADER
-        glUseProgram(other_shader.ID);
+        other_shader.use();
 
         // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    void Cube::render_activeShader() const {
+    void Cube::render_foregoingShader() const {
         // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);

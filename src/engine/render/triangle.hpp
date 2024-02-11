@@ -2,6 +2,7 @@
 #define TRIANGLE_H
 
 #include "../../config.h"
+#include "../../yume.h"
 
 namespace render {
     // TRIANGLE

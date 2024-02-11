@@ -94,42 +94,25 @@ namespace mathy {
         static vec3<T> UP() { return {T(0), T(1), T(0)}; };
     };
 
-    // RGB
-    class colorRGB {
-    public:
-        float r{};
-        float g{};
-        float b{};
-
-        colorRGB(float rValue, float gValue, float bValue)
-            : r(rValue), g(gValue), b(bValue) {}
-
-        colorRGB& operator=(const colorRGB& other) = default;
-
-        static colorRGB BLACK() { return {0.0f, 0.0f, 0.0f}; };
-        static colorRGB WHITE() { return {1.0f, 1.0f, 1.0f}; };
-        static colorRGB RED() { return {1.0f, 0.0f, 0.0f}; };
-        static colorRGB GREEN() { return {0.0f, 1.0f, 0.0f}; };
-        static colorRGB BLUE() { return {0.0f, 0.0f, 1.0f}; };
-    };
-
     // RGBA
-    class colorRGBA {
+    class color {
     public:
         float r{};
         float g{};
         float b{};
         float a{};
 
-        colorRGBA(float rValue, float gValue, float bValue, float aValue)
+        color(float rValue, float gValue, float bValue, float aValue)
                 : r(rValue), g(gValue), b(bValue), a(aValue) {}
 
-        colorRGBA& operator=(const colorRGBA& other) = default;
+        color& operator=(const color& other) = default;
 
-        static colorRGBA BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
-        static colorRGBA WHITE() { return {1.0f, 1.0f, 1.0f, 1.0f}; };
-        static colorRGBA RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
-        static colorRGBA GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
-        static colorRGBA BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
+        static color BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
+
+        static color RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
+        static color GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
+        static color BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
+
+        static color WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
     };
 }

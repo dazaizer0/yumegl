@@ -65,14 +65,14 @@ namespace object {
             position += glm::normalize(glm::cross(front, up)) * cameraSpeed;
 
         // SHORTCUTS
-        if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_UP))
+        if (input::keyDown(GLFW_KEY_Y) && input::keyDown(GLFW_KEY_EQUAL))
             posY += cameraSpeed;
-        else if (input::keyDown(GLFW_KEY_LEFT_CONTROL) && input::keyDown(GLFW_KEY_DOWN))
+        else if (input::keyDown(GLFW_KEY_Y) && input::keyDown(GLFW_KEY_MINUS))
             posY -= cameraSpeed;
 
-        if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_UP))
+        if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_EQUAL))
             sensitivity += 0.0005f;
-        else if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_DOWN))
+        else if (input::keyDown(GLFW_KEY_M) && input::keyDown(GLFW_KEY_MINUS))
             sensitivity -= 0.0005f;
 
         if (input::keyPressed(GLFW_KEY_P))

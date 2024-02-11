@@ -2,9 +2,9 @@
 #define TEXTURE_H
 
 #include "../../config.h"
+#include "../../yume.h"
 
 #include "stb/stb_image.h"
-#include "src/engine/shader/shader.hpp"
 
 namespace render {
     // SQUARE
@@ -12,8 +12,9 @@ namespace render {
     public:
         // PROPERTIES
         glm::vec3 position = {0.0f, 0.0f, 0.0f};
-        mathy::colorRGBA color = mathy::colorRGBA::BLACK();
+        mathy::color color = mathy::color::BLACK();
         shaderSystem::Shader shader;
+
         float size{};
         bool enable{};
 
@@ -23,19 +24,18 @@ namespace render {
         const char* name;
 
         // CONSTRUCTOR
-        Texture(
-            const char* namev,
-            std::string path,
-            glm::vec3 position_value,
-            mathy::colorRGBA color_value,
-            float size_value
-        );
+        Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::color color_value, float size_value);
         ~Texture();
 
         //FUNCTIONS
         void updatePosition();
         void refresh();
-        void render() const;
+
+        void bindTexture();
+        void render_ownShader() const;
+        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_foregoingShader() const;
+
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation(glm::vec3 axis, float angle);
         void updateRotation() const;
@@ -51,7 +51,7 @@ namespace render {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::colorRGBA color_value, float size_value) {
+    Texture::Texture(const char* namev, std::string path, glm::vec3 position_value, mathy::color color_value, float size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -229,10 +229,25 @@ namespace render {
     }
 
     // RENDER
-    void Texture::render() const {
+    void Texture::bindTexture() {
         glBindTexture(GL_TEXTURE_2D, tex);
+    }
 
-        glUseProgram(shader.ID);
+    void Texture::render_ownShader() const {
+        shader.use();
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void Texture::render_getShader(const shaderSystem::Shader& other_shader) const {
+        other_shader.use();
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void Texture::render_foregoingShader() const {
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
@@ -242,6 +257,8 @@ namespace render {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
+
+        glDeleteProgram(shader.ID);
 
         std::cerr << "Textures data successfully deleted" << std::endl;
     }
