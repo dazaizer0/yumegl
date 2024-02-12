@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../yume.h"
 
-namespace render {
+namespace rd1 {
     // TRIANGLE
     class Triangle {
     public:

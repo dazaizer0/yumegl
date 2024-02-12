@@ -28,15 +28,18 @@ add_executable(${PROJECT_NAME}
         dep/stb/stb.cpp
 
         # render
-        src/engine/render/triangle.hpp
-        src/engine/render/square.hpp
+        src/engine/rd1/triangle.hpp
+        src/engine/rd1/square.hpp
         src/engine/shader/shader.hpp
-        src/engine/render/texture.hpp
+        src/engine/rd1/texture.hpp
         src/engine/gui/yume_imgui.hpp
-        src/engine/render/cube.hpp
+        src/engine/rd1/cube.hpp
         src/engine/objects/camera.hpp
         src/engine/gui/yumeGui.hpp
-        src/engine/renderer/module.hpp
+
+        # RENDER 2 / 2D
+        src/engine/rd2/module.hpp
+        src/engine/rd2/squaret.hpp
 )
 
 # OPENGL

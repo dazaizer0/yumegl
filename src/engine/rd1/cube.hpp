@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../yume.h"
 
-namespace render {
+namespace rd1 {
 	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };

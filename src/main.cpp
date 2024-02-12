@@ -1,16 +1,14 @@
 #include "config.h"
 #include "yume.h"
-
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#include "engine/rd1/texture.hpp"
 
 int main() {
     // INITIALIZATION
-    yumegl::init(WINDOW_WIDTH, WINDOW_HEIGHT, "Yume");
+    yumegl::init("Yume");
     yumegl::eFunc::setColor(mathy::color::BLACK());
 
     // CAMERA
-    object::Camera3D cam({0.0f, 0.0f, 3.0f}, WINDOW_WIDTH, WINDOW_HEIGHT);
+    object::Camera3D cam({0.0f, 0.0f, 3.0f}, yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
     // DEPTH
     glEnable(GL_DEPTH_TEST);
@@ -19,18 +17,18 @@ int main() {
     shaderSystem::Shader default3DShader;
     default3DShader.genShader("texture/vertex_t3d.glsl", "texture/fragment_t3d.glsl");
 
-    auto* cube = new render::Cube("textures/sonic_warning.png", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(1.0f));
+    auto* cube = new rd1::Cube("textures/sonic_warning.png", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(1.0f));
     cube->shader.genShader("texture/vertex_t3d.glsl", "texture/fragment_t3d.glsl");
 
-    auto* room = new render::Cube("textures/sonic_dirt.png", glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(20.0f, 10.0f, 20.0f));
-    auto* room1 = new render::Cube("textures/sonic_ice.png", glm::vec3(0.0f, 5.0f, -30.1f), glm::vec3(10.0f, 10.0f, 10.0f));
+    auto* room = new rd1::Cube("textures/sonic_dirt.png", glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(20.0f, 10.0f, 20.0f));
+    auto* room1 = new rd1::Cube("textures/sonic_ice.png", glm::vec3(0.0f, 5.0f, -30.1f), glm::vec3(10.0f, 10.0f, 10.0f));
 
-    auto* panel = new render::Square(glm::vec3{ 0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f }, glm::vec2{ 0.45f, 0.8f });
-    panel->shader.genShader("shape/vertex.glsl", "shape/fragment.glsl");
+    auto* panel = new rd1::Texture("textures/sonic_ice.png", glm::vec3{ 0.0f }, mathy::color{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec2{ 0.8f, 0.8f });
+    panel->shader.genShader("texture/vertex_t.glsl", "texture/fragment_t.glsl");
 
-    cube->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    room->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    room1->setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    cube->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
+    room->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
+    room1->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
     // MAIN LOOP
     while (yumegl::isWindowOpen()) {
@@ -73,7 +71,9 @@ int main() {
         // GUI
         if (!cam.active) {
             cam.update(panel->shader);
+            panel->bindTexture();
             panel->render_ownShader();
+            panel->setRotation(glm::vec3(0.0f, 0.0f, 1.0f), 180.0f);
         }
 
         // SWAP POLL EVENTS

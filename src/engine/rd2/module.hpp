@@ -4,23 +4,20 @@
 #include "yumegl/src/config.h"
 #include "yumegl/src/yume.h"
 
-namespace renderer {
+namespace rd2 {
     class Module {
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         bool enable{};
 
         Module(glm::vec3 positionV, bool enableV);
-        ~Module();
+        // BODY
+        ~Module() = default;
     };
 
     Module::Module(glm::vec3 positionV, bool enableV) {
         position = positionV;
         enable = enableV;
-    }
-
-    Module::~Module() {
-
     }
 
     class ExtendedModule : public Module {
@@ -29,6 +26,8 @@ namespace renderer {
         glm::vec3 size{};
 
         ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
+        // BODY
+        ~ExtendedModule() = default;
     };
 
     ExtendedModule::ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV) : Module(positionV, enableV) {

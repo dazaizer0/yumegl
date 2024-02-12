@@ -5,8 +5,9 @@
 #include "../../yume.h"
 #include "stb/stb_image.h"
 
-namespace render {
+namespace rd1 {
     class Texture {
+    public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         mathy::color color = mathy::color::BLACK();
         shaderSystem::Shader shader;

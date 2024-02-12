@@ -4,11 +4,15 @@
 
 namespace yumegl {
     // WINDOW
+    unsigned int WINDOW_WIDTH{ 1280 };
+    unsigned int WINDOW_HEIGHT{ 720 };
+
     GLFWwindow* _window;
+
     float deltaTime{};
     float lastFrame{};
 
-    void init(int width, int height, const std::string& title) {
+    void init(const std::string& title) {
         // GAME WINDOW INITIALIZATION
         if (!glfwInit()) {
             std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -20,7 +24,7 @@ namespace yumegl {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
-        _window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+        _window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title.c_str(), nullptr, nullptr);
 
         if (_window == nullptr) {
             std::cerr << "Failed to create GLFW window" << std::endl;
