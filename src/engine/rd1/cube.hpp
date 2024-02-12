@@ -18,23 +18,23 @@ namespace rd1 {
 
         // UPDATE
         void updatePosition();
-        void refresh();
+        void refresh() const;
 
         // RENDER
-        void bindTexture();
+        void bindTexture() const;
         void render_ownShader() const;
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
         // OPERATIONS
-        void rotate(glm::vec3 axis, float rotationSpeed);
+        void rotate(glm::vec3 axis, float rotationSpeed) const;
         void setRotation_ownShader(glm::vec3 axis, float angle) const;
         void setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const;
 
         // DATA
         void setWindowSize(unsigned int window_w, unsigned int window_h);
 
-        // DECONSTRUCTOR
+        // DECONSTRUCT
         ~Cube();
 
     private:
@@ -198,7 +198,7 @@ namespace rd1 {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
     }
 
-    void Cube::refresh() {
+    void Cube::refresh() const {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -206,7 +206,7 @@ namespace rd1 {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
     }
 
-    void Cube::bindTexture() {
+    void Cube::bindTexture() const {
         // BIND TEXTURE
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
@@ -236,7 +236,7 @@ namespace rd1 {
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    void Cube::rotate(glm::vec3 axis, float rotationSpeed) {
+    void Cube::rotate(glm::vec3 axis, float rotationSpeed) const {
         // ROTATE
         auto model = glm::mat4(1.0f);
         auto view = glm::mat4(1.0f);
@@ -305,9 +305,9 @@ namespace rd1 {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 
-        glDeleteShader(shader.ID);
+        shaderSystem::deleteShader(shader);
 
         std::cerr << "textures data successfully deleted" << std::endl;
     }
 }
-#endif //YUMEGL_CUBE_HPP
+#endif

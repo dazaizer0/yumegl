@@ -1,3 +1,5 @@
+
+// WINDOWS
 // OPENGL
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -19,3 +21,6 @@
 #include <string>
 #include <Windows.h>
 #include <filesystem>
+
+// TODO: LINUX SUPPORT
+// #inc...

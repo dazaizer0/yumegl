@@ -12,7 +12,7 @@ namespace rd2 {
         shaderSystem::Shader shader;
 
         // LOGIC
-        Squaret(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
+        [[maybe_unused]] Squaret(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
 
         void updatePosition();
         void refresh();
@@ -39,7 +39,7 @@ namespace rd2 {
         std::vector<unsigned int> indices;
     };
 
-    Squaret::Squaret(glm::vec3 positionV, glm::vec3 sizeV, bool enableV) : ExtendedModule(positionV, sizeV, enableV) {
+    [[maybe_unused]] Squaret::Squaret(glm::vec3 positionV, glm::vec3 sizeV, bool enableV) : ExtendedModule(positionV, sizeV, enableV) {
     }
 
     void Squaret::updatePosition() {
@@ -79,7 +79,8 @@ namespace rd2 {
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
 
-        glDeleteProgram(shader.ID);
+        shaderSystem::deleteShader(shader);
     }
 }
+
 #endif

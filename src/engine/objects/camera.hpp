@@ -28,7 +28,7 @@ namespace object {
         float yaw{ -90.0f };
         float pitch{ 0.0f };
         float lastX{ 800.0f / 2.0 };
-        float lastY{600.0f / 2.0 };
+        float lastY{ 600.0f / 2.0 };
         float fov{ 45.0f };
 
         bool cursorVisible = true;

@@ -3,7 +3,10 @@
 #include "engine/rd1/texture.hpp"
 
 int main() {
-    // INITIALIZATION
+#pragma region INITIALIZATION
+    /* ------------------------------------------------
+    * ---------------- INITIALIZATION -----------------
+    * ------------------------------------------------ */
     yumegl::init("Yume");
     yumegl::eFunc::setColor(mathy::color::BLACK());
 
@@ -29,23 +32,28 @@ int main() {
     cube->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
     room->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
     room1->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
+#pragma endregion
 
-    // MAIN LOOP
+#pragma region MAIN_LOOP
+    /* ------------------------------------------------
+    * ------------------ MAIN LOOP --------------------
+    * ------------------------------------------------ */
     while (yumegl::isWindowOpen()) {
         // UPDATE
         yumegl::update();
+        input::update();
         cam.update(yumegl::deltaTime);
 
         // INPUT SYSTEM
-        input::updateInput();
-        if (input::keyPressed(GLFW_KEY_ESCAPE)) {
+        if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
-        }
-        if (input::keyPressed(GLFW_KEY_C)) {
-            cam.changeCursorVisibility();
-        }
 
-        // RENDER
+        if (input::keyPressed(GLFW_KEY_C))
+            cam.changeCursorVisibility();
+
+        /* ------------------------------------------------
+         * ------------------- RENDER ---------------------
+         * ------------------------------------------------ */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // ROOM
@@ -79,13 +87,20 @@ int main() {
         // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();
     }
-    // DE-INITIALIZATION
+#pragma endregion
+
+#pragma region DE_INITIALIZATION
+    /* ------------------------------------------------
+    * -------------- DE-INITIALIZATION ----------------
+    * ------------------------------------------------ */
     delete cube;
     delete room;
     delete room1;
     delete panel;
-    glDeleteProgram(default3DShader.ID);
 
+    shaderSystem::deleteShader(default3DShader);
     yumegl::eExit::close();
+
     return 0;
+#pragma endregion
 }

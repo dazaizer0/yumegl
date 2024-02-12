@@ -238,7 +238,7 @@ namespace rd1 {
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
 
-        glDeleteProgram(shader.ID);
+        shaderSystem::deleteShader(shader);
 
         std::cerr << "Textures data successfully deleted" << std::endl;
     }

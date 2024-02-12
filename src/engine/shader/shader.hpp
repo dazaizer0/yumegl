@@ -162,6 +162,10 @@ namespace shaderSystem {
             glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
         }
 
+        ~Shader() {
+            glDeleteShader(ID);
+        }
+
     private:
         static void checkCompileErrors(GLuint shader, const std::string& type) {
             GLint success;
@@ -184,5 +188,9 @@ namespace shaderSystem {
             }
         }
     };
+
+    void deleteShader(const Shader& shader) {
+        glDeleteShader(shader.ID);
+    }
 }
 #endif

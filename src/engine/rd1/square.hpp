@@ -142,7 +142,7 @@ namespace rd1 {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 
-        glDeleteProgram(shader.ID);
+        shaderSystem::deleteShader(shader);
 
         std::cerr << "squares data successfully deleted" << std::endl;
     }
