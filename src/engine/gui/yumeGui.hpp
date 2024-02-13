@@ -42,14 +42,14 @@ namespace gui {
 		glm::vec3 position{ 0.0f };
 		glm::vec3 center{ 0.0f };
 
-		explicit Image(const Panel& parent_panel);
+		explicit Image(const Panel &parent_panel);
 		~Image();
 
 	private:
 
 	};
 
-	Image ::Image(const Panel& parent_panel) {
+	Image ::Image(const Panel &parent_panel) {
 		center = parent_panel.position;
 		position = position + center;
 	}

@@ -7,7 +7,16 @@
 
 namespace rd2 {
     class [[maybe_unused]] Cubet {
+    public:
+        Cubet();
+        ~Cubet();
     };
+
+    Cubet::Cubet() {
+
+    }
+
+    Cubet::~Cubet() = default;
 }
 
 #endif

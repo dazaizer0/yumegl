@@ -16,20 +16,20 @@ namespace rd1 {
         bool enable{};
 
         // CONSTRUCTOR
-        Texture(std::string path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
+        Texture(const std::string& path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
         ~Texture();
 
         //FUNCTIONS
         void updatePosition();
-        void refresh();
+        void refresh() const;
 
-        void bindTexture();
+        void bindTexture() const;
         void render_ownShader() const;
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
         void rotate(glm::vec3 axis, float rotationSpeed);
-        void setRotation(glm::vec3 axis, float angle);
+        void setRotation(glm::vec3 axis, float angle) const;
 
     private:
         unsigned int VBO{}, VAO{}, EBO{};
@@ -42,7 +42,7 @@ namespace rd1 {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(std::string path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
+    Texture::Texture(const std::string& path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -176,14 +176,14 @@ namespace rd1 {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
     }
 
-    void Texture::refresh() {
+    void Texture::refresh() const {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
     // RENDER
-    void Texture::bindTexture() {
+    void Texture::bindTexture() const {
         glBindTexture(GL_TEXTURE_2D, tex);
     }
 
@@ -219,7 +219,7 @@ namespace rd1 {
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::setRotation(glm::vec3 axis, float angle) {
+    void Texture::setRotation(glm::vec3 axis, float angle) const {
         auto transform = glm::mat4(1.0f);
 
         glm::vec3 rotationAxis = axis;

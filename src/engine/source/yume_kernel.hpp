@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../config.h"
+#include <cstdlib>
 
 namespace yumegl {
     // WINDOW

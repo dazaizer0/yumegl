@@ -52,7 +52,7 @@ namespace object {
     }
 
     void Camera3D::update(float deltaTime) {
-        auto cameraSpeed = static_cast<float>(16.0f * deltaTime);
+        auto cameraSpeed = static_cast<float>((input::keyDown(GLFW_KEY_LEFT_SHIFT) ? 24.0f : 16.0f) * deltaTime);
 
         // MOVEMENT
         if (input::keyDown(GLFW_KEY_W))
