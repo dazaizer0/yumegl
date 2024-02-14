@@ -4,6 +4,8 @@
 #include "../../config.h"
 #include "../../yume.h"
 
+#include "src/engine/input/input.hpp"
+
 namespace object {
     class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT learning from learn opengl <<<<<<<<
     public:

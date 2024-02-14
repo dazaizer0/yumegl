@@ -28,13 +28,16 @@ add_executable(${PROJECT_NAME}
         dep/stb/stb.cpp
 
         # render
+        src/engine/shader/shader.hpp
         src/engine/rd1/triangle.hpp
         src/engine/rd1/square.hpp
-        src/engine/shader/shader.hpp
         src/engine/rd1/texture.hpp
-        src/engine/gui/yume_imgui.hpp
         src/engine/rd1/cube.hpp
+
+        # objects
         src/engine/objects/camera.hpp
+
+        # gui
         src/engine/gui/yumeGui.hpp
 
         # RENDER 2 / 2D
@@ -49,20 +52,20 @@ target_include_directories(${PROJECT_NAME}
         dep
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
-target_sources(${PROJECT_NAME}
-        PRIVATE
-        dep/imgui/backends/imgui_impl_glfw.cpp
-        dep/imgui/backends/imgui_impl_opengl3.cpp
-        dep/imgui/imgui.cpp
-        dep/imgui/imgui_draw.cpp
-        dep/imgui/imgui_demo.cpp
-        dep/imgui/imgui_tables.cpp
-        dep/imgui/imgui_widgets.cpp
-)
-
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         glfw
         glm
 )
+
+#target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
+#target_sources(${PROJECT_NAME}
+#        PRIVATE
+#        dep/imgui/backends/imgui_impl_glfw.cpp
+#        dep/imgui/backends/imgui_impl_opengl3.cpp
+#        dep/imgui/imgui.cpp
+#        dep/imgui/imgui_draw.cpp
+#        dep/imgui/imgui_demo.cpp
+#        dep/imgui/imgui_tables.cpp
+#        dep/imgui/imgui_widgets.cpp
+#)

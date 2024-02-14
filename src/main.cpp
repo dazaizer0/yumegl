@@ -38,11 +38,11 @@ int main() {
     /* ------------------------------------------------
     * ------------------ MAIN LOOP --------------------
     * ------------------------------------------------ */
-    //int frameCounter = 0;
-    //auto startTime = std::chrono::high_resolution_clock::now();
+    int frameCounter = 0;
+    auto startTime = std::chrono::high_resolution_clock::now();
 
     while (yumegl::isWindowOpen()) {
-        //auto frameStartTime = std::chrono::high_resolution_clock::now();
+        auto frameStartTime = std::chrono::high_resolution_clock::now();
 
         // UPDATE
         yumegl::update();
@@ -95,7 +95,6 @@ int main() {
         /* ------------------------------------------------
          * -------------------- STATS ---------------------
          * ------------------------------------------------ */
-         /*
          frameCounter++;
 
          if (frameCounter == 60) {
@@ -110,7 +109,6 @@ int main() {
 
          auto frameEndTime = std::chrono::high_resolution_clock::now();
          auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
-         */
     }
 #pragma endregion
 
