@@ -109,6 +109,7 @@ int main() {
 
          auto frameEndTime = std::chrono::high_resolution_clock::now();
          auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
+         */
     }
 #pragma endregion
 

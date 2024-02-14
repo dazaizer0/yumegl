@@ -108,12 +108,12 @@ namespace rd1 {
 
                 position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f,
                 position.x + size.x, position.y + size.y, position.z + -size.z, 1.0f, 1.0f,
-                position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
+                position.x + size.x, position.y + size.y,  position.z + size.z, 1.0f, 0.0f,
                 position.x + size.x, position.y + size.y, position.z + size.z, 1.0f, 0.0f,
                 position.x + -size.x, position.y + size.y, position.z + size.z, 0.0f, 0.0f,
                 position.x + -size.x, position.y + size.y, position.z + -size.z, 0.0f, 1.0f
         };
-
+    
         // CREATE CUBE
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -215,7 +215,6 @@ namespace rd1 {
         // ACTIVATE SHADER
         shader.use();
 
-        // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
@@ -224,7 +223,6 @@ namespace rd1 {
         // ACTIVATE SHADER
         other_shader.use();
 
-        // RENDER TEXTURE
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }

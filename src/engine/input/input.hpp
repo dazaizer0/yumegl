@@ -9,6 +9,7 @@ namespace input {
 
     void update() {
         GLFWwindow* window = yumegl::getWindowPointer();
+
         for (int i = 30; i < 350; i++) {
             keyDownBool[i] = (glfwGetKey(window, i) == GLFW_PRESS);
             keyPressedBool[i] = (keyDownBool[i] && !keyDownLastFrame[i]);

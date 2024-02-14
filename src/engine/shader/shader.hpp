@@ -16,17 +16,10 @@ namespace shaderSystem {
     public:
         unsigned int ID{};
 
-        std::string vertPath{};
-        std::string fragPath{};
-
         Shader() = default;
 
         // FUNCTIONS
-        void genShader(const std::string& vertex_path, const std::string& fragment_path) {
-            // SET 
-            vertPath = vertex_path;
-            fragPath = fragment_path;
-
+        void genShader(const std::string& vertPath, const std::string& fragPath) {
             // CONVERT SHADERS PATHS
 
              // VERTEX
