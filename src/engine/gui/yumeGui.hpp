@@ -49,12 +49,12 @@ namespace gui {
 
 	};
 
-	Image ::Image(const Panel &parent_panel) {
+	Image::Image(const Panel &parent_panel) {
 		center = parent_panel.position;
 		position = position + center;
 	}
 
-	Image ::~Image() {
+	Image::~Image() {
 	}
 #pragma endregion
 };

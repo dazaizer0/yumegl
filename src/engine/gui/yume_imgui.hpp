@@ -9,7 +9,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-/*namespace yumeImGui { // TRMPORARY SHIT
+namespace yumeImGui { // TRMPORARY SHIT
 	void init() {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -20,16 +20,17 @@
 	}
 
     namespace texture {
-        void yumeImGui_CreateFrame(render::Texture obj) {
+        void yumeImGui_CreateFrame(rd1::Texture obj) {
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            ImGui::Begin(obj.name);
+            ImGui::Begin("Texture");
 
             ImGui::Text("Transform");
 
-            ImGui::SliderFloat("size", &obj.size, 0.0f, 1.0f);
+            ImGui::SliderFloat("size_x", &obj.size.x, 0.0f, 1.0f);
+            ImGui::SliderFloat("size_y", &obj.size.y, 0.0f, 1.0f);
 
             ImGui::SliderFloat("pos_x", &obj.position.x, -1.0f, 1.0f);
             ImGui::SliderFloat("pos_y", &obj.position.y, -1.0f, 1.0f);
@@ -44,7 +45,7 @@
     }
 
     namespace cube {
-        void yumeImGui_CreateFrame(render::Cube* obj) {
+        void yumeImGui_CreateFrame(rd1::Cube* obj) {
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
@@ -75,5 +76,5 @@
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
-}*/
+}
 #endif //YUMEGL_YUME_IMGUI_HPP

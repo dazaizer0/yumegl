@@ -5,7 +5,7 @@
 namespace mathy {
     // VECTOR 2
     template <typename T>
-    class vec2 { // TRANSFER TO GLM IN PROGRESS
+    class vec2 {
     public:
         T x{};
         T y{};
@@ -40,6 +40,10 @@ namespace mathy {
             return vec2<T>(x / other.x, y / other.y);
         }
 
+        glm::vec2 asGlm() {
+            return {x, y};
+        }
+
         static vec2<T> ZERO() { return {T(0), T(0)}; };
         static vec2<T> ONE() { return {T(1), T(1)}; };
 
@@ -51,7 +55,7 @@ namespace mathy {
 
     // VECTOR 3
     template <typename T>
-    class vec3 { // TRANSFER TO GLM IN PROGRESS
+    class vec3 {
     public:
         T x{};
         T y{};
@@ -88,6 +92,10 @@ namespace mathy {
             return vec3<T>(x / other.x, y / other.y, z / other.z);
         }
 
+        glm::vec3 asGlm() {
+            return {x, y, z};
+        }
+
         static vec3<T> ZERO() { return {T(0), T(0), T(0)}; };
         static vec3<T> ONE() { return {T(1), T(1), T(1)}; };
 
@@ -115,4 +123,22 @@ namespace mathy {
 
         static color WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
     };
+
+    namespace convert {
+        [[maybe_unused]] glm::vec2 mathyVec2_glmVec2(vec2<float> vec) {
+            return glm::vec2 {vec.x, vec.y};
+        }
+
+        [[maybe_unused]] mathy::vec2<float> glmVec2_mathyVec2(glm::vec2 vec) {
+            return mathy::vec2<float> {vec.x, vec.y};
+        }
+
+        [[maybe_unused]] glm::vec3 mathyVec3_glmVec3(vec3<float> vec) {
+            return glm::vec3 {vec.x, vec.y, vec.z};
+        }
+
+        [[maybe_unused]] mathy::vec3<float> glmVec3_mathyVec3(glm::vec3 vec) {
+            return mathy::vec3<float> {vec.x, vec.y, vec.z};
+        }
+    }
 }

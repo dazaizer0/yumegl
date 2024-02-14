@@ -14,8 +14,9 @@ namespace object {
         float sensitivity{ 0.16f };
         bool firstMouse{ true };
         bool active{ true };
+        bool freeCam{ false };
 
-        Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height);
+        Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height, bool free_cam);
 
         void update(float deltaTime);
         static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
@@ -37,11 +38,12 @@ namespace object {
         float windowHeight{};
     };
 
-    Camera3D::Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height) {
+    Camera3D::Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height, bool free_cam) {
         glfwSetCursorPosCallback(yumegl::_window, Camera3D::mouseCallback);
         glfwSetWindowUserPointer(yumegl::_window, this);
 
         position = position_value;
+        freeCam = free_cam;
 
         setWindowSize(window_width, window_height);
     }
@@ -78,7 +80,11 @@ namespace object {
         if (input::keyPressed(GLFW_KEY_P))
             active = !active;
 
-        position.y = posY;
+        if (input::keyPressed(GLFW_KEY_F))
+            freeCam = !freeCam;
+
+        if (!freeCam)
+            position.y = posY;
     }
 
     void Camera3D::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
@@ -114,6 +120,9 @@ namespace object {
             front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
 
             camera->front = glm::normalize(front);
+
+            if(camera->freeCam)
+                camera->posY = camera->position.y;
         }
     }
 

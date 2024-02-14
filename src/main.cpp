@@ -10,7 +10,7 @@ int main() {
     yumegl::eFunc::setColor(mathy::color::BLACK());
 
     // CAMERA
-    object::Camera3D cam({ 0.0f, 0.0f, 3.0f }, yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
+    object::Camera3D cam({ 0.0f, 0.0f, 3.0f }, yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT, false);
 
     // DEPTH
     glEnable(GL_DEPTH_TEST);

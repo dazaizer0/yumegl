@@ -12,9 +12,7 @@ namespace rd2 {
         ~Cubet();
     };
 
-    Cubet::Cubet() {
-
-    }
+    Cubet::Cubet() = default;
 
     Cubet::~Cubet() = default;
 }

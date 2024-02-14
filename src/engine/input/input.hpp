@@ -3,7 +3,6 @@
 #include "../../config.h"
 
 namespace input {
-    // PROPERTIES
     bool keyPressedBool[372];
     bool keyDownBool[372];
     bool keyDownLastFrame[372];
