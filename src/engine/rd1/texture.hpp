@@ -28,7 +28,7 @@ namespace rd1 {
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
-        void rotate(glm::vec3 axis, float rotationSpeed);
+        void rotate(glm::vec3 axis, float rotationSpeed) const;
         void setRotation(glm::vec3 axis, float angle) const;
 
     private:
@@ -96,10 +96,10 @@ namespace rd1 {
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr )(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
 
         // POSITION
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr);
@@ -170,10 +170,10 @@ namespace rd1 {
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr )(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
     }
 
     void Texture::refresh() const {
@@ -206,7 +206,7 @@ namespace rd1 {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Texture::rotate(glm::vec3 axis, float rotationSpeed) {
+    void Texture::rotate(glm::vec3 axis, float rotationSpeed) const {
         auto transform = glm::mat4(1.0f);
         auto rotationAxis = axis;
 
@@ -216,7 +216,7 @@ namespace rd1 {
 
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
     void Texture::setRotation(glm::vec3 axis, float angle) const {
@@ -229,7 +229,7 @@ namespace rd1 {
 
         shader.use();
         unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
     // DELETE

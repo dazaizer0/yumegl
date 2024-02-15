@@ -1,8 +1,8 @@
 #ifndef YUMEGL_MODULE_HPP
 #define YUMEGL_MODULE_HPP
 
-#include "yumegl/src/config.h"
-#include "yumegl/src/yume.h"
+#include "../../config.h"
+#include "../../yume.h"
 
 namespace rd2 {
     class Module {
@@ -25,12 +25,12 @@ namespace rd2 {
         mathy::color color = mathy::color::WHITE();
         glm::vec3 size{};
 
-        ExtendedModule(glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV);
+        ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
         // BODY
         ~ExtendedModule() = default;
     };
 
-    ExtendedModule::ExtendedModule(glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV) : Module(positionV, enableV) {
+    ExtendedModule::ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV) : Module(positionV, enableV) {
         size = sizeV;
     }
 }

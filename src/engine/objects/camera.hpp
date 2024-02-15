@@ -97,9 +97,9 @@ namespace object {
         if (input::keyPressed(GLFW_KEY_F))
             freeCam = !freeCam;
         if (!freeCam && moving && boobing) {
-            float time = glfwGetTime();
-            float yOffset = sin(time * 10) * cameraSpeed * 1.6;
-            position.y = posY + yOffset;
+            auto time = (float)glfwGetTime();
+            auto yOffset = sin(time * 10) * cameraSpeed * 1.6;
+            position.y = (float)posY + (float)yOffset;
         }
     }
 
