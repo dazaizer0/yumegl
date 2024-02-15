@@ -17,6 +17,7 @@ namespace object {
         bool firstMouse{ true };
         bool active{ true };
         bool freeCam{ false };
+        bool boobing{ true };
 
         Camera3D(glm::uvec3 position_value, unsigned int window_width, unsigned int window_height, bool free_cam);
 
@@ -34,7 +35,8 @@ namespace object {
         float lastY{ 600.0f / 2.0 };
         float fov{ 45.0f };
 
-        bool cursorVisible = true;
+        bool cursorVisible{ true };
+        bool moving{ false };
 
         float windowWidth{};
         float windowHeight{};
@@ -68,6 +70,13 @@ namespace object {
         if (input::keyDown(GLFW_KEY_D))
             position += glm::normalize(glm::cross(front, up)) * cameraSpeed;
 
+        if (input::keyDown(GLFW_KEY_W) || input::keyDown(GLFW_KEY_S) || input::keyDown(GLFW_KEY_A) || input::keyDown(GLFW_KEY_D)) {
+            moving = true;
+        }
+        else {
+            moving = false;
+        }
+
         // SHORTCUTS
         if (input::keyDown(GLFW_KEY_Y) && input::keyDown(GLFW_KEY_EQUAL))
             posY += cameraSpeed;
@@ -82,11 +91,16 @@ namespace object {
         if (input::keyPressed(GLFW_KEY_P))
             active = !active;
 
+        if (active) cursorVisible = false;
+        else cursorVisible = true;
+
         if (input::keyPressed(GLFW_KEY_F))
             freeCam = !freeCam;
-
-        if (!freeCam)
-            position.y = posY;
+        if (!freeCam && moving && boobing) {
+            float time = glfwGetTime();
+            float yOffset = sin(time * 10) * cameraSpeed * 1.6;
+            position.y = posY + yOffset;
+        }
     }
 
     void Camera3D::mouseCallback(GLFWwindow* window, double xPos, double yPos) {

@@ -53,9 +53,6 @@ int main() {
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyPressed(GLFW_KEY_C))
-            cam.changeCursorVisibility();
-
         /* ------------------------------------------------
          * ------------------- RENDER ---------------------
          * ------------------------------------------------ */
@@ -79,11 +76,28 @@ int main() {
         cam.update(cube->shader);
         cube->bindTexture();
         cube->render_ownShader();
-        cube->rotate(glm::vec3{ 0.4f, 0.5f, 0.4f }, 1.0f);
+        cube->rotate(glm::vec3{ 0.6f, 0.8f, 0.6f }, 1.0f);
+
+        cube->shader.use();
+        cam.update(cube->shader);
+        cube->bindTexture();
+        cube->render_ownShader();
+        cube->rotate(glm::vec3{ 0.8f, 0.6f, 0.8f }, 1.0f);
+
+        cube->shader.use();
+        cam.update(cube->shader);
+        cube->bindTexture();
+        cube->render_ownShader();
+        cube->rotate(glm::vec3{ 0.6f, 0.6f, 0.8f }, 1.0f);
+
+        cube->shader.use();
+        cam.update(cube->shader);
+        cube->bindTexture();
+        cube->render_ownShader();
+        cube->rotate(glm::vec3{ 0.8f, 0.6f, 0.6f }, 1.0f);
 
         // GUI
         if (!cam.active) {
-            cam.update(panel->shader);
             panel->bindTexture();
             panel->render_ownShader();
             panel->setRotation(glm::vec3{ 0.0f, 0.0f, 1.0f }, 180.0f);
@@ -109,7 +123,6 @@ int main() {
 
          auto frameEndTime = std::chrono::high_resolution_clock::now();
          auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
-         */
     }
 #pragma endregion
 
