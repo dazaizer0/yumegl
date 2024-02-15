@@ -7,7 +7,7 @@
 #include "src/engine/input/input.hpp"
 
 namespace object {
-    class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT learning from learn opengl <<<<<<<<
+    class Camera3D { // >>>>>>>> IN EARLY DEVELOPMENT <<<<<<<<
     public:
         glm::vec3 position{ 0.0f, 0.0f, 3.0f };
         glm::vec3 front{ 0.0f, 0.0f, -1.0f };
@@ -70,12 +70,10 @@ namespace object {
         if (input::keyDown(GLFW_KEY_D))
             position += glm::normalize(glm::cross(front, up)) * cameraSpeed;
 
-        if (input::keyDown(GLFW_KEY_W) || input::keyDown(GLFW_KEY_S) || input::keyDown(GLFW_KEY_A) || input::keyDown(GLFW_KEY_D)) {
+        if (input::keyDown(GLFW_KEY_W) || input::keyDown(GLFW_KEY_S) || input::keyDown(GLFW_KEY_A) || input::keyDown(GLFW_KEY_D))
             moving = true;
-        }
-        else {
+        else
             moving = false;
-        }
 
         // SHORTCUTS
         if (input::keyDown(GLFW_KEY_Y) && input::keyDown(GLFW_KEY_EQUAL))
@@ -96,9 +94,10 @@ namespace object {
 
         if (input::keyPressed(GLFW_KEY_F))
             freeCam = !freeCam;
+
         if (!freeCam && moving && boobing) {
             auto time = (float)glfwGetTime();
-            auto yOffset = sin(time * 10) * cameraSpeed * 1.6;
+            auto yOffset = sin(time * 14) * cameraSpeed * 1.4;
             position.y = (float)posY + (float)yOffset;
         }
     }
