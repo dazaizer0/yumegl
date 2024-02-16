@@ -22,7 +22,7 @@ namespace rd2 {
 
     class ExtendedModule : public Module {
     public:
-        mathy::color color = mathy::color::WHITE();
+        colour color = colour::WHITE();
         glm::vec3 size{};
 
         ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
@@ -34,5 +34,4 @@ namespace rd2 {
         size = sizeV;
     }
 }
-
 #endif

@@ -6,8 +6,9 @@
 #include "module.hpp"
 
 namespace rd2 {
-    class Squaret : public rd2::ExtendedModule { // THE MODULE IS MORE EXPENSIVE THAN ORDINARY SQUARE/TEXTURE
+    class Square : public rd2::ExtendedModule { // THE MODULE IS MORE EXPENSIVE THAN ORDINARY SQUARE/TEXTURE
         // BECAUSE IT SUPPORTS BOTH SHAPE AND TEXTURE DEPENDING ON THE TEXTURE YOU HAVE
+        // TODO: NEW BETTER, UNIVERSAL AND CROSS PLATFORM 2D SQUARE BASED ON OWN SOLUTIONS
 
         // PROPERTIES
     public:
@@ -27,7 +28,7 @@ namespace rd2 {
         std::string type{};
 
         // LOGIC
-        Squaret(const std::string& path, glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV);
+        Square(const std::string& path, glm::vec3 positionV, colour colorV, glm::vec3 sizeV, bool enableV);
 
         void updatePosition();
         void refresh();
@@ -40,11 +41,11 @@ namespace rd2 {
         void rotate(glm::vec3 axis, float rotationSpeed);
         void setRotation(glm::vec3 axis, float angle);
 
-        ~Squaret();
-    
+        ~Square();
+
     };
 
-    Squaret::Squaret(const std::string& path, glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV) : ExtendedModule(
+    Square::Square(const std::string& path, glm::vec3 positionV, colour colorV, glm::vec3 sizeV, bool enableV) : ExtendedModule(
             positionV, sizeV, enableV) {
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -190,7 +191,7 @@ namespace rd2 {
         stbi_image_free(texData);
     }
 
-    void Squaret::updatePosition() {
+    void Square::updatePosition() {
         if(type == "tex") {
 
         }
@@ -202,7 +203,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::refresh() {
+    void Square::refresh() {
         if(type == "tex") {
 
         }
@@ -214,7 +215,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::bindTexture() {
+    void Square::bindTexture() {
         if(type == "tex") {
 
         }
@@ -226,7 +227,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::render_ownShader() const {
+    void Square::render_ownShader() const {
         if(type == "tex") {
 
         }
@@ -238,7 +239,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::render_getShader(const shaderSystem::Shader &other_shader) const {
+    void Square::render_getShader(const shaderSystem::Shader &other_shader) const {
         if(type == "tex") {
 
         }
@@ -250,7 +251,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::render_foregoingShader() const {
+    void Square::render_foregoingShader() const {
         if(type == "tex") {
 
         }
@@ -262,7 +263,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::rotate(glm::vec3 axis, float rotationSpeed) {
+    void Square::rotate(glm::vec3 axis, float rotationSpeed) {
         if(type == "tex") {
 
         }
@@ -274,7 +275,7 @@ namespace rd2 {
         }
     }
 
-    void Squaret::setRotation(glm::vec3 axis, float angle) {
+    void Square::setRotation(glm::vec3 axis, float angle) {
         if(type == "tex") {
 
         }
@@ -286,7 +287,7 @@ namespace rd2 {
         }
     }
 
-    Squaret::~Squaret() {
+    Square::~Square() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
@@ -294,5 +295,4 @@ namespace rd2 {
         shaderSystem::deleteShader(shader);
     }
 }
-
 #endif

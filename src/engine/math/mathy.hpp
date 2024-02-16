@@ -5,7 +5,7 @@
 namespace mathy {
     // VECTOR 2
     template <typename T>
-    class vec2 {
+    class vec2 { // TODO: universal vectors (vec2)
     public:
         T x{};
         T y{};
@@ -55,7 +55,7 @@ namespace mathy {
 
     // VECTOR 3
     template <typename T>
-    class vec3 {
+    class vec3 { // TODO: universal vectors (vec3)
     public:
         T x{};
         T y{};
@@ -102,28 +102,6 @@ namespace mathy {
         static vec3<T> UP() { return {T(0), T(1), T(0)}; };
     };
 
-    // RGBA
-    class color {
-    public:
-        float r{};
-        float g{};
-        float b{};
-        float a{};
-
-        color(float rValue, float gValue, float bValue, float aValue)
-                : r(rValue), g(gValue), b(bValue), a(aValue) {}
-
-        color& operator=(const color& other) = default;
-
-        static color BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
-
-        static color RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
-        static color GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
-        static color BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
-
-        static color WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
-    };
-
     namespace convert {
         [[maybe_unused]] glm::vec2 mathyVec2_glmVec2(vec2<float> vec) {
             return glm::vec2 {vec.x, vec.y};
@@ -142,3 +120,25 @@ namespace mathy {
         }
     }
 }
+
+// RGBA
+class colour {
+public:
+    float r{};
+    float g{};
+    float b{};
+    float a{};
+
+    colour(float rValue, float gValue, float bValue, float aValue)
+            : r(rValue), g(gValue), b(bValue), a(aValue) {}
+
+    colour& operator=(const colour& other) = default;
+
+    static colour BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
+
+    static colour RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
+    static colour GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
+    static colour BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
+
+    static colour WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
+};

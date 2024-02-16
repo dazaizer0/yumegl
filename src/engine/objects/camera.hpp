@@ -34,8 +34,7 @@ namespace object {
         float lastX{ 800.0f / 2.0 };
         float lastY{ 600.0f / 2.0 };
         float fov{ 45.0f };
-
-        bool cursorVisible{ true };
+        
         bool moving{ false };
 
         float windowWidth{};
@@ -89,15 +88,12 @@ namespace object {
         if (input::keyPressed(GLFW_KEY_P))
             active = !active;
 
-        if (active) cursorVisible = false;
-        else cursorVisible = true;
-
         if (input::keyPressed(GLFW_KEY_F))
             freeCam = !freeCam;
 
         if (!freeCam && moving && boobing) {
             auto time = (float)glfwGetTime();
-            auto yOffset = sin(time * 14) * cameraSpeed * 1.4;
+            auto yOffset = sin(time * 14) * cameraSpeed * 1.4f;
             position.y = (float)posY + (float)yOffset;
         }
     }
@@ -148,11 +144,11 @@ namespace object {
         glm::mat4 view = glm::lookAt(position, position + front, up);
         shader.setMat4("view", view);
 
-        glfwSetInputMode(yumegl::_window, GLFW_CURSOR, cursorVisible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(yumegl::_window, GLFW_CURSOR, active ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
     }
 
     void Camera3D::changeCursorVisibility() {
-        cursorVisible = !cursorVisible;
+        active = !active;
     }
 }
 #endif

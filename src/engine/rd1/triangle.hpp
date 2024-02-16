@@ -10,13 +10,13 @@ namespace rd1 {
     public:
         // PROPERTIES
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
-        mathy::color color = mathy::color::WHITE();
+        colour color = colour::WHITE();
 
         float size{};
         bool enable{};
 
         // CONSTRUCTOR
-        Triangle(glm::vec3 position_value, mathy::color color_value, float size_value);
+        Triangle(glm::vec3 position_value, colour color_value, float size_value);
 
         // RENDER
         void render() const;
@@ -32,7 +32,7 @@ namespace rd1 {
         std::vector<float> data;
     };
 
-    Triangle::Triangle(glm::vec3 position_value, mathy::color color_value, float size_value) {
+    Triangle::Triangle(glm::vec3 position_value, colour color_value, float size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;

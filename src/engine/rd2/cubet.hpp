@@ -6,15 +6,11 @@
 #include "module.hpp"
 
 namespace rd2 {
-    class [[maybe_unused]] Cubet {
+    class [[maybe_unused]] Cube {
     public:
-        Cubet();
-        ~Cubet();
+        Cube() = default;
+        ~Cube() = default;
     };
-
-    Cubet::Cubet() = default;
-
-    Cubet::~Cubet() = default;
 }
 
 #endif

@@ -9,14 +9,14 @@ namespace rd1 {
     class Texture {
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
-        mathy::color color = mathy::color::BLACK();
+        colour color = colour::BLACK();
         shaderSystem::Shader shader;
 
         glm::vec2 size{};
         bool enable{};
 
         // CONSTRUCTOR
-        Texture(const std::string& path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
+        Texture(const std::string& path, glm::vec3 position_value, colour color_value, glm::vec2 size_value);
         ~Texture();
 
         //FUNCTIONS
@@ -42,7 +42,7 @@ namespace rd1 {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const std::string& path, glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
+    Texture::Texture(const std::string& path, glm::vec3 position_value, colour color_value, glm::vec2 size_value) {
         // SET PROPERTIES
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();

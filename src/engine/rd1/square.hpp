@@ -11,13 +11,13 @@ namespace rd1 {
         // PROPERTIES
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         glm::vec2 size{ 1.0f, 1.0f };
-        mathy::color color = mathy::color::BLACK();
+        colour color = colour::BLACK();
         shaderSystem::Shader shader;
 
         bool enable{};
 
         // CONSTRUCTOR
-        Square(glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value);
+        Square(glm::vec3 position_value, colour color_value, glm::vec2 size_value);
 
         //UPDATE
         void updatePosition();
@@ -40,7 +40,7 @@ namespace rd1 {
         std::vector<float> data;
     };
 
-    Square::Square(glm::vec3 position_value, mathy::color color_value, glm::vec2 size_value) {
+    Square::Square(glm::vec3 position_value, colour color_value, glm::vec2 size_value) {
         // SET PROPERTIES
         position = position_value;
         color = color_value;

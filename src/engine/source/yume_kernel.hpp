@@ -72,8 +72,8 @@ namespace yumegl {
         glfwPollEvents();
     }
 
-    namespace eFunc {
-        void setColor(const mathy::color& color) {
+    namespace eFunc { // ENGINE'S ELEMENTARY FUNCTIONS
+        void setColor(const colour& color) {
             glClearColor(color.r, color.g, color.b, color.a);
         }
 
@@ -107,7 +107,7 @@ namespace yumegl {
         }
     }
 
-    namespace eExit {
+    namespace eExit { // ENGINE'S PROCESS TERMINATION FUNCTIONS
         void close() {
             std::cerr << "Opengl has been successfully closed" << std::endl;
             glfwTerminate();
