@@ -43,7 +43,7 @@ namespace yumegl {
             return;
         }
         else {
-            std::cout << "GLAD initialized correctly\n";
+            std::cout << "GLAD initialized correctly\n> yumegl 0.0.0.1 <\n";
         }
 
         glfwSwapInterval(1);
