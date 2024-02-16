@@ -8,9 +8,23 @@
 namespace rd2 {
     class Squaret : public rd2::ExtendedModule { // THE MODULE IS MORE EXPENSIVE THAN ORDINARY SQUARE/TEXTURE
         // BECAUSE IT SUPPORTS BOTH SHAPE AND TEXTURE DEPENDING ON THE TEXTURE YOU HAVE
-    public:
+
         // PROPERTIES
+    public:
         shaderSystem::Shader shader;
+
+    private:
+        const unsigned int vertex_count{ 4 };
+        unsigned int VBO{}, VAO{}, EBO{};
+
+        unsigned int tex{};
+        const char* texPath{};
+        unsigned char* texData{};
+
+        std::vector<float> vertices;
+        std::vector<unsigned int> indices;
+
+        std::string type{};
 
         // LOGIC
         Squaret(const std::string& path, glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV);
@@ -27,19 +41,7 @@ namespace rd2 {
         void setRotation(glm::vec3 axis, float angle);
 
         ~Squaret();
-
-    private:
-        const unsigned int vertex_count{ 4 };
-        unsigned int VBO{}, VAO{}, EBO{};
-
-        unsigned int tex{};
-        const char* texPath{};
-        unsigned char* texData{};
-
-        std::vector<float> vertices;
-        std::vector<unsigned int> indices;
-
-        std::string type{};
+    
     };
 
     Squaret::Squaret(const std::string& path, glm::vec3 positionV, mathy::color colorV, glm::vec3 sizeV, bool enableV) : ExtendedModule(

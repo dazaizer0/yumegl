@@ -11,7 +11,7 @@ namespace rd2 {
         bool enable{};
 
         Module(glm::vec3 positionV, bool enableV);
-        // BODY
+
         ~Module() = default;
     };
 
@@ -26,7 +26,7 @@ namespace rd2 {
         glm::vec3 size{};
 
         ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
-        // BODY
+
         ~ExtendedModule() = default;
     };
 
