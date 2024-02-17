@@ -32,7 +32,7 @@ namespace mathy {
             x(xIn);
             y(yIn);
         }
-        vec2yu(glm::vec<2, T, glm::defaultp> container) : container(container) { }
+        explicit vec2yu(glm::vec<2, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
 
@@ -164,7 +164,7 @@ namespace mathy {
             y(yIn);
             z(zIn);
         }
-        vec3yu(glm::vec<3, T, glm::defaultp> container) : container(container) { }
+        explicit vec3yu(glm::vec<3, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
 

@@ -42,8 +42,8 @@ add_executable(${PROJECT_NAME}
 
         # RENDER 2 / 2D
         src/engine/rd2/module.hpp
-        src/engine/rd2/squaret.hpp
-        src/engine/rd2/cubet.hpp
+        src/engine/rd2/square_rd2.hpp
+        src/engine/rd2/cube_rd2.hpp
 )
 
 # OPENGL

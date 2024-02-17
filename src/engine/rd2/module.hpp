@@ -7,15 +7,15 @@
 namespace rd2 {
     class Module {
     public:
-        glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+        mathy::vec3yu<> position = mathy::vec3yu{ 0.0f, 0.0f, 0.0f };
         bool enable{};
 
-        Module(glm::vec3 positionV, bool enableV);
+        Module(mathy::vec3yu<> positionV, bool enableV);
 
         ~Module() = default;
     };
 
-    Module::Module(glm::vec3 positionV, bool enableV) {
+    Module::Module(mathy::vec3yu<> positionV, bool enableV) {
         position = positionV;
         enable = enableV;
     }
@@ -23,14 +23,14 @@ namespace rd2 {
     class ExtendedModule : public Module {
     public:
         colour color = colour::WHITE();
-        glm::vec3 size{};
+        mathy::vec3yu<> size{};
 
-        ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV);
+        ExtendedModule(mathy::vec3yu<> positionV, mathy::vec3yu<> sizeV, bool enableV);
 
         ~ExtendedModule() = default;
     };
 
-    ExtendedModule::ExtendedModule(glm::vec3 positionV, glm::vec3 sizeV, bool enableV) : Module(positionV, enableV) {
+    ExtendedModule::ExtendedModule(mathy::vec3yu<> positionV, mathy::vec3yu<> sizeV, bool enableV) : Module(positionV, enableV) {
         size = sizeV;
     }
 }

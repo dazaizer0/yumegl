@@ -28,7 +28,7 @@ namespace rd2 {
         std::string type{};
 
         // LOGIC
-        Square(const std::string& path, glm::vec3 positionV, colour colorV, glm::vec3 sizeV, bool enableV);
+        Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV);
 
         void updatePosition();
         void refresh();
@@ -45,7 +45,7 @@ namespace rd2 {
 
     };
 
-    Square::Square(const std::string& path, glm::vec3 positionV, colour colorV, glm::vec3 sizeV, bool enableV) : ExtendedModule(
+    Square::Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) : ExtendedModule(
             positionV, sizeV, enableV) {
         std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path2.c_str();
@@ -76,19 +76,19 @@ namespace rd2 {
                     // position, position, position
                     // tex coords, tex coords, tex coords
 
-                    position.x + size.x, position.y + size.y, position.z,
+                    position.x() + size.x(), position.y() + size.y(), position.z(),
                     color.r, color.g, color.b,
                     1.0f, 1.0f,
 
-                    position.x + size.x, position.y + -size.y, position.z,
+                    position.x() + size.x(), position.y() + -size.y(), position.z(),
                     color.r, color.g, color.b,
                     1.0f, 0.0f,
 
-                    position.x + -size.x, position.y + -size.y, position.z,
+                    position.x() + -size.x(), position.y() + -size.y(), position.z(),
                     color.r, color.g, color.b,
                     0.0f, 0.0f,
 
-                    position.x + -size.x, position.y + size.y, position.z,
+                    position.x() + -size.x(), position.y() + size.y(), position.z(),
                     color.r, color.g, color.b,
                     0.0f, 1.0f
             };
@@ -150,21 +150,24 @@ namespace rd2 {
         }
         else {
             vertices = {
-                    // down-left
-                    position.x + -size.x, position.y + -size.y, position.z,
-                    color.r, color.g, color.b,
+                    // position, position, position
+                    // tex coords, tex coords, tex coords
 
-                    // down-right
-                    position.x + size.x, position.y + -size.y, position.z,
+                    position.x() + size.x(), position.y() + size.y(), position.z(),
                     color.r, color.g, color.b,
+                    1.0f, 1.0f,
 
-                    // top-left
-                    position.x + -size.x, position.y + size.y, position.z,
+                    position.x() + size.x(), position.y() + -size.y(), position.z(),
                     color.r, color.g, color.b,
+                    1.0f, 0.0f,
 
-                    // top-right
-                    position.x + size.x, position.y + size.y, position.z,
+                    position.x() + -size.x(), position.y() + -size.y(), position.z(),
                     color.r, color.g, color.b,
+                    0.0f, 0.0f,
+
+                    position.x() + -size.x(), position.y() + size.y(), position.z(),
+                    color.r, color.g, color.b,
+                    0.0f, 1.0f
             };
 
             // GENERATE OBJECT

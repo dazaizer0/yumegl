@@ -1,5 +1,5 @@
-#ifndef YUMEGL_CUBET_HPP
-#define YUMEGL_CUBET_HPP
+#ifndef YUMEGL_CUBE_RD2_HPP
+#define YUMEGL_CUBE_RD2_HPP
 
 #include "../../config.h"
 #include "../../yume.h"
