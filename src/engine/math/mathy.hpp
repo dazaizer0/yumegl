@@ -1,124 +1,271 @@
 #pragma once // IN DEVELOPMENT | SWITCHING TO GLM
 
 #include <iostream>
+#include <sstream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace mathy {
     // VECTOR 2
-    template <typename T>
-    class vec2 { // TODO: universal vectors (vec2)
+    template <typename T = float>
+    class vec2yu { // TODO: universal vectors (vec2)
+
     public:
-        T x{};
-        T y{};
+        // FIELDS, PROPERTIES
 
-        vec2(T xValue, T yValue)
-                : x(xValue), y(yValue) {}
+        glm::vec<2, T, glm::defaultp> container;
+        
+        inline T x() { return container.x; }
+        inline void x(T xIn) { container.x = xIn; }
+        
+        inline T y() { return container.y; }
+        inline void y(T yIn) { container.y = yIn; }
 
-        void out() {
-            std::cout << "x: " << x << ", y: " << y << "\n";
+        // CONSTRUCTORS
+
+        vec2yu() {
+            x(T(0));
+            y(T(0));
+        }
+        vec2yu(T xIn, T yIn) {
+            x(xIn);
+            y(yIn);
+        }
+        vec2yu(glm::vec<2, T, glm::defaultp> container) : container(container) { }
+
+        // FUNCTIONS
+
+        std::string toString() {
+            std::stringstream ss;
+            ss << "x: " << x() << ", y: " << y() << "\n";
+            return ss.str();
         }
 
-        vec2<T>& operator=(const vec2<T>& other) {
-            x = other.x;
-            y = other.y;
+        void toStdout() {
+            std::cout << toString(); // Uses toString() to make the code more clear. I know it's unoptimal to make an ss and then cout it, but this func.'s probably not gonna be used too much and if it's gonna be, then we'll think about it.
+        }
 
+        inline T length_2() {
+            return x() * x() + y() * y();
+        }
+
+        inline T length() {
+            if (typeid(T) == typeid(float))
+                return sqrtf(length_2());
+            else
+                return sqrt(length_2());
+        }
+
+        inline T lengthInv() {
+            return (T)1 / length();
+        }
+
+        inline vec2yu normalizE() {
+            return *this *= lengthInv();
+        }
+
+        inline vec2yu normalizED() {
+            return *this * lengthInv();
+        }
+
+        static vec2yu<T> ZERO() { return { T(0), T(0) }; };
+        static vec2yu<T> ONE() { return { T(1), T(1) }; };
+
+        static vec2yu<T> UP() { return { T(0), T(-1) }; };
+        static vec2yu<T> DOWN() { return { T(0), T(1) }; };
+        static vec2yu<T> RIGHT() { return { T(1), T(0) }; };
+        static vec2yu<T> LEFT() { return { T(-1), T(0) }; };
+
+        // OPERATORS
+
+        vec2yu<T>& operator=(const vec2yu<T>& other) {
+            container = other.container;
             return *this;
         }
 
-        vec2<T> operator+(const vec2<T>& other) const {
-            return vec2<T>(x + other.x, y + other.y);
+        vec2yu<T> operator+(const vec2yu<T>& other) const {
+            return vec2yu<T>(container + other.container);
+        }
+        vec2yu<T>& operator+=(const vec2yu<T>& other) {
+            container += other.container;
+            return *this;
         }
 
-        vec2<T> operator-(const vec2<T>& other) const {
-            return vec2<T>(x - other.x, y - other.y);
+        vec2yu<T> operator-(const vec2yu<T>& other) const {
+            return vec2yu<T>(container - other.container);
+        }
+        vec2yu<T>& operator-=(const vec2yu<T>& other) {
+            container -= other.container;
+            return *this;
         }
 
-        vec2<T> operator*(const vec2<T>& other) const {
-            return vec2<T>(x * other.x, y * other.y);
+        vec2yu<T> operator*(const vec2yu<T>& other) const {
+            return vec2yu<T>(container * other.container);
+        }
+        vec2yu<T>& operator*=(const vec2yu<T>& other) {
+            container *= other.container;
+            return *this;
         }
 
-        vec2<T> operator/(const vec2<T>& other) const {
-            return vec2<T>(x / other.x, y / other.y);
+        vec2yu<T> operator*(const T scale) const {
+            return vec2yu<T>(container * scale);
+        }
+        vec2yu<T>& operator*=(const T scale) {
+            container *= scale;
+            return *this;
         }
 
-        glm::vec2 asGlm() {
-            return {x, y};
+        vec2yu<T> operator/(const vec2yu<T>& other) const {
+            return vec2yu<T>(container / other.container);
+        }
+        vec2yu<T>& operator/=(const vec2yu<T>& other) {
+            container /= other.container;
+            return *this;
         }
 
-        static vec2<T> ZERO() { return {T(0), T(0)}; };
-        static vec2<T> ONE() { return {T(1), T(1)}; };
-
-        static vec2<T> UP() { return {T(0), T(-1)}; };
-        static vec2<T> DOWN() { return {T(0), T(1)}; };
-        static vec2<T> RIGHT() { return {T(1), T(0)}; };
-        static vec2<T> LEFT() { return {T(-1), T(0)}; };
+        vec2yu<T> operator/(const T scale) const {
+            return vec2yu<T>(container / scale);
+        }
+        vec2yu<T>& operator/=(const T scale) {
+            container /= scale;
+            return *this;
+        }
     };
 
+    
     // VECTOR 3
-    template <typename T>
-    class vec3 { // TODO: universal vectors (vec3)
+    template <typename T = float>
+    class vec3yu { // TODO: universal vectors (vec2)
+
     public:
-        T x{};
-        T y{};
-        T z{};
+        // FIELDS, PROPERTIES
 
-        vec3(T xValue, T yValue, T zValue)
-                : x(xValue), y(yValue), z(zValue) {}
+        glm::vec<3, T, glm::defaultp> container;
 
-        void out() {
-            std::cout << "x: " << x << ", y: " << y << ", z: " << z << "\n";
+        inline T x() { return container.x; }
+        inline void x(T xIn) { container.x = xIn; }
+
+        inline T y() { return container.y; }
+        inline void y(T yIn) { container.y = yIn; }
+
+        inline T z() { return container.z; }
+        inline void z(T zIn) { container.z = zIn; }
+
+        // CONSTRUCTORS
+
+        vec3yu() {
+            x(T(0));
+            y(T(0));
+            z(T(0));
+        }
+        vec3yu(T xIn, T yIn, T zIn) {
+            x(xIn);
+            y(yIn);
+            z(zIn);
+        }
+        vec3yu(glm::vec<3, T, glm::defaultp> container) : container(container) { }
+
+        // FUNCTIONS
+
+        std::string toString() {
+            std::stringstream ss;
+            ss << "x: " << x() << ", y: " << y() << ", z: " << z() << "\n";
+            return ss.str();
         }
 
-        vec3<T>& operator=(const vec3<T>& other) {
-            x = other.x;
-            y = other.y;
-            z = other.z;
+        void toStdout() {
+            std::cout << toString(); // Uses toString() to make the code more clear. I know it's unoptimal to make an ss and then cout it, but this func.'s probably not gonna be used too much and if it's gonna be, then we'll think about it.
+        }
 
+        inline T length_2() {
+            return x() * x() + y() * y() + z() * z();
+        }
+
+        inline T length() {
+            if (typeid(T) == typeid(float))
+                return sqrtf(length_2());
+            else
+                return sqrt(length_2());
+        }
+
+        inline T lengthInv() {
+            return (T)1 / length();
+        }
+
+        inline vec3yu normalizE() {
+            return *this *= lengthInv();
+        }
+
+        inline vec3yu normalizED() {
+            return *this * lengthInv();
+        }
+
+        static vec3yu<T> ZERO() { return { T(0), T(0), T(0) }; }
+        static vec3yu<T> ONE() { return { T(1), T(1), T(1) }; }
+
+        static vec3yu<T> UP() { return { T(0), T(-1), T(0) }; }
+        static vec3yu<T> DOWN() { return { T(0), T(1), T(0) }; }
+        static vec3yu<T> RIGHT() { return { T(1), T(0), T(0) }; }
+        static vec3yu<T> LEFT() { return { T(-1), T(0), T(0) }; }
+        static vec3yu<T> FORWARD() { return { T(0), T(0), T(1) }; }
+        static vec3yu<T> BACK() { return { T(0), T(0), T(-1) }; }
+
+        // OPERATORS
+
+        vec3yu<T>& operator=(const vec3yu<T>& other) {
+            container = other.container;
             return *this;
         }
 
-        vec3<T> operator+(const vec3<T>& other) const {
-            return vec3<T>(x + other.x, y + other.y, z + other.z);
+        vec3yu<T> operator+(const vec3yu<T>& other) const {
+            return vec3yu<T>(container + other.container);
+        }
+        vec3yu<T>& operator+=(const vec3yu<T>& other) {
+            container += other.container;
+            return *this;
         }
 
-        vec3<T> operator-(const vec3<T>& other) const {
-            return vec3<T>(x - other.x, y - other.y, z - other.z);
+        vec3yu<T> operator-(const vec3yu<T>& other) const {
+            return vec3yu<T>(container - other.container);
+        }
+        vec3yu<T>& operator-=(const vec3yu<T>& other) {
+            container -= other.container;
+            return *this;
         }
 
-        vec3<T> operator*(const vec3<T>& other) const {
-            return vec3<T>(x * other.x, y * other.y, z * other.z);
+        vec3yu<T> operator*(const vec3yu<T>& other) const {
+            return vec3yu<T>(container * other.container);
+        }
+        vec3yu<T>& operator*=(const vec3yu<T>& other) {
+            container *= other.container;
+            return *this;
         }
 
-        vec3<T> operator/(const vec3<T>& other) const {
-            return vec3<T>(x / other.x, y / other.y, z / other.z);
+        vec3yu<T> operator*(const T scale) const {
+            return vec3yu<T>(container * scale);
+        }
+        vec3yu<T>& operator*=(const T scale) {
+            container *= scale;
+            return *this;
         }
 
-        glm::vec3 asGlm() {
-            return {x, y, z};
+        vec3yu<T> operator/(const vec3yu<T>& other) const {
+            return vec3yu<T>(container / other.container);
+        }
+        vec3yu<T>& operator/=(const vec3yu<T>& other) {
+            container /= other.container;
+            return *this;
         }
 
-        static vec3<T> ZERO() { return {T(0), T(0), T(0)}; };
-        static vec3<T> ONE() { return {T(1), T(1), T(1)}; };
-
-        static vec3<T> UP() { return {T(0), T(1), T(0)}; };
+        vec3yu<T> operator/(const T scale) const {
+            return vec3yu<T>(container / scale);
+        }
+        vec3yu<T>& operator/=(const T scale) {
+            container /= scale;
+            return *this;
+        }
     };
-
-    namespace convert {
-        [[maybe_unused]] glm::vec2 mathyVec2_glmVec2(vec2<float> vec) {
-            return glm::vec2 {vec.x, vec.y};
-        }
-
-        [[maybe_unused]] mathy::vec2<float> glmVec2_mathyVec2(glm::vec2 vec) {
-            return mathy::vec2<float> {vec.x, vec.y};
-        }
-
-        [[maybe_unused]] glm::vec3 mathyVec3_glmVec3(vec3<float> vec) {
-            return glm::vec3 {vec.x, vec.y, vec.z};
-        }
-
-        [[maybe_unused]] mathy::vec3<float> glmVec3_mathyVec3(glm::vec3 vec) {
-            return mathy::vec3<float> {vec.x, vec.y, vec.z};
-        }
-    }
 }
 
 // RGBA
