@@ -58,6 +58,11 @@ target_link_libraries(${PROJECT_NAME}
         glm
 )
 
+target_link_directories(${PROJECT_NAME}
+        PRIVATE
+        assets
+)
+
 #target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
 #target_sources(${PROJECT_NAME}
 #        PRIVATE

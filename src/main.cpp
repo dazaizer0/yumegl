@@ -14,28 +14,27 @@ int main() {
     yumegl::eFunc::setColor(colour::BLACK());
 
     // CAMERA
-    object::Camera3D cam({ 0.0f, 0.0f, 3.0f }, yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT, false);
+    object::Camera3D cam({ 0.0f, 4.0f, 3.0f }, yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT, false);
 
     // DEPTH
     glEnable(GL_DEPTH_TEST);
 
     // OBJECTS
     shaderSystem::Shader default3DShader;
-    default3DShader.genShader("texture/vertex_t3d.glsl", "texture/fragment_t3d.glsl");
+    default3DShader.genShader("shaders/3D/vertex.glsl", "shaders/3D/fragment.glsl");
 
-    auto* cube = new rd1::Cube("textures/sonic_warning.png", glm::vec3{ 0.0f, 0.0f, -3.0f }, glm::vec3{ 1.0f });
-    cube->shader.genShader("texture/vertex_t3d.glsl", "texture/fragment_t3d.glsl");
+    auto* cube = new rd1::Cube("textures/sonic_disco.png", glm::vec3{ 0.0f, 4.0f, -3.0f }, glm::vec3{ 1.0f });
+    cube->shader.genShader("shaders/3D/vertex.glsl", "shaders/3D/fragment.glsl");
     cube->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* room = new rd1::Cube("textures/sonic_dirt.png", glm::vec3{ 0.0f, 5.0f, 0.0f }, glm::vec3{ 20.0f, 10.0f, 20.0f });
+    auto* room = new rd1::Cube("textures/sonic_forest.png", glm::vec3{ 0.0f, 5.0f, 0.0f }, glm::vec3{ 20.0f, 10.0f, 20.0f });
     room->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* room1 = new rd1::Cube("textures/sonic_ice.png", glm::vec3{ 0.0f, 5.0f, -30.1f }, glm::vec3{ 10.0f, 10.0f, 10.0f });
-    room1->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
+    auto* floor = new rd1::Cube("textures/sonic_floor.png", glm::vec3{ 0.0f, -5.0f, 0.0f }, glm::vec3{ 20.0f, 0.1f, 20.0f });
+    floor->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
     auto* panel = new rd1::Texture("textures/sonic_ice.png", glm::vec3{ 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec2{ 0.8f, 0.8f });
-    panel->shader.genShader("texture/vertex_t.glsl", "texture/fragment_t.glsl");
-
+    panel->shader.genShader("shaders/texture/vertex.glsl", "shaders/texture/fragment.glsl");
 #pragma endregion
 
 #pragma region MAIN_LOOP
@@ -71,9 +70,9 @@ int main() {
         room->setRotation_getShader(glm::vec3{ 0.1f, 0.1f, 0.1f }, default3DShader, 0.1f);
 
         cam.update(default3DShader);
-        room1->bindTexture();
-        room1->render_foregoingShader();
-        room1->setRotation_getShader(glm::vec3{ 0.1f, 0.1f, 0.1f }, default3DShader, 0.1f);
+        floor->bindTexture();
+        floor->render_foregoingShader();
+        floor->setRotation_getShader(glm::vec3{ 0.1f, 0.1f, 0.1f }, default3DShader, 0.1f);
 
         // CUBE
         cube->shader.use();
@@ -118,7 +117,7 @@ int main() {
     * ------------------------------------------------ */
     delete cube;
     delete room;
-    delete room1;
+    delete floor;
     delete panel;
 
     shaderSystem::deleteShader(default3DShader);
