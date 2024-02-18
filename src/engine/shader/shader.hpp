@@ -23,12 +23,12 @@ namespace shaderSystem {
             // CONVERT SHADERS PATHS
 
              // VERTEX
-            std::string vpath = yumegl::eFunc::yumePath() + "/assets/" + vertPath;
-            const char* vertexPath = vpath.c_str();
+            // std::string vpath = yumegl::eFunc::yumePath() + "/assets/" + vertPath;
+            const char* vertexPath = vertPath.c_str();
 
             // FRAGMENT
-            std::string fpath = yumegl::eFunc::yumePath() + "/assets/" + fragPath;
-            const char* fragmentPath = fpath.c_str();
+            // std::string fpath = yumegl::eFunc::yumePath() + "/assets/" + fragPath;
+            const char* fragmentPath = fragPath.c_str();
 
             if (vertexPath == nullptr) {
                 std::cerr << "ERROR:LOADING:VERTEX:SHADER" << std::endl;

@@ -56,8 +56,8 @@ namespace rd1 {
 
 	Cube::Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value) {
         // SET PROPERTIES
-        std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
-        texPath = path2.c_str();
+        // std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
+        texPath = path.c_str();
 
         if (texPath == nullptr) {
             std::cerr << "ERROR:LOADING:TEXTURE" << std::endl;

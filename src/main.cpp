@@ -21,20 +21,20 @@ int main() {
 
     // OBJECTS
     shaderSystem::Shader default3DShader;
-    default3DShader.genShader("shaders/3D/vertex.glsl", "shaders/3D/fragment.glsl");
+    default3DShader.genShader("../assets/shaders/3D/vertex.glsl", "../assets/shaders/3D/fragment.glsl");
 
-    auto* cube = new rd1::Cube("textures/sonic_disco.png", glm::vec3{ 0.0f, 4.0f, -3.0f }, glm::vec3{ 1.0f });
-    cube->shader.genShader("shaders/3D/vertex.glsl", "shaders/3D/fragment.glsl");
+    auto* cube = new rd1::Cube("../assets/textures/sonic_disco.png", glm::vec3{ 0.0f, 4.0f, -3.0f }, glm::vec3{ 1.0f });
+    cube->shader.genShader("../assets/shaders/3D/vertex.glsl", "../assets/shaders/3D/fragment.glsl");
     cube->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* room = new rd1::Cube("textures/sonic_forest.png", glm::vec3{ 0.0f, 5.0f, 0.0f }, glm::vec3{ 20.0f, 10.0f, 20.0f });
+    auto* room = new rd1::Cube("../assets/textures/sonic_forest.png", glm::vec3{ 0.0f, 5.0f, 0.0f }, glm::vec3{ 20.0f, 10.0f, 20.0f });
     room->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* floor = new rd1::Cube("textures/sonic_floor.png", glm::vec3{ 0.0f, -5.0f, 0.0f }, glm::vec3{ 20.0f, 0.1f, 20.0f });
+    auto* floor = new rd1::Cube("../assets/textures/sonic_floor.png", glm::vec3{ 0.0f, -5.0f, 0.0f }, glm::vec3{ 20.0f, 0.1f, 20.0f });
     floor->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* panel = new rd1::Texture("textures/sonic_ice.png", glm::vec3{ 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec2{ 0.8f, 0.8f });
-    panel->shader.genShader("shaders/texture/vertex.glsl", "shaders/texture/fragment.glsl");
+    auto* panel = new rd1::Texture("../assets/textures/sonic_ice.png", glm::vec3{ 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec2{ 0.8f, 0.8f });
+    panel->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 #pragma endregion
 
 #pragma region MAIN_LOOP

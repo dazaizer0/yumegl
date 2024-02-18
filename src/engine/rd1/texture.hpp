@@ -44,8 +44,8 @@ namespace rd1 {
 
     Texture::Texture(const std::string& path, glm::vec3 position_value, colour color_value, glm::vec2 size_value) {
         // SET PROPERTIES
-        std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
-        texPath = path2.c_str();
+        // std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
+        texPath = path.c_str();
 
         if (texPath == nullptr) {
             std::cerr << "ERROR:LOADING:TEXTURE" << std::endl;
