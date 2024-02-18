@@ -7,7 +7,7 @@
 namespace rd2 {
     class Module {
     public:
-        mathy::vec3yu<> position = mathy::vec3yu{ 0.0f, 0.0f, 0.0f };
+        mathy::vec3yu<> position{ 0.0f, 0.0f, 0.0f };
         bool enable{};
 
         Module(mathy::vec3yu<> positionV, bool enableV);

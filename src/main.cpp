@@ -33,7 +33,7 @@ int main() {
     auto* floor = new rd1::Cube("../assets/textures/sonic_floor.png", glm::vec3{ 0.0f, -5.0f, 0.0f }, glm::vec3{ 20.0f, 0.1f, 20.0f });
     floor->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* panel = new rd1::Texture("../assets/textures/sonic_ice.png", glm::vec3{ 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec2{ 0.8f, 0.8f });
+    auto* panel = new rd1::Texture("../assets/textures/sonic_ice.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.8f, 0.8f });
     panel->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 #pragma endregion
 
@@ -83,9 +83,37 @@ int main() {
 
         // GUI
         if (!cam.active) {
+            // MATHY TRANSFORMATIONS | YUME MATH IMPLEMENTATION AND USE EXAMPLE
+            if (input::keyDown(GLFW_KEY_RIGHT)) {
+                panel->size.container.x = panel->size.x() + 0.0005f;
+                panel->updateVertices();
+                panel->refresh();
+            }
+            else if (input::keyDown(GLFW_KEY_LEFT)) {
+                panel->size.container.x = panel->size.x() - 0.0005f;
+                panel->updateVertices();
+                panel->refresh();
+            }
+            if (input::keyDown(GLFW_KEY_UP)) {
+                panel->size.container.y = panel->size.y() + 0.0005f;
+                panel->updateVertices();
+                panel->refresh();
+            }
+            else if (input::keyDown(GLFW_KEY_DOWN)) {
+                panel->size.container.y = panel->size.y() - 0.0005f;
+                panel->updateVertices();
+                panel->refresh();
+            }
+
+            if (input::keyDown(GLFW_KEY_R)) {
+                panel->rotate(mathy::vec3yu<>{1.0f, 1.0f, 1.0f}, 1.0f);
+                panel->updateVertices();
+                panel->refresh();
+            }
+
             panel->bindTexture();
             panel->render_ownShader();
-            panel->setRotation(glm::vec3{ 0.0f, 0.0f, 1.0f }, 180.0f);
+            panel->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
         }
 
         // SWAP POLL EVENTS
