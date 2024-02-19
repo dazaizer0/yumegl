@@ -106,7 +106,7 @@ int main() {
             }
 
             if (input::keyDown(GLFW_KEY_R)) {
-                panel->rotate(mathy::vec3yu<>{1.0f, 1.0f, 1.0f}, 1.0f);
+                panel->rotate(mathy::vec3yu<>{0.0f, 0.0f, 1.0f}, 1.0f);
                 panel->updateVertices();
                 panel->refresh();
             }
@@ -129,6 +129,7 @@ int main() {
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
             std::cout << "\nThe time it takes to generate 60 frames: >" << duration.count() << "< ms\n";
             std::cout << "The limit od milliseconds to generate 60 frames: >960/1000<\n";
+            std::cout << yumegl::deltaTime << ": deltaTime\n";
 
             frameCounter = 0;
             startTime = std::chrono::high_resolution_clock::now();

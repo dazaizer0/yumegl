@@ -21,7 +21,7 @@ namespace rd1 {
         // RENDER
         void render() const;
 
-        // DECONSTRUCTOR
+        // DECONSTRUCT
         ~Triangle();
 
     private:

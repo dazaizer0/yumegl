@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/config.h
         src/yume.h
+        src/project.h
 
         # math
         src/engine/math/mathy.hpp
@@ -44,6 +45,9 @@ add_executable(${PROJECT_NAME}
         src/engine/rd2/module.hpp
         src/engine/rd2/square_rd2.hpp
         src/engine/rd2/cube_rd2.hpp
+
+        # GAME
+        assets/game.hpp
 )
 
 # OPENGL

@@ -1,5 +1,9 @@
 #pragma once
 
+#define system class
+#define subsystem void
+#define minisystem struct
+
 // YUME
 #include "src/engine/shader/shader.hpp"
 #include "src/engine/rd1/texture.hpp"

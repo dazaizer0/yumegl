@@ -47,7 +47,7 @@ namespace object {
 
         position = position_value;
         freeCam = free_cam;
-        posY = position_value.y;
+        posY = (float)position_value.y;
 
         setWindowSize(window_width, window_height);
     }

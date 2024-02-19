@@ -207,7 +207,7 @@ namespace rd1 {
     }
 
     void Texture::rotate(mathy::vec3yu<> axis, float rotationSpeed) const {
-        auto transform = glm::mat4(1.0f);
+        auto transform = glm::mat4{ 1.0f };
 
         transform = glm::translate(transform, position.container);
         transform = glm::rotate(transform, rotationSpeed * (float)glfwGetTime(), axis.container);
@@ -219,7 +219,7 @@ namespace rd1 {
     }
 
     void Texture::setRotation(mathy::vec3yu<> axis, float angle) const {
-        auto transform = glm::mat4(1.0f);
+        auto transform = glm::mat4{ 1.0f };
 
         transform = glm::rotate(transform, glm::radians(angle), axis.container);
         //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
