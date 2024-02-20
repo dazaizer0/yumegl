@@ -19,6 +19,9 @@ int main() {
     auto* win = new rd1::Texture("../assets/textures/own_win.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.0f, 1.0f });
     win->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
+    auto* moon = new rd1::Texture("../assets/textures/moon.png", mathy::vec3yu<>{ -0.8f, -0.7f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.17f, 0.3f });
+    moon->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
     // BUGS
     auto* bug1 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ -0.4f, -0.2f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
     bug1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
@@ -34,6 +37,9 @@ int main() {
 
     auto* bug5 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ 0.1f, -0.9f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
     bug5->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* bug6 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ 0.5f, 0.9f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug6->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
     float batTimer{ 0.0f };
     float batMax{ 1.0f };
@@ -62,7 +68,12 @@ int main() {
          * ------------------------------------------------ */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // ROOM
+        // MOON
+        moon->bindTexture();
+        moon->render_ownShader();
+        moon->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+        // BAT
         bat->bindTexture();
         bat->render_ownShader();
         bat->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
@@ -176,7 +187,26 @@ int main() {
             bug5->refresh();
         }
 
-        if (!bug1->enable && !bug2->enable && !bug3->enable && !bug4->enable && !bug5->enable) {
+        // BUG 6
+        if (bat->position.distance(bug6->position) < bat->size.y()) {
+            bug6->enable = false;
+        }
+
+        if (bug6->enable) {
+            bug6->bindTexture();
+            bug6->render_ownShader();
+            bug6->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug6->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug6->position.x() > 1.0f) {
+                bug6->position.container.x = -1.0f;
+            }
+
+            bug6->updateVertices();
+            bug6->refresh();
+        }
+
+        if (!bug1->enable && !bug2->enable && !bug3->enable && !bug4->enable && !bug5->enable && !bug6->enable) {
             win->bindTexture();
             win->render_ownShader();
             win->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
@@ -217,6 +247,7 @@ int main() {
     delete bug3;
     delete bug4;
     delete bug5;
+    delete bug6;
 
     yumegl::eExit::close();
 
