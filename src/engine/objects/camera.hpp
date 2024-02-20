@@ -94,7 +94,7 @@ namespace object {
 
         if (!freeCam && moving && boobing) {
             auto time = (float)glfwGetTime();
-            auto yOffset = sin(time * 14) * cameraSpeed * 1.4f;
+            auto yOffset = sin(time * 14 * 1) * cameraSpeed * 1.2f * 1;
             position.y = (float)posY + (float)yOffset;
         }
     }

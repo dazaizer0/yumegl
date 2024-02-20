@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -67,6 +68,13 @@ namespace mathy {
 
         inline vec2yu normalizED() {
             return *this * lengthInv();
+        }
+
+        double distance(vec2yu<> other) {
+            double dx = container.x - other.x();
+            double dy = container.y - other.y();
+
+            return std::sqrt(dx * dx + dy * dy);
         }
 
         static vec2yu<T> ZERO() { return { T(0), T(0) }; };
@@ -201,6 +209,14 @@ namespace mathy {
             return *this * lengthInv();
         }
 
+        double distance(vec3yu<> other) {
+            double dx = container.x - other.x();
+            double dy = container.y - other.y();
+            double dz = container.z - other.z();
+
+            return std::sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
         static vec3yu<T> ZERO() { return { T(0), T(0), T(0) }; }
         static vec3yu<T> ONE() { return { T(1), T(1), T(1) }; }
 
@@ -266,6 +282,17 @@ namespace mathy {
             return *this;
         }
     };
+
+    vec2yu<> scaleToWindow(vec2yu<> vec, int window_x, int window_y) {
+        return vec2yu<>{ 0.0f, 0.0f };
+
+        // example:
+        // vec.x = 1.0f, vec.y = 1.0f
+        // window_x == 1280
+        // window_y = 720
+        // = 16 : 9
+        // new vec = { 0.45f, 0.8f }
+    }
 }
 
 // RGBA

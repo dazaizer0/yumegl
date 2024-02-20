@@ -13,7 +13,7 @@ namespace rd1 {
         shaderSystem::Shader shader;
 
         mathy::vec2yu<> size{};
-        bool enable{};
+        bool enable{ true };
 
         // CONSTRUCTOR
         Texture(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value);
@@ -37,6 +37,8 @@ namespace rd1 {
         unsigned int tex{};
         const char* texPath;
         unsigned char* texData;
+
+        int texWidth{}, texHeight{};
 
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
@@ -125,17 +127,17 @@ namespace rd1 {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        int width, height, nrChannels;
+        int nrChannels;
         texData = stbi_load(
             texPath,
-            &width,
-            &height,
+            &texWidth,
+            &texHeight,
             &nrChannels,
             0
         );
 
         if (texData) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {

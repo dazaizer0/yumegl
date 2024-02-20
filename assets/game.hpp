@@ -3,17 +3,17 @@
 #include "../src/config.h"
 #include "../src/yume.h"
 
-system game {
+system Game {
 public:
-    subsystem init() {
+    static subsystem init() {
 
     }
 
-    subsystem update() {
+    static subsystem update() {
 
     }
 
-    subsystem close() {
+    static subsystem close() {
 
     }
 };
