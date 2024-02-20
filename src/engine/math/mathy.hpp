@@ -14,7 +14,6 @@ namespace mathy {
 
     public:
         // FIELDS, PROPERTIES
-
         glm::vec<2, T, glm::defaultp> container;
         
         inline T x() { return container.x; }
@@ -24,7 +23,6 @@ namespace mathy {
         inline void y(T yIn) { container.y = yIn; }
 
         // CONSTRUCTORS
-
         vec2yu() {
             x(T(0));
             y(T(0));
@@ -36,7 +34,6 @@ namespace mathy {
         explicit vec2yu(glm::vec<2, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
-
         std::string toString() {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << "\n";
@@ -44,7 +41,7 @@ namespace mathy {
         }
 
         void toStdout() {
-            std::cout << toString(); // Uses toString() to make the code more clear. I know it's unoptimal to make an ss and then cout it, but this func.'s probably not gonna be used too much and if it's gonna be, then we'll think about it.
+            std::cout << toString(); // Uses toString() to make the code more clear. I know it's suboptimal to make an ss and then cout it, but this func.'s probably not going to be used too much and if it's going to be, then we'll think about it.
         }
 
         inline T length_2() {
@@ -62,11 +59,11 @@ namespace mathy {
             return (T)1 / length();
         }
 
-        inline vec2yu normalizE() {
+        [[maybe_unused]] inline vec2yu normalizE() {
             return *this *= lengthInv();
         }
 
-        inline vec2yu normalizED() {
+        [[maybe_unused]] inline vec2yu normalizED() {
             return *this * lengthInv();
         }
 
@@ -86,7 +83,6 @@ namespace mathy {
         static vec2yu<T> LEFT() { return { T(-1), T(0) }; };
 
         // OPERATORS
-
         vec2yu<T>& operator=(const vec2yu<T>& other) {
             container = other.container;
             return *this;
@@ -148,7 +144,6 @@ namespace mathy {
 
     public:
         // FIELDS, PROPERTIES
-
         glm::vec<3, T, glm::defaultp> container;
 
         inline T x() { return container.x; }
@@ -161,7 +156,6 @@ namespace mathy {
         inline void z(T zIn) { container.z = zIn; }
 
         // CONSTRUCTORS
-
         vec3yu() {
             x(T(0));
             y(T(0));
@@ -175,7 +169,6 @@ namespace mathy {
         explicit vec3yu(glm::vec<3, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
-
         std::string toString() {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << ", z: " << z() << "\n";
@@ -183,7 +176,7 @@ namespace mathy {
         }
 
         void toStdout() {
-            std::cout << toString(); // Uses toString() to make the code more clear. I know it's unoptimal to make an ss and then cout it, but this func.'s probably not gonna be used too much and if it's gonna be, then we'll think about it.
+            std::cout << toString(); // Uses toString() to make the code more clear. I know it's suboptimal to make an ss and then cout it, but this func.'s probably not going to be used too much and if it's going to be, then we'll think about it.
         }
 
         inline T length_2() {
@@ -201,11 +194,11 @@ namespace mathy {
             return (T)1 / length();
         }
 
-        inline vec3yu normalizE() {
+        [[maybe_unused]] inline vec3yu normalizE() {
             return *this *= lengthInv();
         }
 
-        inline vec3yu normalizED() {
+        [[maybe_unused]] inline vec3yu normalizED() {
             return *this * lengthInv();
         }
 
@@ -228,7 +221,6 @@ namespace mathy {
         static vec3yu<T> BACK() { return { T(0), T(0), T(-1) }; }
 
         // OPERATORS
-
         vec3yu<T>& operator=(const vec3yu<T>& other) {
             container = other.container;
             return *this;
@@ -283,7 +275,7 @@ namespace mathy {
         }
     };
 
-    vec2yu<> scaleToWindow(vec2yu<> vec, int window_x, int window_y) {
+    vec2yu<> scaleToWindow(int window_x, int window_y) {
         return vec2yu<>{ 0.0f, 0.0f };
 
         // example:

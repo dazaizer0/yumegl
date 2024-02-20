@@ -2,7 +2,6 @@
 
 #define system class
 #define subsystem void
-#define minisystem struct
 
 // YUME
 #include "src/engine/shader/shader.hpp"

@@ -7,7 +7,7 @@ int main() {
     /* ------------------------------------------------
     * ---------------- INITIALIZATION -----------------
     * ------------------------------------------------- */
-    yumegl::init("cat runner");
+    yumegl::init("texture");
     yumegl::eFunc::setColor(colour::BLACK());
 
     // DEPTH

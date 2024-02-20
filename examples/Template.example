@@ -1,29 +1,24 @@
 #include "config.h"
 #include "yume.h"
+#include "project.h"
 
 int main() {
 #pragma region INITIALIZATION
     /* ------------------------------------------------
     * ---------------- INITIALIZATION -----------------
-    * ------------------------------------------------ */
-    yumegl::init("Yume");
-    yumegl::eFunc::setColor(mathy::color::BLACK());
+    * ------------------------------------------------- */
+    yumegl::init("yumegl");
+    yumegl::eFunc::setColor(colour::BLACK());
 
     // DEPTH
     glEnable(GL_DEPTH_TEST);
-
 #pragma endregion
 
 #pragma region MAIN_LOOP
     /* ------------------------------------------------
     * ------------------ MAIN LOOP --------------------
     * ------------------------------------------------ */
-    //int frameCounter = 0;
-    //auto startTime = std::chrono::high_resolution_clock::now();
-
     while (yumegl::isWindowOpen()) {
-        //auto frameStartTime = std::chrono::high_resolution_clock::now();
-
         // UPDATE
         yumegl::update();
         input::update();
@@ -39,26 +34,6 @@ int main() {
 
         // SWAP POLL EVENTS
         yumegl::swapBuffersPollEvents();
-
-        /* ------------------------------------------------
-         * -------------------- STATS ---------------------
-         * ------------------------------------------------ */
-         /*
-         frameCounter++;
-
-         if (frameCounter == 60) {
-             auto endTime = std::chrono::high_resolution_clock::now();
-             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-             std::cout << "\nThe time it takes to generate 60 frames: >" << duration.count() << "< ms\n";
-             std::cout << "The limit od milliseconds to generate 60 frames: >960/1000<\n";
-
-             frameCounter = 0;
-             startTime = std::chrono::high_resolution_clock::now();
-         }
-
-         auto frameEndTime = std::chrono::high_resolution_clock::now();
-         auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
-         */
     }
 #pragma endregion
 
@@ -67,7 +42,6 @@ int main() {
     * -------------- DE-INITIALIZATION ----------------
     * ------------------------------------------------ */
     yumegl::eExit::close();
-
     return 0;
 #pragma endregion
 }

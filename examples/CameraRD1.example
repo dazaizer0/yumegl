@@ -7,7 +7,7 @@ int main() {
     /* ------------------------------------------------
     * ---------------- INITIALIZATION -----------------
     * ------------------------------------------------- */
-    yumegl::init("Yume");
+    yumegl::init("CRD1");
     yumegl::eFunc::setColor(colour::BLACK());
 
     // CAMERA
