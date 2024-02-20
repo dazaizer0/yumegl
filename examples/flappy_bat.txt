@@ -1,0 +1,225 @@
+#include "config.h"
+#include "yume.h"
+
+int main() {
+#pragma region INITIALIZATION
+    /* ------------------------------------------------
+    * ---------------- INITIALIZATION -----------------
+    * ------------------------------------------------ */
+    yumegl::init("Yume");
+    yumegl::eFunc::setColor(colour{ 0.72f, 0.72f, 0.72f, 1.0f });
+
+    // DEPTH
+    glEnable(GL_DEPTH_TEST);
+
+    // OBJECTS
+    auto* bat = new rd1::Texture("../assets/textures/bat.png", mathy::vec3yu<>{ 0.6f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.045f, 0.08f });
+    bat->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* win = new rd1::Texture("../assets/textures/own_win.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.0f, 1.0f });
+    win->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    // BUGS
+    auto* bug1 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ -0.4f, -0.2f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* bug2 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ 0.4f, 0.4f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug2->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* bug3 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ 0.6f, 0.2f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug3->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* bug4 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ -0.9f, -0.4f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug4->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    auto* bug5 = new rd1::Texture("../assets/textures/bug.png", mathy::vec3yu<>{ 0.1f, -0.9f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.011f, 0.02f });
+    bug5->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    float batTimer{ 0.0f };
+    float batMax{ 1.0f };
+#pragma endregion
+
+#pragma region MAIN_LOOP
+    /* ------------------------------------------------
+    * ------------------ MAIN LOOP --------------------
+    * ------------------------------------------------ */
+    //int frameCounter = 0;
+    //auto startTime = std::chrono::high_resolution_clock::now();
+
+    while (yumegl::isWindowOpen()) {
+        //auto frameStartTime = std::chrono::high_resolution_clock::now();
+
+        // UPDATE
+        yumegl::update();
+        input::update();
+
+        // INPUT SYSTEM
+        if (input::keyPressed(GLFW_KEY_ESCAPE))
+            yumegl::setWindowStatus(false);
+
+        /* ------------------------------------------------
+         * ------------------- RENDER ---------------------
+         * ------------------------------------------------ */
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // ROOM
+        bat->bindTexture();
+        bat->render_ownShader();
+        bat->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+        if (bat->position.y() < 1.0f - bat->size.y()) {
+            bat->position.container.y += 1.0f * yumegl::deltaTime;
+        }
+
+        if (!input::keyDown(GLFW_KEY_SPACE)) batTimer = 0.0f;
+        if (input::keyDown(GLFW_KEY_SPACE) && batTimer < batMax) {
+            batTimer += 1.0f * yumegl::deltaTime;
+            if (bat->position.y() > -1.0f)
+                bat->position.container.y -= 2.0f * yumegl::deltaTime;
+        }
+
+        bat->updateVertices();
+        bat->refresh();
+
+        // BUG 1
+        if (bat->position.distance(bug1->position) < bat->size.y()) {
+            bug1->enable = false;
+        }
+
+        if (bug1->enable) {
+            bug1->bindTexture();
+            bug1->render_ownShader();
+            bug1->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug1->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug1->position.x() > 1.0f) {
+                bug1->position.container.x = -1.0f;
+            }
+
+            bug1->updateVertices();
+            bug1->refresh();
+        }
+
+        // BUG 2
+        if (bat->position.distance(bug2->position) < bat->size.y()) {
+            bug2->enable = false;
+        }
+
+        if (bug2->enable) {
+            bug2->bindTexture();
+            bug2->render_ownShader();
+            bug2->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug2->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug2->position.x() > 1.0f) {
+                bug2->position.container.x = -1.0f;
+            }
+
+            bug2->updateVertices();
+            bug2->refresh();
+        }
+
+        // BUG 3
+        if (bat->position.distance(bug3->position) < bat->size.y()) {
+            bug3->enable = false;
+        }
+
+        if (bug3->enable) {
+            bug3->bindTexture();
+            bug3->render_ownShader();
+            bug3->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug3->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug3->position.x() > 1.0f) {
+                bug3->position.container.x = -1.0f;
+            }
+
+            bug3->updateVertices();
+            bug3->refresh();
+        }
+
+        // BUG 4
+        if (bat->position.distance(bug4->position) < bat->size.y()) {
+            bug4->enable = false;
+        }
+
+        if (bug4->enable) {
+            bug4->bindTexture();
+            bug4->render_ownShader();
+            bug4->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug4->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug4->position.x() > 1.0f) {
+                bug4->position.container.x = -1.0f;
+            }
+
+            bug4->updateVertices();
+            bug4->refresh();
+        }
+
+        // BUG 5
+        if (bat->position.distance(bug5->position) < bat->size.y()) {
+            bug5->enable = false;
+        }
+
+        if (bug5->enable) {
+            bug5->bindTexture();
+            bug5->render_ownShader();
+            bug5->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+            bug5->position.container.x += 0.5f * yumegl::deltaTime;
+            if (bug5->position.x() > 1.0f) {
+                bug5->position.container.x = -1.0f;
+            }
+
+            bug5->updateVertices();
+            bug5->refresh();
+        }
+
+        if (!bug1->enable && !bug2->enable && !bug3->enable && !bug4->enable && !bug5->enable) {
+            win->bindTexture();
+            win->render_ownShader();
+            win->setRotation(mathy::vec3yu{ 0.0f, 0.0f, 1.0f }, 180.0f);
+        }
+
+        // SWAP POLL EVENTS
+        yumegl::swapBuffersPollEvents();
+
+        /* ------------------------------------------------
+         * -------------------- STATS ---------------------
+         * ------------------------------------------------ */
+         /*
+         frameCounter++;
+
+         if (frameCounter == 60) {
+             auto endTime = std::chrono::high_resolution_clock::now();
+             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+             std::cout << "\nThe time it takes to generate 60 frames: >" << duration.count() << "< ms\n";
+             std::cout << "The limit od milliseconds to generate 60 frames: >960/1000<\n";
+
+             frameCounter = 0;
+             startTime = std::chrono::high_resolution_clock::now();
+         }
+
+         auto frameEndTime = std::chrono::high_resolution_clock::now();
+         auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime);
+         */
+    }
+#pragma endregion
+
+#pragma region DE_INITIALIZATION
+    /* ------------------------------------------------
+    * -------------- DE-INITIALIZATION ----------------
+    * ------------------------------------------------ */
+    delete bat;
+    delete bug1;
+    delete bug2;
+    delete bug3;
+    delete bug4;
+    delete bug5;
+
+    yumegl::eExit::close();
+
+    return 0;
+#pragma endregion
+}
