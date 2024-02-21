@@ -11,6 +11,7 @@
 
 // YUME ESSENTIAL HEADLINES
 #include "engine/math/mathy.hpp"
+#include "engine/math/colour.hpp"
 #include "engine/source/yume_kernel.hpp"
 
 // BASIC

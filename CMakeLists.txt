@@ -16,6 +16,7 @@ add_executable(${PROJECT_NAME}
 
         # math
         src/engine/math/mathy.hpp
+        src/engine/math/colour.hpp
 
         # input
         src/engine/input/input.hpp

@@ -286,25 +286,3 @@ namespace mathy {
         // new vec = { 0.45f, 0.8f }
     }
 }
-
-// RGBA
-class colour {
-public:
-    float r{};
-    float g{};
-    float b{};
-    float a{};
-
-    colour(float rValue, float gValue, float bValue, float aValue)
-            : r(rValue), g(gValue), b(bValue), a(aValue) {}
-
-    colour& operator=(const colour& other) = default;
-
-    static colour BLACK() { return {0.0f, 0.0f, 0.0f, 1.0f}; };
-
-    static colour RED() { return {1.0f, 0.0f, 0.0f, 1.0f}; };
-    static colour GREEN() { return {0.0f, 1.0f, 0.0f, 1.0f}; };
-    static colour BLUE() { return {0.0f, 0.0f, 1.0f, 1.0f}; };
-
-    static colour WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
-};
