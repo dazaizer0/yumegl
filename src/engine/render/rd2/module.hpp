@@ -1,8 +1,8 @@
 #ifndef YUMEGL_MODULE_HPP
 #define YUMEGL_MODULE_HPP
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
 
 namespace rd2 {
     class Module {

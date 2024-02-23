@@ -1,8 +1,8 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
 
 namespace rd1 {
     // TRIANGLE

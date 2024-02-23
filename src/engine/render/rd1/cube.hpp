@@ -1,8 +1,9 @@
 #ifndef YUMEGL_CUBE_HPP
 #define YUMEGL_CUBE_HPP
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
+#include <src/engine/shader/shader.hpp>
 
 namespace rd1 {
 	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

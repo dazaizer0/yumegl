@@ -14,17 +14,19 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // OBJECTS
-    auto* player = new rd1::Texture("../assets/textures/sonic_warning.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.09f, 0.16f });
+    panicShader.genShader("../assets/shaders/shape/vertex.glsl", "../assets/shaders/shape/fragment.glsl");
+
+    auto* player = new rd::TexSquare("../assets/textures/sonic_warning.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
     player->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
     float jumpTime{ 0.6f };
     float jumpTimer{ jumpTime };
     float jumpForce{ 1.1f };
     bool jumping{ false };
 
-    auto* ground = new rd1::Texture("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
+    auto* ground = new rd::TexSquare("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
-    auto* ground1 = new rd1::Texture("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ -2.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
+    auto* ground1 = new rd::TexSquare("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ -2.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 #pragma endregion
 
@@ -36,6 +38,7 @@ int main() {
         // UPDATE
         yumegl::update();
         input::update();
+        player->PanicHandler();
 
         // PLATFORM MOVEMENT
         ground->position.container.x += 0.4f * yumegl::deltaTime;

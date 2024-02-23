@@ -1,8 +1,8 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
 
 namespace rd1 {
     // SQUARE

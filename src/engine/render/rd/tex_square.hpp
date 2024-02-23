@@ -1,12 +1,12 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
 #include "stb/stb_image.h"
 
-namespace rd1 {
-    class Texture {
+namespace rd {
+    class TexSquare {
     public:
         mathy::vec3yu<> position{ 0.0f, 0.0f, 0.0f };
         colour color = colour::BLACK();
@@ -16,15 +16,24 @@ namespace rd1 {
         bool enable{ true };
 
         // CONSTRUCTOR
-        Texture(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value);
-        ~Texture();
+        TexSquare(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value);
+        ~TexSquare();
 
         //FUNCTIONS
         void updateVertices();
+        void updateVertices_includePanic();
+
         void refresh() const;
 
+        void textureErrorHandler();
+        void PanicHandler() const;
+
         void bindTexture() const;
+        void bindTexture_includePanic() const;
+
+        void render_ownShader_incudePanic() const;
         void render_ownShader() const;
+
         void render_getShader(const shaderSystem::Shader& other_shader) const;
         void render_foregoingShader() const;
 
@@ -37,6 +46,7 @@ namespace rd1 {
         unsigned int tex{};
         const char* texPath;
         unsigned char* texData;
+        bool panic{ false };
 
         int texWidth{}, texHeight{};
 
@@ -44,7 +54,7 @@ namespace rd1 {
         std::vector<unsigned int> indices;
     };
 
-    Texture::Texture(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value) {
+    TexSquare::TexSquare(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value) {
         // SET PROPERTIES
         // std::string path2 = yumegl::eFunc::yumePath() + "/assets/" + path;
         texPath = path.c_str();
@@ -91,6 +101,7 @@ namespace rd1 {
             1, 2, 3
         };
 
+        // CREATE TEX-SQUARE
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
@@ -142,14 +153,22 @@ namespace rd1 {
         }
         else {
             std::cout << "Failed to load texture" << std::endl;
+            panic = true;
         }
         stbi_image_free(texData);
 
         setRotation({ 0.0f, 0.0f, 1.0f }, 180.0f);
     }
 
+    void TexSquare::PanicHandler() const {
+        if (panic) {
+            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
+            std::exit(0);
+        }
+    }
+
     // FUNCTIONS
-    void Texture::updateVertices() {
+    void TexSquare::updateVertices() {
         vertices = {
                 // position, position, position
                 // tex coords, tex coords, tex coords
@@ -178,37 +197,105 @@ namespace rd1 {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
     }
 
-    void Texture::refresh() const {
+    void TexSquare::updateVertices_includePanic() {
+        if (panic) {
+            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
+            std::exit(0);
+        }
+        else {
+            vertices = {
+                // position, position, position
+                // tex coords, tex coords, tex coords
+
+                position.x() + size.x(), position.y() + size.y(), position.z(),
+                color.r, color.g, color.b,
+                1.0f, 1.0f,
+
+                position.x() + size.x(), position.y() + -size.y(), position.z(),
+                color.r, color.g, color.b,
+                1.0f, 0.0f,
+
+                position.x() + -size.x(), position.y() + -size.y(), position.z(),
+                color.r, color.g, color.b,
+                0.0f, 0.0f,
+
+                position.x() + -size.x(), position.y() + size.y(), position.z(),
+                color.r, color.g, color.b,
+                0.0f, 1.0f
+            };
+
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
+        }
+    }
+
+    void TexSquare::refresh() const {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
 
     // RENDER
-    void Texture::bindTexture() const {
+    void TexSquare::textureErrorHandler() {
+        if (texData) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else {
+            panic = true;
+        }
+    }
+
+    void TexSquare::bindTexture() const {
         glBindTexture(GL_TEXTURE_2D, tex);
     }
 
-    void Texture::render_ownShader() const {
+    void TexSquare::bindTexture_includePanic() const {
+        if(!panic)
+            glBindTexture(GL_TEXTURE_2D, tex);
+        else {
+            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
+            std::exit(0);
+        }
+    }
+
+    // include panic mode
+    void TexSquare::render_ownShader_incudePanic() const {
+        if (!panic) {
+            shader.use();
+
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        }
+        else {
+            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
+            std::exit(0);
+        }
+    }
+
+    void TexSquare::render_ownShader() const {
         shader.use();
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Texture::render_getShader(const shaderSystem::Shader& other_shader) const {
+    void TexSquare::render_getShader(const shaderSystem::Shader& other_shader) const {
         other_shader.use();
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Texture::render_foregoingShader() const {
+    void TexSquare::render_foregoingShader() const {
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Texture::rotate(mathy::vec3yu<> axis, float rotationSpeed) const {
+    void TexSquare::rotate(mathy::vec3yu<> axis, float rotationSpeed) const {
         auto transform = glm::mat4{ 1.0f };
 
         transform = glm::translate(transform, position.container);
@@ -220,7 +307,7 @@ namespace rd1 {
         glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
     }
 
-    void Texture::setRotation(mathy::vec3yu<> axis, float angle) const {
+    void TexSquare::setRotation(mathy::vec3yu<> axis, float angle) const {
         auto transform = glm::mat4{ 1.0f };
 
         transform = glm::rotate(transform, glm::radians(angle), axis.container);
@@ -232,7 +319,7 @@ namespace rd1 {
     }
 
     // DELETE
-    Texture::~Texture() {
+    TexSquare::~TexSquare() {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);

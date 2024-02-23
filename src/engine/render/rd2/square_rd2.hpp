@@ -1,8 +1,8 @@
 #ifndef YUMEGL_ELEMENT_HPP
 #define YUMEGL_ELEMENT_HPP
 
-#include "../../config.h"
-#include "../../yume.h"
+#include "../../../config.h"
+#include "../../../yume.h"
 #include "module.hpp"
 
 namespace rd2 {

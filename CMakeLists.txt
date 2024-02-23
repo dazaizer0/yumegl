@@ -31,10 +31,9 @@ add_executable(${PROJECT_NAME}
 
         # render
         src/engine/shader/shader.hpp
-        src/engine/rd1/triangle.hpp
-        src/engine/rd1/square.hpp
-        src/engine/rd1/texture.hpp
-        src/engine/rd1/cube.hpp
+        src/engine/render/rd1/triangle.hpp
+        src/engine/render/rd1/square.hpp
+        src/engine/render/rd1/cube.hpp
 
         # objects
         src/engine/objects/camera.hpp
@@ -43,9 +42,12 @@ add_executable(${PROJECT_NAME}
         src/engine/gui/yumeGui.hpp
 
         # RENDER 2 / 2D
-        src/engine/rd2/module.hpp
-        src/engine/rd2/square_rd2.hpp
-        src/engine/rd2/cube_rd2.hpp
+        src/engine/render/rd2/module.hpp
+        src/engine/render/rd2/square_rd2.hpp
+        src/engine/render/rd2/cube_rd2.hpp
+
+
+        src/engine/render/rd/tex_square.hpp
 
         # GAME
         assets/game.hpp
