@@ -7,7 +7,7 @@ int main() {
     /* ------------------------------------------------
     * ---------------- INITIALIZATION -----------------
     * ------------------------------------------------- */
-    yumegl::init("yumegl");
+    yumegl::init("car runner");
     yumegl::eFunc::setColor(colour::BLACK());
 
     // DEPTH
@@ -16,7 +16,7 @@ int main() {
     // OBJECTS
     panicShader.genShader("../assets/shaders/shape/vertex.glsl", "../assets/shaders/shape/fragment.glsl");
 
-    auto* player = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
+    auto* player = new rd::TexSquare("../assets/textures/cat.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
     player->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
     float jumpTime{ 0.6f };
     float jumpTimer{ jumpTime };
@@ -24,20 +24,26 @@ int main() {
     bool jumping{ false };
     bool canJump{ true };
 
-    auto* ground = new rd::TexSquare("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
+    auto* ground = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ 0.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
-    auto* ground1 = new rd::TexSquare("../assets/textures/sonic_dirt.png", mathy::vec3yu<>{ -2.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
+    auto* ground1 = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ -2.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
-    auto* obstacle = new rd::TexSquare("../assets/textures/sonic_warning.png", mathy::vec3yu<>{ 0.2f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
+    auto* obstacle = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ 0.2f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
     obstacle->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
-    auto* obstacle1 = new rd::TexSquare("../assets/textures/sonic_warning.png", mathy::vec3yu<>{ -0.9f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
+    auto* obstacle1 = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ -0.9f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
     obstacle1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
-    auto* lost = new rd::TexSquare("../assets/textures/sonic_ice.png", mathy::vec3yu<>{ 0.0f, -0.2f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 1.0f, 0.8f });
+    auto* obstacle2 = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ -0.8f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
+    obstacle2->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    obstacle2->enable = false;
+
+    auto* lost = new rd::TexSquare("../assets/textures/lost.png", mathy::vec3yu<>{ 0.0f, -0.2f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 1.0f, 0.8f });
     lost->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
+    bool finalScoreShowed{ false };
 
     float gameTimer{ 0.0f };
     float gameSpeed{ 0.4f };
@@ -88,6 +94,14 @@ int main() {
 
         if (obstacle1->position.x() > 1.0f + obstacle1->size.x()) {
             obstacle1->position.container.x = -1.0f - obstacle1->size.x();
+        }
+
+        obstacle2->position.container.x += gameSpeed * yumegl::deltaTime;
+        obstacle2->updateVertices();
+        obstacle2->refresh();
+
+        if (obstacle2->position.x() > 1.0f + obstacle2->size.x()) {
+            obstacle2->position.container.x = -1.0f - obstacle2->size.x();
         }
 
         // PLAYER JUMPING
@@ -151,21 +165,37 @@ int main() {
         obstacle1->render_ownShader();
         obstacle1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
+        if (gameTimer > 20.0f) {
+            obstacle2->bindTexture();
+            obstacle2->render_ownShader();
+            obstacle2->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
+            obstacle2->enable = true;
+        }
+
         if ((int)gameTimer % 5 == 0)
             std::cout << "score/timer: " << gameTimer << '\n';
 
-        if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() || player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x()) && gameTimer > 2.0f) {
+        if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() ||
+            player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x() ||
+            (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) 
+            && gameTimer > 2.0f) {
+            // END GAME
             lost->bindTexture();
             lost->render_ownShader();
             lost->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
             gameSpeed = 0.0f;
+            canJump = false;
+
             if (finalScore == 0.0f)
                 finalScore = gameTimer;
             else
                 gameTimer = finalScore;
 
-            std::cout << "score : " << finalScore << '\n';
+            if (finalScoreShowed == false) {
+                std::cout << "final score : " << finalScore << '\n';
+                finalScoreShowed = true;
+            }
         }
 
         // SWAP POLL EVENTS
@@ -180,6 +210,10 @@ int main() {
     delete player;
     delete ground;
     delete ground1;
+    delete obstacle;
+    delete obstacle1;
+    delete obstacle2;
+    delete lost;
 
     yumegl::eExit::close();
     return 0;
