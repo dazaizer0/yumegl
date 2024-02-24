@@ -14,6 +14,7 @@ namespace mathy {
 
     public:
         // FIELDS, PROPERTIES
+
         glm::vec<2, T, glm::defaultp> container;
         
         inline T x() { return container.x; }
@@ -23,6 +24,7 @@ namespace mathy {
         inline void y(T yIn) { container.y = yIn; }
 
         // CONSTRUCTORS
+
         vec2yu() {
             x(T(0));
             y(T(0));
@@ -34,6 +36,7 @@ namespace mathy {
         explicit vec2yu(glm::vec<2, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
+
         std::string toString() {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << "\n";
@@ -67,11 +70,8 @@ namespace mathy {
             return *this * lengthInv();
         }
 
-        double distance(vec2yu<> other) {
-            double dx = container.x - other.x();
-            double dy = container.y - other.y();
-
-            return std::sqrt(dx * dx + dy * dy);
+        T distance(vec2yu<> other) {
+            return (*this - other).length();
         }
 
         static vec2yu<T> ZERO() { return { T(0), T(0) }; };
@@ -83,6 +83,7 @@ namespace mathy {
         static vec2yu<T> LEFT() { return { T(-1), T(0) }; };
 
         // OPERATORS
+
         vec2yu<T>& operator=(const vec2yu<T>& other) {
             container = other.container;
             return *this;
@@ -135,6 +136,11 @@ namespace mathy {
             container /= scale;
             return *this;
         }
+
+        template<typename A>
+        operator vec2yu<A>() {
+            return vec2yu<A>((A)(this->container.x), (A)(this->container.y));
+        }
     };
 
     
@@ -144,6 +150,7 @@ namespace mathy {
 
     public:
         // FIELDS, PROPERTIES
+
         glm::vec<3, T, glm::defaultp> container;
 
         inline T x() { return container.x; }
@@ -156,6 +163,7 @@ namespace mathy {
         inline void z(T zIn) { container.z = zIn; }
 
         // CONSTRUCTORS
+
         vec3yu() {
             x(T(0));
             y(T(0));
@@ -169,6 +177,7 @@ namespace mathy {
         explicit vec3yu(glm::vec<3, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
+
         std::string toString() {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << ", z: " << z() << "\n";
@@ -202,12 +211,8 @@ namespace mathy {
             return *this * lengthInv();
         }
 
-        double distance(vec3yu<> other) {
-            double dx = container.x - other.x();
-            double dy = container.y - other.y();
-            double dz = container.z - other.z();
-
-            return std::sqrt(dx * dx + dy * dy + dz * dz);
+        T distance(vec3yu other) {
+            return (*this - other).length();
         }
 
         static vec3yu<T> ZERO() { return { T(0), T(0), T(0) }; }
@@ -221,6 +226,7 @@ namespace mathy {
         static vec3yu<T> BACK() { return { T(0), T(0), T(-1) }; }
 
         // OPERATORS
+
         vec3yu<T>& operator=(const vec3yu<T>& other) {
             container = other.container;
             return *this;
@@ -273,8 +279,13 @@ namespace mathy {
             container /= scale;
             return *this;
         }
-    };
 
+        template<typename A>
+        operator vec3yu<A>() {
+            return vec3yu<A>((A)this->container.x, (A)this->container.y, (A)this->container.z);
+        }
+    };
+    
     vec2yu<> scaleToWindow(int window_x, int window_y) {
         return vec2yu<>{ 0.0f, 0.0f };
 
