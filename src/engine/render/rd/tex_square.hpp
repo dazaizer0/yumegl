@@ -79,19 +79,19 @@ namespace rd {
 
              position.x() + size.x(), position.y() + size.y(), position.z(),
              color.r, color.g, color.b,
-             1.0f, 1.0f,
+             0.0f, 1.0f,
 
              position.x() + size.x(), position.y() + -size.y(), position.z(),
              color.r, color.g, color.b,
-             1.0f, 0.0f,
+             0.0f, 0.0f,
 
             position.x() + -size.x(), position.y() + -size.y(), position.z(),
             color.r, color.g, color.b,
-            0.0f, 0.0f,
+            1.0f, 0.0f,
 
             position.x() + -size.x(), position.y() + size.y(), position.z(),
             color.r, color.g, color.b,
-            0.0f, 1.0f
+            1.0f, 1.0f
         };
         indices = {
             // triangle 1
@@ -175,19 +175,19 @@ namespace rd {
 
                 position.x() + size.x(), position.y() + size.y(), position.z(),
                 color.r, color.g, color.b,
-                1.0f, 1.0f,
+                0.0f, 1.0f,
 
                 position.x() + size.x(), position.y() + -size.y(), position.z(),
                 color.r, color.g, color.b,
-                1.0f, 0.0f,
+                0.0f, 0.0f,
 
                 position.x() + -size.x(), position.y() + -size.y(), position.z(),
                 color.r, color.g, color.b,
-                0.0f, 0.0f,
+                1.0f, 0.0f,
 
                 position.x() + -size.x(), position.y() + size.y(), position.z(),
                 color.r, color.g, color.b,
-                0.0f, 1.0f
+                1.0f, 1.0f
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
