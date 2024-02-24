@@ -17,6 +17,7 @@ int main() {
     start:
     auto* player = new rd::TexSquare("../assets/textures/cat.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
     player->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
     float jumpTime{ 0.6f };
     float jumpTimer{ jumpTime };
     float jumpForce{ 1.1f };
@@ -25,25 +26,31 @@ int main() {
 
     auto* ground = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ 0.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    ground->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
     auto* ground1 = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ -2.0f, 1.75f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 1.00f, 1.0f });
     ground1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    ground1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
     auto* obstacle = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ 0.2f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
     obstacle->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    obstacle->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
     auto* obstacle1 = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ -0.9f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
     obstacle1->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    obstacle1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
     auto* obstacle2 = new rd::TexSquare("../assets/textures/obstacle.png", mathy::vec3yu<>{ -0.8f, 0.65f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.06f, 0.11f });
     obstacle2->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    obstacle2->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
     obstacle2->enable = false;
 
-    auto* lost = new rd::TexSquare("../assets/textures/lost.png", mathy::vec3yu<>{ 0.0f, -0.2f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 1.0f, 0.8f });
+    auto* lost = new rd::TexSquare("../assets/textures/lost.png", mathy::vec3yu<>{ -0.3f, 0.2f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.5f, 0.5f });
     lost->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
     auto* restart = new rd::TexSquare("../assets/textures/restart.png", mathy::vec3yu<>{ -0.8f, -0.5f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.36f, 0.49f });
     restart->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+    restart->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
     bool finalScoreShowed{ false };
 
@@ -62,13 +69,13 @@ int main() {
         yumegl::update();
         input::update();
         player->PanicHandler();
-        gameTimer += 1.0f * yumegl::deltaTime;
+        gameTimer += 1.0f * yumegl::dupaTime;
 
         if (gameTimer <= 20.0f)
-            gameSpeed += 0.01f * yumegl::deltaTime;
+            gameSpeed += 0.01f * yumegl::dupaTime;
 
         // GROUND
-        ground->position.container.x += gameSpeed * yumegl::deltaTime;
+        ground->position.container.x += gameSpeed * yumegl::dupaTime;
         ground->updateVertices();
         ground->refresh();
 
@@ -77,7 +84,7 @@ int main() {
         }
 
         // GROUND 1
-        ground1->position.container.x += gameSpeed * yumegl::deltaTime;
+        ground1->position.container.x += gameSpeed * yumegl::dupaTime;
         ground1->updateVertices();
         ground1->refresh();
 
@@ -86,7 +93,7 @@ int main() {
         }
 
         // OBSTACLE
-        obstacle->position.container.x += gameSpeed * yumegl::deltaTime;
+        obstacle->position.container.x += gameSpeed * yumegl::dupaTime;
         obstacle->updateVertices();
         obstacle->refresh();
 
@@ -95,7 +102,7 @@ int main() {
         }
 
         // OBSTACLE 1
-        obstacle1->position.container.x += gameSpeed * yumegl::deltaTime;
+        obstacle1->position.container.x += gameSpeed * yumegl::dupaTime;
         obstacle1->updateVertices();
         obstacle1->refresh();
 
@@ -104,7 +111,7 @@ int main() {
         }
 
         // OBSTACLE 2
-        obstacle2->position.container.x += gameSpeed * yumegl::deltaTime;
+        obstacle2->position.container.x += gameSpeed * yumegl::dupaTime;
         obstacle2->updateVertices();
         obstacle2->refresh();
 
@@ -115,14 +122,14 @@ int main() {
         // PLAYER JUMPING
         if (!jumping) {
             if (player->position.y() <= 0.59f)
-                player->position.container.y += 0.8f * yumegl::deltaTime;
+                player->position.container.y += 0.8f * yumegl::dupaTime;
             else
                 jumping = false;
         }
         else {
             if (jumpTimer > 0.0f) {
-                player->position.container.y -= jumpForce * yumegl::deltaTime;
-                jumpTimer -= 1.0f * yumegl::deltaTime;
+                player->position.container.y -= jumpForce * yumegl::dupaTime;
+                jumpTimer -= 1.0f * yumegl::dupaTime;
             }
             else {
                 jumping = false;
@@ -165,36 +172,29 @@ int main() {
         // TEXTURE
         player->bindTexture();
         player->render_ownShader();
-        player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
         ground->bindTexture();
         ground->render_ownShader();
-        ground->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
         ground1->bindTexture();
         ground1->render_ownShader();
-        ground1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
         if (gameTimer > 2.0f) {
             obstacle->bindTexture();
             obstacle->render_ownShader();
-            obstacle->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
         }
 
         obstacle1->bindTexture();
         obstacle1->render_ownShader();
-        obstacle1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
         if (gameTimer > 15.0f) {
             obstacle2->bindTexture();
             obstacle2->render_ownShader();
-            obstacle2->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
             obstacle2->enable = true;
         }
 
         restart->bindTexture();
         restart->render_ownShader();
-        restart->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
         // PRINT SCORE
         if ((int)gameTimer % 5 == 0)
@@ -203,12 +203,12 @@ int main() {
         // COLLISION SYSTEM
         if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() ||
             player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x() ||
-            (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) 
-            && gameTimer > 2.0f) {
+            (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) &&
+            gameTimer > 2.0f) {
             // END GAME
             lost->bindTexture();
             lost->render_ownShader();
-            lost->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
+            lost->rotate(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 1.0f);
 
             gameSpeed = 0.0f;
             canJump = false;

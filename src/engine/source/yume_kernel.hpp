@@ -10,7 +10,7 @@ namespace yumegl {
 
     GLFWwindow* _window;
 
-    float deltaTime{};
+    float dupaTime{};
     float lastFrame{};
 
     void init(const std::string& title) {
@@ -51,7 +51,7 @@ namespace yumegl {
 
     void update() {
         auto currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
+        dupaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
     }
 
