@@ -14,8 +14,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // OBJECTS
-    panicShader.genShader("../assets/shaders/shape/vertex.glsl", "../assets/shaders/shape/fragment.glsl");
-
+    start:
     auto* player = new rd::TexSquare("../assets/textures/cat.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
     player->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
     float jumpTime{ 0.6f };
@@ -43,6 +42,9 @@ int main() {
     auto* lost = new rd::TexSquare("../assets/textures/lost.png", mathy::vec3yu<>{ 0.0f, -0.2f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 1.0f, 0.8f });
     lost->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 
+    auto* restart = new rd::TexSquare("../assets/textures/restart.png", mathy::vec3yu<>{ -0.8f, -0.5f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.36f, 0.49f });
+    restart->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+
     bool finalScoreShowed{ false };
 
     float gameTimer{ 0.0f };
@@ -61,9 +63,11 @@ int main() {
         input::update();
         player->PanicHandler();
         gameTimer += 1.0f * yumegl::deltaTime;
-        gameSpeed += 0.01f * yumegl::deltaTime;
 
-        // PLATFORM MOVEMENT
+        if (gameTimer <= 20.0f)
+            gameSpeed += 0.01f * yumegl::deltaTime;
+
+        // GROUND
         ground->position.container.x += gameSpeed * yumegl::deltaTime;
         ground->updateVertices();
         ground->refresh();
@@ -72,6 +76,7 @@ int main() {
             ground->position.container.x = -1.0f - ground->size.x();
         }
 
+        // GROUND 1
         ground1->position.container.x += gameSpeed * yumegl::deltaTime;
         ground1->updateVertices();
         ground1->refresh();
@@ -80,6 +85,7 @@ int main() {
             ground1->position.container.x = -1.0f - ground1->size.x();
         }
 
+        // OBSTACLE
         obstacle->position.container.x += gameSpeed * yumegl::deltaTime;
         obstacle->updateVertices();
         obstacle->refresh();
@@ -88,6 +94,7 @@ int main() {
             obstacle->position.container.x = -1.0f - obstacle->size.x();
         }
 
+        // OBSTACLE 1
         obstacle1->position.container.x += gameSpeed * yumegl::deltaTime;
         obstacle1->updateVertices();
         obstacle1->refresh();
@@ -96,6 +103,7 @@ int main() {
             obstacle1->position.container.x = -1.0f - obstacle1->size.x();
         }
 
+        // OBSTACLE 2
         obstacle2->position.container.x += gameSpeed * yumegl::deltaTime;
         obstacle2->updateVertices();
         obstacle2->refresh();
@@ -134,6 +142,18 @@ int main() {
         if (input::keyPressed(GLFW_KEY_SPACE) && canJump)
             jumping = true;
 
+        if (input::keyPressed(GLFW_KEY_R)) {
+            delete player;
+            delete ground;
+            delete ground1;
+            delete obstacle;
+            delete obstacle1;
+            delete obstacle2;
+            delete lost;
+
+            goto start;
+        }
+
         player->updateVertices();
         player->refresh();
 
@@ -165,16 +185,22 @@ int main() {
         obstacle1->render_ownShader();
         obstacle1->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
 
-        if (gameTimer > 20.0f) {
+        if (gameTimer > 15.0f) {
             obstacle2->bindTexture();
             obstacle2->render_ownShader();
             obstacle2->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
             obstacle2->enable = true;
         }
 
+        restart->bindTexture();
+        restart->render_ownShader();
+        restart->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
+
+        // PRINT SCORE
         if ((int)gameTimer % 5 == 0)
             std::cout << "score/timer: " << gameTimer << '\n';
 
+        // COLLISION SYSTEM
         if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() ||
             player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x() ||
             (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) 
