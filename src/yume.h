@@ -11,4 +11,4 @@
 #include "src/engine/render/rd/tex_square.hpp"
 #include "src/engine/objects/camera.hpp"
 #include "src/engine/input/input.hpp"
-#include "src/engine/audio/beep_engine.h"
+#include "src/engine/audio/beep_engine.hpp"

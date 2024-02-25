@@ -1,10 +1,10 @@
 #include "../../config.h"
 
-void PRINT(const std::string& message) {
+void print(const std::string& message) {
     std::cout << message;
 }
 
-void PLAY(const double frequency, int duration) {
+void playBeep(const double frequency, int duration) {
     const double period = 1.0 / frequency * 1000000; // T = 1 / f
 
 #ifdef _WIN32
@@ -16,12 +16,13 @@ void PLAY(const double frequency, int duration) {
         std::this_thread::sleep_for(std::chrono::microseconds(static_cast<int>(period)));
     }
 #endif
+    std::cout << std::flush;
 }
 
-class SOUND {
+class BeepSound {
 public:
-    SOUND() : frequency(0.0), duration(0) {} // default sound constructor
-    SOUND(const double f, const int d) : frequency(f), duration(d) {}
+    BeepSound() : frequency(0.0), duration(0) {} // default sound constructor
+    BeepSound(const double f, const int d) : frequency(f), duration(d) {}
 
     [[nodiscard]] double getFrequency() const {
         return frequency;
@@ -35,16 +36,16 @@ private:
     int duration;
 };
 
-void PLAY_SOUNDS(const std::map<int, SOUND>& SOUNDS, int base_sleep_time) {
+void playBeepMap(const std::map<int, BeepSound>& SOUNDS, const int base_sleep_time) {
     for (const auto& sound : SOUNDS) {
-        PLAY(sound.second.getFrequency(), sound.second.getDuration());
+        playBeep(sound.second.getFrequency(), sound.second.getDuration());
         std::cout << std::flush;
 
         Sleep(base_sleep_time);
     }
 }
 
-void CLEAR_TERMINAL() {
+void clearTerminal() {
 #ifdef _WIN32
     system("cls");
 #else

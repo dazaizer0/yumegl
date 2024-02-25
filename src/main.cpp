@@ -145,13 +145,13 @@ start:
             yumegl::setWindowStatus(false);
 
         if (input::keyPressed(GLFW_KEY_SPACE) && canJump) {
-            jumping = true;
-            std::thread playThread(PLAY, 400, 800);
+            std::thread playThread(playBeep, 400, 500);
             playThread.detach();
+            jumping = true;
         }
 
         if (input::keyPressed(GLFW_KEY_R)) {
-            std::thread playThread(PLAY, 600, 500);
+            std::thread playThread(playBeep, 600, 700);
             playThread.detach();
 
             delete player;
@@ -201,8 +201,10 @@ start:
         restart->render_ownShader();
 
         // PRINT SCORE
-        if ((int)gameTimer % 5 == 0)
+        if ((int)gameTimer % 5 == 0) {
             std::cout << "score/timer: " << gameTimer << '\n';
+            // clearTerminal();
+        }
 
         // COLLISION SYSTEM
         if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() ||
