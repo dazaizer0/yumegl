@@ -51,7 +51,7 @@ namespace shaderSystem {
 
             vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
             fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
+ 
             try {
                 // open files
                 vShaderFile.open(vertexPath);

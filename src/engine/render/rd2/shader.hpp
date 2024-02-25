@@ -14,38 +14,30 @@
 namespace shaderSystem {
     class Shader {
     public:
-        unsigned int ID{};
+        GLuint ID{};
 
         Shader() = default;
 
         // FUNCTIONS
-        void genShader(const std::string& vertPath, const std::string& fragPath) {
-            // CONVERT SHADERS PATHS
+        void genShader(const std::string& vertexPath, const std::string& fragmentPath) {
+            //if convertion needed in the future, we can remove "const" and "&" from 
+            //the arguments and modify them here
 
-             // VERTEX
-            // std::string vpath = yumegl::eFunc::yumePath() + "/assets/" + vertPath;
-            const char* vertexPath = vertPath.c_str();
-
-            // FRAGMENT
-            // std::string fpath = yumegl::eFunc::yumePath() + "/assets/" + fragPath;
-            const char* fragmentPath = fragPath.c_str();
-
-            if (vertexPath == nullptr) {
-                std::cerr << "ERROR:LOADING:VERTEX:SHADER" << std::endl;
+            if (std::fstream::good(vertexPath)) {
+                std::cerr << "ERROR:PATH:VERTEX:SHADER" << std::endl;
             }
             else {
                 std::cout << "vertex shader loaded correctly\n";
             }
 
-            if (fragmentPath == nullptr) {
-                std::cerr << "ERROR:LOADING:FRAGMENT:SHADER" << std::endl;
+            if (std::fstream::good(fragmentPath)) {
+                std::cerr << "ERROR:PATH:FRAGMENT:SHADER" << std::endl;
             }
             else {
                 std::cout << "fragment shader loaded correctly\n";
             }
 
-            std::string vertexCode;
-            std::string fragmentCode;
+            const char* vertexShaderSource, fragmentShaderSource;
             std::ifstream vShaderFile;
             std::ifstream fShaderFile;
 
@@ -66,44 +58,40 @@ namespace shaderSystem {
                 vShaderFile.close();
                 fShaderFile.close();
 
-                // convert stream into string
-                vertexCode = vShaderStream.str();
-                fragmentCode = fShaderStream.str();
-
-                std::cout << "shader compiled correctly\n";
+                // convert stream into c_string
+                vertexShaderSource = vShaderStream.str().c_str();
+                fragmentShaderSource = fShaderStream.str().c_str();
             }
             catch (std::ifstream::failure& e) {
                 std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
             }
 
-            const char* vShaderCode = vertexCode.c_str();
-            const char* fShaderCode = fragmentCode.c_str();
-            unsigned int vertex, fragment;
+            GLuint vertexShader, fragmentShader;
 
             // VERTEX
-            vertex = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertex, 1, &vShaderCode, nullptr);
-            glCompileShader(vertex);
+            vertexShader = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+            glCompileShader(vertexShader);
 
-            checkCompileErrors(vertex, "VERTEX");
+            checkCompileErrors(vertexShader, "VERTEX");
 
             // FRAGMENT
-            fragment = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragment, 1, &fShaderCode, nullptr);
-            glCompileShader(fragment);
+            fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+            glCompileShader(fragmentShader);
 
-            checkCompileErrors(fragment, "FRAGMENT");
+            checkCompileErrors(fragmentShader, "FRAGMENT");
 
             // SHADER
             ID = glCreateProgram();
-            glAttachShader(ID, vertex);
-            glAttachShader(ID, fragment);
+            glAttachShader(ID, vertexShader);
+            glAttachShader(ID, fragmentShader);
             glLinkProgram(ID);
 
             checkCompileErrors(ID, "PROGRAM");
 
-            glDeleteShader(vertex);
-            glDeleteShader(fragment);
+            glDeleteShader(vertexShader);
+            glDeleteShader(fragmentShader);
         }
 
         void use() const {
@@ -167,16 +155,16 @@ namespace shaderSystem {
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
                 if (!success) {
                     glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-                    std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n"
-                        << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                    std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << std::endl
+                        << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
                 }
             }
             else {
                 glGetProgramiv(shader, GL_LINK_STATUS, &success);
                 if (!success) {
                     glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-                    std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n"
-                        << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                    std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << std::endl
+                        << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
                 }
             }
         }
