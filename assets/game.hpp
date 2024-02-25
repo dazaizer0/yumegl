@@ -3,7 +3,7 @@
 #include "../src/config.h"
 #include "../src/yume.h"
 
-system Game {
+/*system Game {
 public:
     static subsystem init() {
 
@@ -16,4 +16,4 @@ public:
     static subsystem close() {
 
     }
-};
+};*/

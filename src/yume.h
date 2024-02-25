@@ -1,7 +1,7 @@
 #pragma once
 
-#define system class
-#define subsystem void
+//#define system class
+//#define subsystem void
 
 // YUME
 #include "src/engine/shader/shader.hpp"

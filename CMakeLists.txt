@@ -6,6 +6,23 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(glfw)
 add_subdirectory(glm)
 
+#set(SDL_SHARED ON)
+
+#include(FetchContent)
+#FetchContent_Declare(
+#        SDL
+#        GIT_REPOSITORY https://github.com/libsdl-org/SDL
+#        GIT_TAG release-2.30.0
+#)
+#FetchContent_MakeAvailable(SDL)
+
+#FetchContent_Declare(
+#        SDL_mixer
+#        GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer
+#        GIT_TAG release-2.8.0
+#)
+#FetchContent_MakeAvailable(SDL_mixer)
+
 # project
 add_executable(${PROJECT_NAME}
         # main
@@ -54,15 +71,18 @@ add_executable(${PROJECT_NAME}
 )
 
 # OPENGL
-target_include_directories(${PROJECT_NAME}
-        PRIVATE
-        dep
-)
-
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         glfw
         glm
+        #SDL2::SDL2
+        #SDL2_mixer
+)
+
+target_include_directories(${PROJECT_NAME}
+        PRIVATE
+        dep
+        ${sdl_BINARY_DIR}/include
 )
 
 target_link_directories(${PROJECT_NAME}

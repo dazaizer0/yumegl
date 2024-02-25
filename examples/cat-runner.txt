@@ -14,7 +14,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     // OBJECTS
-start:
+    start:
     auto* player = new rd::TexSquare("../assets/textures/cat.png", mathy::vec3yu<>{ 0.5f, 0.6f, 0.0f }, colour::BLUE(), mathy::vec2yu<>{ 0.09f, 0.16f });
     player->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
     player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
