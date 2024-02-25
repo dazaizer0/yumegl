@@ -68,7 +68,6 @@ int main() {
         // UPDATE
         yumegl::update();
         input::update();
-        player->PanicHandler();
         gameTimer += 1.0f * yumegl::dupaTime;
 
         if (gameTimer <= 20.0f)

@@ -29,9 +29,9 @@ namespace rd {
         void PanicHandler() const;
 
         void bindTexture() const;
-        void bindTexture_includePanic() const;
+        void bindTexture_includePanic();
 
-        void render_ownShader_incudePanic() const;
+        void render_ownShader_incudePanic();
         void render_ownShader() const;
 
         void render_getShader(const shaderSystem::Shader& other_shader) const;
@@ -157,12 +157,14 @@ namespace rd {
         }
         stbi_image_free(texData);
 
-        setRotation({ 0.0f, 0.0f, 1.0f }, 180.0f);
+        std::cout << "Checing panic mode...\n";
+        PanicHandler();
+        std::cout << "The object has been successfully initialized\n";
     }
 
     void TexSquare::PanicHandler() const {
         if (panic) {
-            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
+            std::cerr << "-> Panic Handler : panic mode detected" << std::endl;
             std::exit(0);
         }
     }
@@ -198,11 +200,7 @@ namespace rd {
     }
 
     void TexSquare::updateVertices_includePanic() {
-        if (panic) {
-            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
-            std::exit(0);
-        }
-        else {
+        try {
             vertices = {
                 // position, position, position
                 // tex coords, tex coords, tex coords
@@ -230,6 +228,10 @@ namespace rd {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
         }
+        catch (const std::exception& e) {
+            panic = true;
+            PanicHandler();
+        }
     }
 
     void TexSquare::refresh() const {
@@ -253,26 +255,29 @@ namespace rd {
         glBindTexture(GL_TEXTURE_2D, tex);
     }
 
-    void TexSquare::bindTexture_includePanic() const {
-        if(!panic)
+    void TexSquare::bindTexture_includePanic() {
+        try {
             glBindTexture(GL_TEXTURE_2D, tex);
-        else {
-            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
-            std::exit(0);
+        }
+        catch (const std::exception& e) {
+            std::cerr << "-> Panic Handler : error with binding texture" << std::endl;
+            panic = true;
+            PanicHandler();
         }
     }
 
     // include panic mode
-    void TexSquare::render_ownShader_incudePanic() const {
-        if (!panic) {
+    void TexSquare::render_ownShader_incudePanic() {
+        try {
             shader.use();
 
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         }
-        else {
-            std::cerr << "---> TexturePanic std::exit(0)" << std::endl;
-            std::exit(0);
+        catch (const std::exception& e) {
+            std::cerr << "-> Panic Handler : error with rendering" << std::endl;
+            panic = true;
+            PanicHandler();
         }
     }
 
