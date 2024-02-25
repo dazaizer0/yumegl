@@ -144,10 +144,16 @@ start:
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyPressed(GLFW_KEY_SPACE) && canJump)
+        if (input::keyPressed(GLFW_KEY_SPACE) && canJump) {
             jumping = true;
+            std::thread playThread(PLAY, 400, 800);
+            playThread.detach();
+        }
 
         if (input::keyPressed(GLFW_KEY_R)) {
+            std::thread playThread(PLAY, 600, 500);
+            playThread.detach();
+
             delete player;
             delete ground;
             delete ground1;
@@ -216,7 +222,7 @@ start:
             else
                 gameTimer = finalScore;
 
-            if (finalScoreShowed == false) {
+            if (!finalScoreShowed) {
                 std::cout << "final score : " << finalScore << '\n';
                 finalScoreShowed = true;
             }

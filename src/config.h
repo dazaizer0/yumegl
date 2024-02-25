@@ -20,9 +20,19 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <Windows.h>
 #include <filesystem>
 #include <chrono>
+#include <chrono>
+#include <thread>
+#include <conio.h>
+#include <cstdlib>
+#include <map>
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // TODO: LINUX SUPPORT
 // #inc...
