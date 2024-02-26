@@ -14,20 +14,16 @@
 namespace shaderSystem {
     class Shader {
     public:
-        unsigned int ID{};
+        GLuint ID{};
 
         Shader() = default;
 
         // FUNCTIONS
         void genShader(const std::string& vertPath, const std::string& fragPath) {
-            // CONVERT SHADERS PATHS
-
             // VERTEX
-            // std::string vpath = yumegl::eFunc::yumePath() + "/assets/" + vertPath;
             const char* vertexPath = vertPath.c_str();
 
             // FRAGMENT
-            // std::string fpath = yumegl::eFunc::yumePath() + "/assets/" + fragPath;
             const char* fragmentPath = fragPath.c_str();
 
             if (vertexPath == nullptr) {

@@ -174,6 +174,4 @@ namespace shaderSystem {
         glDeleteShader(shader.ID);
     }
 }
-
-shaderSystem::Shader panicShader;
 #endif
