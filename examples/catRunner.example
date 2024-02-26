@@ -144,10 +144,16 @@ int main() {
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyPressed(GLFW_KEY_SPACE) && canJump)
+        if (input::keyPressed(GLFW_KEY_SPACE) && canJump) {
+            std::thread playThread(playBeep, 400, 500);
+            playThread.detach();
             jumping = true;
+        }
 
         if (input::keyPressed(GLFW_KEY_R)) {
+            std::thread playThread(playBeep, 600, 700);
+            playThread.detach();
+
             delete player;
             delete ground;
             delete ground1;
@@ -195,13 +201,15 @@ int main() {
         restart->render_ownShader();
 
         // PRINT SCORE
-        if ((int)gameTimer % 5 == 0)
+        if ((int)gameTimer % 5 == 0) {
             std::cout << "score/timer: " << gameTimer << '\n';
+            // clearTerminal();
+        }
 
         // COLLISION SYSTEM
         if ((player->position.distance(obstacle->position) < player->size.x() + obstacle->size.x() ||
-            player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x() ||
-            (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) &&
+             player->position.distance(obstacle1->position) < player->size.x() + obstacle1->size.x() ||
+             (player->position.distance(obstacle2->position) < player->size.x() + obstacle2->size.x() && obstacle2->enable)) &&
             gameTimer > 2.0f) {
             // END GAME
             lost->bindTexture();
@@ -216,7 +224,7 @@ int main() {
             else
                 gameTimer = finalScore;
 
-            if (finalScoreShowed == false) {
+            if (!finalScoreShowed) {
                 std::cout << "final score : " << finalScore << '\n';
                 finalScoreShowed = true;
             }

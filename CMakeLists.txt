@@ -53,7 +53,6 @@ add_executable(${PROJECT_NAME}
 
         # audio
         src/engine/audio/beep_engine.hpp
-        #src/engine/shader/shader2.hpp
 )
 
 # OPENGL

@@ -5,42 +5,43 @@
 int main() {
 #pragma region INITIALIZATION
     /* ------------------------------------------------
-    * ---------------- INITIALIZATION -----------------
-    * ------------------------------------------------- */
+    ----------------- INITIALIZATION ------------------
+    ------------------------------------------------ */
     yumegl::init("yumegl");
     yumegl::eFunc::setColor(colour::BLACK());
-
-    // DEPTH
     glEnable(GL_DEPTH_TEST);
 #pragma endregion
 
 #pragma region MAIN_LOOP
     /* ------------------------------------------------
-    * ------------------ MAIN LOOP --------------------
-    * ------------------------------------------------ */
+    -------------------- MAIN LOOP --------------------
+    ------------------------------------------------ */
     while (yumegl::isWindowOpen()) {
         // UPDATE
         yumegl::update();
         input::update();
 
-        // INPUT SYSTEM
+        // INPUT
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
         /* ------------------------------------------------
-         * ------------------- RENDER ---------------------
-         * ------------------------------------------------ */
+        --------------------- RENDER ----------------------
+        ------------------------------------------------ */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // SWAP POLL EVENTS
+
+        /* ------------------------------------------------
+        --------------------- OTHER -----------------------
+        ------------------------------------------------ */
         yumegl::swapBuffersPollEvents();
     }
 #pragma endregion
 
 #pragma region DE_INITIALIZATION
     /* ------------------------------------------------
-    * -------------- DE-INITIALIZATION ----------------
-    * ------------------------------------------------ */
+    --------------- DE -INITIALIZATION ----------------
+    ------------------------------------------------ */
     yumegl::eExit::close();
     return 0;
 #pragma endregion

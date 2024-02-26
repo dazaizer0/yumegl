@@ -5,8 +5,8 @@
 int main() {
 #pragma region INITIALIZATION
     /* ------------------------------------------------
-    * ---------------- INITIALIZATION -----------------
-    * ------------------------------------------------- */
+    ----------------- INITIALIZATION ------------------
+    ------------------------------------------------ */
     yumegl::init("CRD1");
     yumegl::eFunc::setColor(colour::BLACK());
 
@@ -30,14 +30,14 @@ int main() {
     auto* floor = new rd1::Cube("../assets/textures/sonic_floor.png", glm::vec3{ 0.0f, -5.0f, 0.0f }, glm::vec3{ 20.0f, 0.1f, 20.0f });
     floor->setWindowSize(yumegl::WINDOW_WIDTH, yumegl::WINDOW_HEIGHT);
 
-    auto* panel = new rd1::Texture("../assets/textures/sonic_ice.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.8f, 0.8f });
+    auto* panel = new rd::TexSquare("../assets/textures/sonic_ice.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.8f, 0.8f });
     panel->shader.genShader("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
 #pragma endregion
 
 #pragma region MAIN_LOOP
     /* ------------------------------------------------
-    * ------------------ MAIN LOOP --------------------
-    * ------------------------------------------------ */
+    -------------------- MAIN LOOP --------------------
+    ------------------------------------------------ */
     int frameCounter = 0;
     auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -47,15 +47,15 @@ int main() {
         // UPDATE
         yumegl::update();
         input::update();
-        cam.update(yumegl::deltaTime);
+        cam.update(yumegl::dupaTime);
 
         // INPUT SYSTEM
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
         /* ------------------------------------------------
-         * ------------------- RENDER ---------------------
-         * ------------------------------------------------ */
+        --------------------- RENDER ----------------------
+        ------------------------------------------------ */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // ROOM
@@ -113,20 +113,18 @@ int main() {
             panel->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f }, 180.0f);
         }
 
-        // SWAP POLL EVENTS
+        /* ------------------------------------------------
+        --------------------- OTHER -----------------------
+        ------------------------------------------------ */
         yumegl::swapBuffersPollEvents();
 
-        /* ------------------------------------------------
-         * -------------------- STATS ---------------------
-         * ------------------------------------------------ */
         frameCounter++;
-
         if (frameCounter == 60) {
             auto endTime = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
             std::cout << "\nThe time it takes to generate 60 frames: >" << duration.count() << "< ms\n";
             std::cout << "The limit od milliseconds to generate 60 frames: >960/1000<\n";
-            std::cout << yumegl::deltaTime << ": deltaTime\n";
+            std::cout << yumegl::dupaTime << ": deltaTime\n";
 
             frameCounter = 0;
             startTime = std::chrono::high_resolution_clock::now();
@@ -139,8 +137,8 @@ int main() {
 
 #pragma region DE_INITIALIZATION
     /* ------------------------------------------------
-    * -------------- DE-INITIALIZATION ----------------
-    * ------------------------------------------------ */
+    --------------- DE -INITIALIZATION ----------------
+    ------------------------------------------------ */
     delete cube;
     delete room;
     delete floor;

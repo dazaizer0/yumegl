@@ -47,6 +47,7 @@ namespace yumegl {
         }
 
         glfwSwapInterval(1);
+        std::cout << std::flush;
     }
 
     void update() {

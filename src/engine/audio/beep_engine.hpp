@@ -16,7 +16,6 @@ void playBeep(const double frequency, int duration) {
         std::this_thread::sleep_for(std::chrono::microseconds(static_cast<int>(period)));
     }
 #endif
-    std::cout << std::flush;
 }
 
 class BeepSound {
