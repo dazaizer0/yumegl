@@ -1,6 +1,6 @@
 // FROM LEARN_OPENGL | during reconstruction
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef SHADER2_HPP
+#define SHADER2_HPP
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -20,7 +20,7 @@ namespace shaderSystem {
 
         // FUNCTIONS
         void genShader(const std::string& vertexPath, const std::string& fragmentPath) {
-            //if convertion needed in the future, we can remove "const" and "&" from 
+            //if convertion needed in the future, we can remove "const" and "&" from
             //the arguments and modify them here
 
             if (std::fstream::good(vertexPath)) {
@@ -156,7 +156,7 @@ namespace shaderSystem {
                 if (!success) {
                     glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
                     std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << std::endl
-                        << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
+                              << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
                 }
             }
             else {
@@ -164,7 +164,7 @@ namespace shaderSystem {
                 if (!success) {
                     glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
                     std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << std::endl
-                        << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
+                              << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
                 }
             }
         }

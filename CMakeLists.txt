@@ -30,10 +30,10 @@ add_executable(${PROJECT_NAME}
         dep/stb/stb.cpp
 
         # render
-        src/engine/shader/shader.hpp
         src/engine/render/rd1/triangle.hpp
         src/engine/render/rd1/square.hpp
         src/engine/render/rd1/cube.hpp
+        src/engine/shader/shader.hpp
 
         # objects
         src/engine/objects/camera.hpp
@@ -52,8 +52,9 @@ add_executable(${PROJECT_NAME}
         assets/game.hpp
 
         # audio
-        "src/engine/audio/beep_engine.hpp"
- )
+        src/engine/audio/beep_engine.hpp
+        # src/engine/shader/shader2.hpp
+)
 
 # OPENGL
 target_link_libraries(${PROJECT_NAME}

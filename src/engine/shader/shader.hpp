@@ -22,7 +22,7 @@ namespace shaderSystem {
         void genShader(const std::string& vertPath, const std::string& fragPath) {
             // CONVERT SHADERS PATHS
 
-             // VERTEX
+            // VERTEX
             // std::string vpath = yumegl::eFunc::yumePath() + "/assets/" + vertPath;
             const char* vertexPath = vertPath.c_str();
 
@@ -51,7 +51,7 @@ namespace shaderSystem {
 
             vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
             fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
- 
+
             try {
                 // open files
                 vShaderFile.open(vertexPath);
@@ -168,7 +168,7 @@ namespace shaderSystem {
                 if (!success) {
                     glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
                     std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n"
-                        << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                              << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
                 }
             }
             else {
@@ -176,7 +176,7 @@ namespace shaderSystem {
                 if (!success) {
                     glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
                     std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n"
-                        << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                              << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
                 }
             }
         }
