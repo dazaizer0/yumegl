@@ -2,6 +2,7 @@
 #include "yume.h"
 #include "project.h"
 
+#include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
@@ -74,16 +75,24 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("Texture");
+        ImGui::Begin("TexSquare");
 
-        ImGui::Text("Transform");
+        if (ImGui::BeginTabBar("Transform")) {
+            if (ImGui::BeginTabItem("size")) {
+                ImGui::SliderFloat("X", &tex->size.container.x, 0.0f, 1.0f);
+                ImGui::SliderFloat("Y", &tex->size.container.y, 0.0f, 1.0f);
+                ImGui::EndTabItem();
+            }
 
-        ImGui::SliderFloat("size_x", &tex->size.container.x, 0.0f, 1.0f);
-        ImGui::SliderFloat("size_y", &tex->size.container.y, 0.0f, 1.0f);
+            if (ImGui::BeginTabItem("position")) {
+                ImGui::SliderFloat("X", &tex->position.container.x, 1.0f, -1.0f);
+                ImGui::SliderFloat("Y", &tex->position.container.y, 1.0f, -1.0f);
+                ImGui::SliderFloat("Z", &tex->position.container.z, 1.0f, -1.0f);
+                ImGui::EndTabItem();
+            }
 
-        ImGui::SliderFloat("pos_x", &tex->position.container.x, 1.0f, -1.0f);
-        ImGui::SliderFloat("pos_y", &tex->position.container.y, 1.0f, -1.0f);
-        ImGui::SliderFloat("pos_z", &tex->position.container.z, 1.0f, -1.0f);
+            ImGui::EndTabBar();
+        }
 
         ImGui::End();
         ImGui::Render();
@@ -93,7 +102,6 @@ int main() {
         tex->updateVertices();
         tex->refresh();
 
-        // OTHER
         yumegl::swapBuffersPollEvents();
     }
 #pragma endregion
