@@ -73,14 +73,14 @@ target_link_directories(${PROJECT_NAME}
         assets
 )
 
-#target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
-#target_sources(${PROJECT_NAME}
-#        PRIVATE
-#        dep/imgui/backends/imgui_impl_glfw.cpp
-#        dep/imgui/backends/imgui_impl_opengl3.cpp
-#        dep/imgui/imgui.cpp
-#        dep/imgui/imgui_draw.cpp
-#        dep/imgui/imgui_demo.cpp
-#        dep/imgui/imgui_tables.cpp
-#        dep/imgui/imgui_widgets.cpp
-#)
+target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
+target_sources(${PROJECT_NAME}
+        PRIVATE
+        dep/imgui/backends/imgui_impl_glfw.cpp
+        dep/imgui/backends/imgui_impl_opengl3.cpp
+        dep/imgui/imgui.cpp
+        dep/imgui/imgui_draw.cpp
+        dep/imgui/imgui_demo.cpp
+        dep/imgui/imgui_tables.cpp
+        dep/imgui/imgui_widgets.cpp
+)

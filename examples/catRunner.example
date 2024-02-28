@@ -145,13 +145,13 @@ int main() {
             yumegl::setWindowStatus(false);
 
         if (input::keyPressed(GLFW_KEY_SPACE) && canJump) {
-            std::thread playThread(playBeep, 400, 500);
+            std::thread playThread(audio::beep::playBeep, 400, 500);
             playThread.detach();
             jumping = true;
         }
 
         if (input::keyPressed(GLFW_KEY_R)) {
-            std::thread playThread(playBeep, 600, 700);
+            std::thread playThread(audio::beep::playBeep, 600, 700);
             playThread.detach();
 
             delete player;

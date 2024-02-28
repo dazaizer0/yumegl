@@ -106,6 +106,14 @@ namespace yumegl {
 
             return result;
         }
+
+        [[maybe_unused]] void clearTerminal() {
+        #ifdef _WIN32
+        system("cls");
+        #else
+        system("clear");
+        #endif
+        }
     }
 
     namespace eExit { // ENGINE'S PROCESS TERMINATION FUNCTIONS

@@ -27,6 +27,8 @@ namespace rd {
 
         void textureErrorHandler();
         void PanicHandler() const;
+        
+        void render() const;
 
         void bindTexture() const;
         void bindTexture_includePanic();
@@ -249,6 +251,17 @@ namespace rd {
         else {
             panic = true;
         }
+    }
+
+    void TexSquare::render() const {
+        glBindTexture(GL_TEXTURE_2D, tex);
+
+        if (shader.ID) {
+            shader.use();
+        }
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
     void TexSquare::bindTexture() const {
