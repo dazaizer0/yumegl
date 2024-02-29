@@ -256,7 +256,7 @@ namespace rd {
     void TexSquare::render() const {
         glBindTexture(GL_TEXTURE_2D, tex);
 
-        if (shader.ID) {
+        if (shader.getId()) {
             shader.use();
         }
 

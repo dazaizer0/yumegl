@@ -111,10 +111,10 @@ namespace shaderSystem {
     private:
         GLuint id;
         //can't be public or someone's gonna overwrite it without calling glDeleteProgram and that's a memory leak 
-    
+
+        Shader* vertexShader;
+        Shader* fragmentShader;
     public:
-        Shader *vertexShader;
-        Shader *fragmentShader;
 
 
         GlProgram() : id(glCreateProgram()) {};
@@ -192,7 +192,8 @@ namespace shaderSystem {
 
         ~GlProgram() {
             glDeleteProgram(id);
-            delete vertexShader, fragmentShader;
+            delete vertexShader;
+            delete fragmentShader;
         }
 
         void checkLinkingErrors() {
