@@ -28,12 +28,11 @@ int main() {
     tex->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
 
     audio::beep::BeepMusic startMusic {{
-        audio::beep::BeepSound{500, 600},
-        audio::beep::BeepSound{400, 700},
+        audio::beep::BeepSound{500, 500},
+        audio::beep::BeepSound{400, 500},
         audio::beep::BeepSound{800, 700},
         audio::beep::BeepSound{900, 1000},
-        audio::beep::BeepSound{400, 900},
-        audio::beep::BeepSound{760, 1200}
+        audio::beep::BeepSound{400, 900}
     }};
 
     // The "play" function plays the BeepMusic vector which has been set at BeepMusic's constructor
