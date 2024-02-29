@@ -53,7 +53,7 @@ add_executable(${PROJECT_NAME}
 
         # audio
         src/engine/audio/beep_engine.hpp
-)
+ )
 
 # OPENGL
 target_link_libraries(${PROJECT_NAME}
