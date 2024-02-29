@@ -99,8 +99,8 @@ namespace shaderSystem {
     };
 
 
-    Shader* generateShader(GLenum sType, const std::string& path) {
-        Shader *shade = new Shader(sType);
+    Shader generateShader(GLenum sType, const std::string& path) {
+        Shader shade = Shader(sType);
         shade->loadShaderPath(path);
         return shade;
     }
@@ -112,8 +112,8 @@ namespace shaderSystem {
         GLuint id;
         //can't be public or someone's gonna overwrite it without calling glDeleteProgram and that's a memory leak 
 
-        Shader* vertexShader;
-        Shader* fragmentShader;
+        Shader vertexShader;
+        Shader fragmentShader;
     public:
 
 
@@ -192,8 +192,6 @@ namespace shaderSystem {
 
         ~GlProgram() {
             glDeleteProgram(id);
-            delete vertexShader;
-            delete fragmentShader;
         }
 
         void checkLinkingErrors() {

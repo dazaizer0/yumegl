@@ -11,7 +11,7 @@ set(SFML_VERSION "2.6.1")
 include(FetchContent)
 FetchContent_Declare(
     sfml
-    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG        "${SFML_VERSION}"
 )
 
