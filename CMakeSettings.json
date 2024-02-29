@@ -9,24 +9,7 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "variables": [
-        {
-          "name": "FETCHCONTENT_UPDATES_DISCONNECTED_SFML",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "FETCHCONTENT_UPDATES_DISCONNECTED",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "FETCHCONTENT_FULLY_DISCONNECTED",
-          "value": "False",
-          "type": "BOOL"
-        }
-      ]
+      "ctestCommandArgs": ""
     },
     {
       "name": "x64-Release",
@@ -37,7 +20,8 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ]
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": []
     }
   ]
 }
