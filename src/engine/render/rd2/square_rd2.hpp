@@ -12,7 +12,7 @@ namespace rd2 {
 
         // PROPERTIES
     public:
-        shaderSystem::Shader shader;
+        shaderSystem::GlProgram shader;
 
     private:
         const unsigned int vertex_count{ 4 };
@@ -35,7 +35,7 @@ namespace rd2 {
 
         void bindTexture();
         void render_ownShader() const;
-        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
 
         void rotate(glm::vec3 axis, float rotationSpeed);
@@ -242,7 +242,7 @@ namespace rd2 {
         }
     }
 
-    void Square::render_getShader(const shaderSystem::Shader &other_shader) const {
+    void Square::render_getShader(const shaderSystem::GlProgram &other_shader) const {
         if(type == "tex") {
 
         }
@@ -295,7 +295,7 @@ namespace rd2 {
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
 
-        shaderSystem::deleteShader(shader);
+        shader.~GlProgram();
     }
 }
 #endif

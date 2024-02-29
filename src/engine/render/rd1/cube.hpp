@@ -10,7 +10,7 @@ namespace rd1 {
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         glm::vec3 size{ 0.0f, 0.0f, 0.0f };
-        shaderSystem::Shader shader;
+        shaderSystem::GlProgram shader;
 
         bool enable{};
 
@@ -24,13 +24,13 @@ namespace rd1 {
         // RENDER
         void bindTexture() const;
         void render_ownShader() const;
-        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
 
         // OPERATIONS
         void rotate(glm::vec3 axis, float rotationSpeed) const;
         void setRotation_ownShader(glm::vec3 axis, float angle) const;
-        void setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const;
+        void setRotation_getShader(glm::vec3 axis, const shaderSystem::GlProgram& other_shader, float angle) const;
 
         // DATA
         void setWindowSize(unsigned int window_w, unsigned int window_h);
@@ -220,7 +220,7 @@ namespace rd1 {
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    void Cube::render_getShader(const shaderSystem::Shader& other_shader) const {
+    void Cube::render_getShader(const shaderSystem::GlProgram& other_shader) const {
         // ACTIVATE SHADER
         other_shader.use();
 
@@ -251,8 +251,8 @@ namespace rd1 {
         view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
         projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
 
-        unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
-        unsigned int viewLoc = glGetUniformLocation(shader.ID, "view");
+        unsigned int modelLoc = glGetUniformLocation(shader.getId(), "model");
+        unsigned int viewLoc = glGetUniformLocation(shader.getId(), "view");
 
         glUniformMatrix4fv((GLint)modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv((GLint)viewLoc, 1, GL_FALSE, &view[0][0]);
@@ -277,7 +277,7 @@ namespace rd1 {
         shader.setMat4("model", model);
     }
 
-    void Cube::setRotation_getShader(glm::vec3 axis, const shaderSystem::Shader& other_shader, float angle) const {
+    void Cube::setRotation_getShader(glm::vec3 axis, const shaderSystem::GlProgram& other_shader, float angle) const {
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
 
@@ -303,7 +303,7 @@ namespace rd1 {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 
-        shaderSystem::deleteShader(shader);
+        shader.~GlProgram();
 
         std::cerr << "textures data successfully deleted" << std::endl;
     }

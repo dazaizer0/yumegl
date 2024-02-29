@@ -10,7 +10,7 @@ namespace rd {
     public:
         mathy::vec3yu<> position{ 0.0f, 0.0f, 0.0f };
         colour color = colour::BLACK();
-        shaderSystem::Shader shader;
+        shaderSystem::GlProgram shader;
 
         mathy::vec2yu<> size{};
         bool enable{ true };
@@ -36,7 +36,7 @@ namespace rd {
         void render_ownShader_incudePanic();
         void render_ownShader() const;
 
-        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
 
         void rotate(mathy::vec3yu<> axis, float rotationSpeed) const;
@@ -159,7 +159,7 @@ namespace rd {
         }
         stbi_image_free(texData);
 
-        std::cout << "Checing panic mode...\n";
+        std::cout << "Checking panic mode...\n";
         PanicHandler();
         std::cout << "The object has been successfully initialized\n";
     }
@@ -301,7 +301,7 @@ namespace rd {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
-    void TexSquare::render_getShader(const shaderSystem::Shader& other_shader) const {
+    void TexSquare::render_getShader(const shaderSystem::GlProgram& other_shader) const {
         other_shader.use();
 
         glBindVertexArray(VAO);
@@ -321,8 +321,10 @@ namespace rd {
         transform = glm::translate(transform, -position.container);
 
         shader.use();
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        //unsigned int transformLoc = glGetUniformLocation(shader.id, "transform");
+        //glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        //wywal jak akceptujesz zmiane
+        shader.setMat4("transform", transform);
     }
 
     void TexSquare::setRotation(mathy::vec3yu<> axis, float angle) const {
@@ -332,8 +334,10 @@ namespace rd {
         //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
 
         shader.use();
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        //unsigned int transformLoc = glGetUniformLocation(shader.id, "transform");
+        //glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        //wywal jak akceptujesz zmiane
+        shader.setMat4("transform", transform);
     }
 
     // DELETE
@@ -342,7 +346,7 @@ namespace rd {
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
 
-        shaderSystem::deleteShader(shader);
+        shader.~GlProgram();
 
         std::cerr << "Textures data successfully deleted" << std::endl;
     }

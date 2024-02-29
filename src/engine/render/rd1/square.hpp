@@ -12,7 +12,7 @@ namespace rd1 {
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         glm::vec2 size{ 1.0f, 1.0f };
         colour color = colour::BLACK();
-        shaderSystem::Shader shader;
+        shaderSystem::GlProgram shader;
 
         bool enable{};
 
@@ -25,7 +25,7 @@ namespace rd1 {
 
         // RENDER
         void render_ownShader() const;
-        void render_getShader(const shaderSystem::Shader& other_shader) const;
+        void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
 
         // DECONSTRUCTOR
@@ -125,7 +125,7 @@ namespace rd1 {
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vertex_count);
     }
 
-    void Square::render_getShader(const shaderSystem::Shader& other_shader) const {
+    void Square::render_getShader(const shaderSystem::GlProgram& other_shader) const {
         other_shader.use();
 
         glBindVertexArray(VAO);
@@ -142,7 +142,7 @@ namespace rd1 {
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
 
-        shaderSystem::deleteShader(shader);
+        shader.~GlProgram();
 
         std::cerr << "squares data successfully deleted" << std::endl;
     }
