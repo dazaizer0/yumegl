@@ -124,7 +124,7 @@ namespace shaderSystem {
         void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
             vertexShader = generateShader(GL_VERTEX_SHADER, vertexPath);
-            fragmentShader = generateShader(GL_VERTEX_SHADER, fragmentPath);
+            fragmentShader = generateShader(GL_FRAGMENT_SHADER, fragmentPath);
 
             linkProgram();
         }
