@@ -6,6 +6,25 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(glfw)
 add_subdirectory(glm)
 
+set(SFML_VERSION "2.6.1")
+
+include(FetchContent)
+FetchContent_Declare(
+    sfml
+    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
+    GIT_TAG        "${SFML_VERSION}"
+)
+
+FetchContent_GetProperties(sfml)
+if(NOT sfml_POPULATED)
+    FetchContent_Populate(sfml)
+    add_subdirectory(${sfml_SOURCE_DIR} ${sfml_BINARY_DIR})
+endif()
+
+set(SOURCE
+    main.cpp
+)
+
 # project
 add_executable(${PROJECT_NAME}
         # main
@@ -84,3 +103,10 @@ target_sources(${PROJECT_NAME}
         dep/imgui/imgui_tables.cpp
         dep/imgui/imgui_widgets.cpp
 )
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        sfml-audio
+)
+
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall)

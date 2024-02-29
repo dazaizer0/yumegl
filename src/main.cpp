@@ -6,6 +6,11 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+// IMPORTATNT
+#include "SFML/Audio.hpp"
+// Due to the new library in our project added by FetchContent, the first debugging may take a little longer than usual.
+// If you will see an error saying you don't have openal32.dll file, just find the file in _deps and copy it to your build directory. This should solve the problem.
+
 int main() {
 #pragma region INITIALIZATION
     /* ------------------------------------------------
@@ -36,7 +41,19 @@ int main() {
     }};
 
     // The "play" function plays the BeepMusic vector which has been set at BeepMusic's constructor
+    // YUMEGL INTRO beep_engine
     startMusic.play();
+
+    // SFML::Audio Music
+    sf::Music jojoMusic;
+    if (!jojoMusic.openFromFile("../assets/audio/jojo.wav")) {
+        std::cerr << "Couldn't find music file." << std::endl;
+        std::cerr << "Try to upload the new assets folder to your build directory." << std::endl;
+        return -1;
+    }
+    jojoMusic.setVolume(50.0f);
+    jojoMusic.setPitch(1.0f);
+    jojoMusic.play();
 
 #pragma endregion
 
