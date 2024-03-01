@@ -29,9 +29,11 @@ namespace shaderSystem {
             case GL_VERTEX_SHADER:
                 id = glCreateShader(GL_VERTEX_SHADER);
                 stype = 0;
+                break;
             case GL_FRAGMENT_SHADER:
                 id = glCreateShader(GL_FRAGMENT_SHADER);
                 stype = 1;
+                break;
             }
         }
 
@@ -81,6 +83,7 @@ namespace shaderSystem {
 
         ~Shader() {
             glDeleteShader(id);
+            std::cerr << "Shader has been deleted - " << stype << std::endl;
         }
 
     private:
@@ -192,9 +195,16 @@ namespace shaderSystem {
 
         ~GlProgram() {
             glDeleteProgram(id);
-            delete vertexShader;
-            delete fragmentShader;
+            if (vertexShader != nullptr) {
+                delete vertexShader;
+                vertexShader = nullptr;
+            }
+            if (fragmentShader != nullptr) {
+                delete fragmentShader;
+                fragmentShader = nullptr;
+            }
         }
+
 
         void checkLinkingErrors() {
             GLint success;

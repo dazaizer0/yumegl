@@ -51,6 +51,9 @@ int main() {
         std::cerr << "Try to upload the new assets folder to your build directory." << std::endl;
         return -1;
     }
+    else {
+        std::cout << "The music file has been successfully loaded.\n";
+    }
     jojoMusic.setVolume(50.0f);
     jojoMusic.setPitch(1.0f);
     jojoMusic.play();
