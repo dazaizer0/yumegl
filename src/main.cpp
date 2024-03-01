@@ -7,9 +7,12 @@
 #include <imgui_impl_opengl3.h>
 
 // IMPORTATNT
+// 
 //#include "SFML/Audio.hpp"
+// 
 // Due to the new library in our project added by FetchContent, the first debugging may take a little longer than usual.
 // If you will see an error saying you don't have openal32.dll file, just find the file in _deps and copy it to your build directory. This should solve the problem.
+// We had to remove the SFML library due to linking errors, SFML::Audio - Comming Soon
 
 int main() {
 #pragma region INITIALIZATION
@@ -28,6 +31,7 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    // OBJECTS
     auto* tex = new rd::TexSquare("../assets/textures/cat.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.45f, 0.9f });
     tex->shader.makeProgramFromPaths("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
     tex->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
@@ -44,6 +48,7 @@ int main() {
     startMusic.play();
 
     // SFML::Audio Music
+    // SOON...
     /*sf::Music jojoMusic;
     if (!jojoMusic.openFromFile("../assets/audio/jojo.wav")) {
         std::cerr << "Couldn't find music file." << std::endl;

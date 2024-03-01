@@ -24,3 +24,4 @@ build
 dep
 glfw
 glm
+SFML
