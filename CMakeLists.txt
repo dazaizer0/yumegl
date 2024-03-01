@@ -8,12 +8,6 @@ add_subdirectory(glm)
 
 set(SFML_VERSION "2.6.1")
 
-include(FetchContent)
-FetchContent_Declare(
-    sfml
-    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
-    GIT_TAG        "${SFML_VERSION}"
-)
 
 FetchContent_GetProperties(sfml)
 if(NOT sfml_POPULATED)
@@ -22,7 +16,7 @@ if(NOT sfml_POPULATED)
 endif()
 
 set(SOURCE
-    src/main.cpp
+    main.cpp
 )
 
 # project

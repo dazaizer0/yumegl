@@ -7,7 +7,7 @@
 #include <imgui_impl_opengl3.h>
 
 // IMPORTATNT
-#include "SFML/Audio.hpp"
+//#include "SFML/Audio.hpp"
 // Due to the new library in our project added by FetchContent, the first debugging may take a little longer than usual.
 // If you will see an error saying you don't have openal32.dll file, just find the file in _deps and copy it to your build directory. This should solve the problem.
 
@@ -44,7 +44,7 @@ int main() {
     startMusic.play();
 
     // SFML::Audio Music
-    sf::Music jojoMusic;
+    /*sf::Music jojoMusic;
     if (!jojoMusic.openFromFile("../assets/audio/jojo.wav")) {
         std::cerr << "Couldn't find music file." << std::endl;
         std::cerr << "Try to upload the new assets folder to your build directory." << std::endl;
@@ -55,7 +55,7 @@ int main() {
     }
     jojoMusic.setVolume(50.0f);
     jojoMusic.setPitch(1.0f);
-    jojoMusic.play();
+    jojoMusic.play();*/
 
 #pragma endregion
 
