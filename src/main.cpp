@@ -34,10 +34,9 @@ int main() {
 
     audio::beep::BeepMusic startMusic {{
         audio::beep::BeepSound{500, 500},
-        audio::beep::BeepSound{400, 500},
-        audio::beep::BeepSound{800, 700},
-        audio::beep::BeepSound{900, 1000},
-        audio::beep::BeepSound{400, 900}
+        audio::beep::BeepSound{400, 400},
+        audio::beep::BeepSound{800, 500},
+        audio::beep::BeepSound{900, 1000}
     }};
 
     // The "play" function plays the BeepMusic vector which has been set at BeepMusic's constructor

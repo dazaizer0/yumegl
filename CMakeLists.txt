@@ -22,7 +22,7 @@ if(NOT sfml_POPULATED)
 endif()
 
 set(SOURCE
-    main.cpp
+    src/main.cpp
 )
 
 # project
