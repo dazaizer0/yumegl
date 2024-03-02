@@ -25,6 +25,7 @@ public:
     static colour GREEN() { return { 0.0f, 1.0f, 0.0f, 1.0f }; };
     static colour BLUE() { return { 0.0f, 0.0f, 1.0f, 1.0f }; };
     static colour YELLOW() { return { 1.0f, 1.0f, 0.0f, 1.0f }; };
+    static colour PURPLE() { return { 0.5f, 0.3f, 0.8f, 1 }; }; //nice purple :)
 
     static colour WHITE() { return { 1.0f, 1.0f, 1.0f, 1.0f }; };
 };
