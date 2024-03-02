@@ -96,12 +96,26 @@ namespace mathy {
             container += other.container;
             return *this;
         }
+        vec2yu<T> operator+(const T scale) const {
+            return vec2yu<T>(container + scale);
+        }
+        vec2yu<T>& operator+=(const T scale) {
+            container += scale;
+            return *this;
+        }
 
         vec2yu<T> operator-(const vec2yu<T>& other) const {
             return vec2yu<T>(container - other.container);
         }
         vec2yu<T>& operator-=(const vec2yu<T>& other) {
             container -= other.container;
+            return *this;
+        }
+        vec2yu<T> operator-(const T scale) const {
+            return vec2yu<T>(container - scale);
+        }
+        vec2yu<T>& operator-=(const T scale) {
+            container -= scale;
             return *this;
         }
 
@@ -143,10 +157,9 @@ namespace mathy {
         }
     };
 
-    
     // VECTOR 3
     template <typename T = float>
-    class vec3yu { // TODO: universal vectors (vec2)
+    class vec3yu {
 
     public:
         // FIELDS, PROPERTIES
@@ -239,12 +252,26 @@ namespace mathy {
             container += other.container;
             return *this;
         }
+        vec3yu<T> operator+(const T scale) const {
+            return vec3yu<T>(container + scale);
+        }
+        vec3yu<T>& operator+=(const T scale) {
+            container += scale;
+            return *this;
+        }
 
         vec3yu<T> operator-(const vec3yu<T>& other) const {
             return vec3yu<T>(container - other.container);
         }
         vec3yu<T>& operator-=(const vec3yu<T>& other) {
             container -= other.container;
+            return *this;
+        }
+        vec3yu<T> operator-(const T scale) const {
+            return vec3yu<T>(container - scale);
+        }
+        vec3yu<T>& operator-=(const T scale) {
+            container -= scale;
             return *this;
         }
 
@@ -283,6 +310,167 @@ namespace mathy {
         template<typename A>
         operator vec3yu<A>() {
             return vec3yu<A>((A)this->container.x, (A)this->container.y, (A)this->container.z);
+        }
+    };
+
+    // VECTOR 4
+    template <typename T = float>
+    class vec4yu {
+
+    public:
+        // FIELDS, PROPERTIES
+
+        glm::vec<4, T, glm::defaultp> container;
+
+        inline T x() { return container.x; }
+        inline void x(T xIn) { container.x = xIn; }
+
+        inline T y() { return container.y; }
+        inline void y(T yIn) { container.y = yIn; }
+
+        inline T z() { return container.z; }
+        inline void z(T zIn) { container.z = zIn; }
+
+        inline T w() { return container.w; }
+        inline void w(T wIn) { container.w = wIn; }
+
+        // CONSTRUCTORS
+
+        vec4yu() {
+            x(T(0));
+            y(T(0));
+            z(T(0));
+            w(T(0));
+        }
+        vec4yu(T xIn, T yIn, T zIn, T wIn) {
+            x(xIn);
+            y(yIn);
+            z(zIn);
+            w(zIn);
+        }
+        explicit vec4yu(glm::vec<4, T, glm::defaultp> container) : container(container) { }
+
+        // FUNCTIONS
+
+        std::string toString() {
+            std::stringstream ss;
+            ss << "x: " << x() << ", y: " << y() << ", z: " << z() << ", w: " << w() << std::endl;
+            return ss.str();
+        }
+
+        void toStdout() {
+            std::cout << toString(); // Uses toString() to make the code more clear. I know it's suboptimal to make an ss and then cout it, but this func.'s probably not going to be used too much and if it's going to be, then we'll think about it.
+        }
+
+        inline T length_2() {
+            return x() * x() + y() * y() + z() * z() + w() * w();
+        }
+
+        inline T length() {
+            if (typeid(T) == typeid(float))
+                return sqrtf(length_2());
+            else
+                return sqrt(length_2());
+        }
+
+        inline T lengthInv() {
+            return (T)1 / length();
+        }
+
+        [[maybe_unused]] inline vec4yu normalizE() {
+            return *this *= lengthInv();
+        }
+
+        [[maybe_unused]] inline vec4yu normalizED() {
+            return *this * lengthInv();
+        }
+
+        T distance(vec4yu other) {
+            return (*this - other).length();
+        }
+
+        static vec4yu<T> ZERO() { return { T(0), T(0), T(0), T(0) }; }
+        static vec4yu<T> ONE() { return { T(1), T(1), T(1), T(1) }; }
+
+        static vec4yu<T> UP() { return { T(0), T(-1), T(0), T(1) }; }
+        static vec4yu<T> DOWN() { return { T(0), T(1), T(0), T(1) }; }
+        static vec4yu<T> RIGHT() { return { T(1), T(0), T(0), T(1) }; }
+        static vec4yu<T> LEFT() { return { T(-1), T(0), T(0), T(1) }; }
+        static vec4yu<T> FORWARD() { return { T(0), T(0), T(1), T(1) }; }
+        static vec4yu<T> BACK() { return { T(0), T(0), T(-1), T(1) }; }
+
+        // OPERATORS
+
+        vec4yu<T>& operator=(const vec4yu<T>& other) {
+            container = other.container;
+            return *this;
+        }
+
+        vec4yu<T> operator+(const vec4yu<T>& other) const {
+            return vec4yu<T>(container + other);
+        }
+        vec4yu<T>& operator+=(const vec4yu<T>& other) {
+            container += other;
+            return *this;
+        }
+        vec4yu<T> operator+(const T other) const {
+            return vec4yu<T>(container + other);
+        }
+        vec4yu<T>& operator+=(const T other) {
+            container += other;
+            return *this;
+        }
+
+        vec4yu<T> operator-(const vec4yu<T>& other) const {
+            return vec4yu<T>(container - other.container);
+        }
+        vec4yu<T>& operator-=(const vec4yu<T>& other) {
+            container -= other.container;
+            return *this;
+        }
+        vec4yu<T> operator-(const T other) const {
+            return vec4yu<T>(container - other);
+        }
+        vec4yu<T>& operator-=(const T other) {
+            container -= other;
+            return *this;
+        }
+
+        vec4yu<T> operator*(const vec4yu<T>& other) const {
+            return vec4yu<T>(container * other.container);
+        }
+        vec4yu<T>& operator*=(const vec4yu<T>& other) {
+            container *= other.container;
+            return *this;
+        }
+
+        vec4yu<T> operator*(const T scale) const {
+            return vec4yu<T>(container * scale);
+        }
+        vec4yu<T>& operator*=(const T scale) {
+            container *= scale;
+            return *this;
+        }
+
+        vec4yu<T> operator/(const vec4yu<T>& other) const {
+            return vec4yu<T>(container / other.container);
+        }
+        vec4yu<T>& operator/=(const vec4yu<T>& other) {
+            container /= other.container;
+            return *this;
+        }
+
+        vec4yu<T> operator/(const T scale) const {
+            return vec4yu<T>(container / scale);
+        }
+        vec4yu<T>& operator/=(const T scale) {
+            container /= scale;
+            return *this;
+        }
+
+        template<typename A>
+        operator vec4yu<A>() {
+            return vec4yu<A>((A)this->container.x, (A)this->container.y, (A)this->container.z, (A)this->container.w);
         }
     };
     

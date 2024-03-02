@@ -21,8 +21,10 @@ namespace shaderSystem {
         GLenum stype;
 
     public:
-        //Creates a Shader object
-        //sType - GLenum: GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+        /// <summary>
+        ///Creates a Shader object, 
+        ///sType: GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+        /// </summary>
         Shader(GLenum sType) {
             switch (sType) {
             case GL_VERTEX_SHADER:
@@ -37,12 +39,15 @@ namespace shaderSystem {
                 id = 0;
                 stype = 76;
             }
-            std::cout << ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : ((stype == 76) ? names[3] : names[2])))
-                << " shader has been created." << std::endl;
+            std::cout << sTypeStr() << " shader has been created." << std::endl;
         }
 
-        const char* sType() const {
-            return (stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]);
+        const char* sTypeStr() const {
+            return ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : ((stype == 76) ? names[3] : names[2])));
+        }
+
+        int sType() const {
+            return stype;
         }
 
         GLuint getId() const {
@@ -91,7 +96,7 @@ namespace shaderSystem {
 
         ~Shader() {
             glDeleteShader(id);
-            std::cout << sType() << " shader has been deleted." << std::endl;
+            std::cout << sTypeStr() << " shader has been deleted." << std::endl;
         }
 
     private:
@@ -103,7 +108,7 @@ namespace shaderSystem {
 
             if (!success) {
                 glGetShaderInfoLog(id, 1024, nullptr, infoLog);
-                std::cerr << "ERROR: SHADER COMPILATION ERROR ; TYPE: " << sType() << std::endl
+                std::cerr << "ERROR: SHADER COMPILATION ERROR ; TYPE: " << sTypeStr() << std::endl
                     << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
             }
         }
@@ -132,20 +137,28 @@ namespace shaderSystem {
     public:
         GlProgram() : id(glCreateProgram()) {};
 
-        //Makse an already linked program with given shaders.
-        //Created program object is not responsible for managing given
-        //pointers, however it stores them and can be queried for them.
+        /// <summary>
+        ///Makse an already linked program with given shaders.
+        ///Created program object is not responsible for managing given
+        ///pointers, however it stores them and can be queried for them.
+        /// </summary>
         GlProgram(Shader* vertexShader, Shader* fragmentShader) : id(glCreateProgram()),
             vertexShader(vertexShader), fragmentShader(fragmentShader) {
+
+            if (vertexShader->sType() != GL_VERTEX_SHADER || fragmentShader->sType() != GL_FRAGMENT_SHADER)
+                std::cout << "ERROR: INCORRECT ARGUMENTS FOR GlProgram CONSTRUCTOR " << std::endl;
+
             linkProgram();
         }
 
         // FUNCTIONS
         
-        //To be used on a compleately untouched GlProgram created with the parameterless constuctor.
-        //Reads shader code from files, compiles it, REPLACES(NOT DELETEs) shader pointers with new objects, 
-        //attaches shaders to the program, links program, deletes pointers, that is shader objects.
-        //Mainly for simple use.
+        /// <summary>
+        ///To be used on a compleately untouched GlProgram created with the parameterless constuctor.
+        ///Reads shader code from files, compiles it, REPLACES(NOT DELETEs) shader pointers with new objects, 
+        ///attaches shaders to the program, links program, deletes pointers, that is shader objects.
+        ///Mainly for simple use.
+        /// </summary>
         void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
             vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
@@ -172,17 +185,34 @@ namespace shaderSystem {
             glUseProgram(id);
         }
 
+        GLint getUniformLocation(const std::string& name) {
+            return glGetUniformLocation(id, name.c_str());
+        }
+
+
         void setBool(const std::string& name, bool value) const {
             glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
         }
+        void setBool(GLint location, bool value) const {
+            glUniform1i(location, (int)value);
+        }
+
 
         void setInt(const std::string& name, int value) const {
             glUniform1i(glGetUniformLocation(id, name.c_str()), value);
         }
+        void setInt(GLint location, int value) const {
+            glUniform1i(location, value);
+        }
+
 
         void setFloat(const std::string& name, float value) const {
             glUniform1f(glGetUniformLocation(id, name.c_str()), value);
         }
+        void setFloat(GLint location, float value) const {
+            glUniform1f(location, value);
+        }
+
 
         void setVec2(const std::string& name, const glm::vec2& value) const {
             glUniform2fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
@@ -191,12 +221,28 @@ namespace shaderSystem {
             glUniform2f(glGetUniformLocation(id, name.c_str()), x, y);
         }
 
+        void setVec2(GLint location, const glm::vec2& value) const {
+            glUniform2fv(location, 1, &value[0]);
+        }
+        void setVec2(GLint location, float x, float y) const {
+            glUniform2f(location, x, y);
+        }
+
+
         void setVec3(const std::string& name, const glm::vec3& value) const {
             glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
         }
         void setVec3(const std::string& name, float x, float y, float z) const {
             glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z);
         }
+
+        void setVec3(GLint location, const glm::vec3& value) const {
+            glUniform3fv(location, 1, &value[0]);
+        }
+        void setVec3(GLint location, float x, float y, float z) const {
+            glUniform3f(location, x, y, z);
+        }
+
 
         void setVec4(const std::string& name, const glm::vec4& value) const {
             glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
@@ -205,17 +251,40 @@ namespace shaderSystem {
             glUniform4f(glGetUniformLocation(id, name.c_str()), x, y, z, w);
         }
 
+        void setVec4(GLint location, const glm::vec4& value) const {
+            glUniform4fv(location, 1, &value[0]);
+        }
+        void setVec4(GLint location, float x, float y, float z, float w) const {
+            glUniform4f(location, x, y, z, w);
+        }
+
+        
         void setMat2(const std::string& name, const glm::mat2& mat) const {
             glUniformMatrix2fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
         }
 
+        void setMat2(GLint location, const glm::mat2& mat) const {
+            glUniformMatrix2fv(location, 1, GL_FALSE, &mat[0][0]);
+        }
+
+
         void setMat3(const std::string& name, const glm::mat3& mat) const {
             glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
         }
+        
+        void setMat3(GLint location, const glm::mat3& mat) const {
+            glUniformMatrix3fv(location, 1, GL_FALSE, &mat[0][0]);
+        }
+
 
         void setMat4(const std::string& name, const glm::mat4& mat) const {
             glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
         }
+
+        void setMat4(GLint location, const glm::mat4& mat) const {
+            glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+        }
+
 
         ~GlProgram() {
             glDeleteProgram(id);
