@@ -46,7 +46,6 @@ add_executable(${PROJECT_NAME}
         # RENDER 2 / 2D
         src/engine/render/rd2/elementary_objects.hpp
         src/engine/render/rd2/square_rd2.hpp
-        
         src/engine/render/rd2/cube_rd2.hpp
 
         src/engine/render/rd/tex_square.hpp
