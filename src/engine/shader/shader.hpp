@@ -5,15 +5,15 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include <filesystem>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <src/engine/source/yume_kernel.hpp>
 
 namespace shaderSystem {
 
-    const char* names[3] = { "VERTEX", "FRAGMENT", "UNKNOWN" };
+    const char* names[4] = { "VERTEX", "FRAGMENT", "UNKNOWN", "I TOLD U IT MUST BE GL_VERTEX_SHADER || GL_FRAGMENT_SHADER"};
 
     struct Shader {
     private:
@@ -21,6 +21,8 @@ namespace shaderSystem {
         GLenum stype;
 
     public:
+        //Creates a Shader object
+        //sType - GLenum: GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
         Shader(GLenum sType) {
             switch (sType) {
             case GL_VERTEX_SHADER:
@@ -31,8 +33,11 @@ namespace shaderSystem {
                 id = glCreateShader(GL_FRAGMENT_SHADER);
                 stype = GL_FRAGMENT_SHADER;
                 break;
+            default:
+                id = 0;
+                stype = 76;
             }
-            std::cout << ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]))
+            std::cout << ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : ((stype == 76) ? names[3] : names[2])))
                 << " shader has been created." << std::endl;
         }
 
@@ -105,41 +110,58 @@ namespace shaderSystem {
     };
 
 
-    Shader* generateShader(GLenum sType, const std::string& path) {
+    Shader* generateShaderPath(GLenum sType, const std::string& path) {
         Shader *shade = new Shader(sType);
         shade->loadShaderPath(path);
         return shade;
     }
-
+    Shader* generateShaderSource(GLenum sType, const char* sourceCode) {
+        Shader* shade = new Shader(sType);
+        shade->loadShaderSource(sourceCode);
+        return shade;
+    }
 
 
     struct GlProgram {
     private:
-        GLuint id;
+        GLuint id{};
         //can't be public or someone's gonna overwrite it without calling glDeleteProgram and that's a memory leak 
 
-        Shader* vertexShader;
-        Shader* fragmentShader;
+        Shader* vertexShader{};
+        Shader* fragmentShader{};
     public:
-
         GlProgram() : id(glCreateProgram()) {};
 
-        // FUNCTIONS
-
-        void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
-
-            vertexShader = generateShader(GL_VERTEX_SHADER, vertexPath);
-            fragmentShader = generateShader(GL_FRAGMENT_SHADER, fragmentPath);
-
+        //Makse an already linked program with given shaders.
+        //Created program object is not responsible for managing given
+        //pointers, however it stores them and can be queried for them.
+        GlProgram(Shader* vertexShader, Shader* fragmentShader) : id(glCreateProgram()),
+            vertexShader(vertexShader), fragmentShader(fragmentShader) {
             linkProgram();
         }
 
-        void linkProgram() {
-            glAttachShader(id, vertexShader->getId());
-            glAttachShader(id, fragmentShader->getId());
-            glLinkProgram(id);
+        // FUNCTIONS
+        
+        //To be used on a compleately untouched GlProgram created with the parameterless constuctor.
+        //Reads shader code from files, compiles it, REPLACES(NOT DELETEs) shader pointers with new objects, 
+        //attaches shaders to the program, links program, deletes pointers, that is shader objects.
+        //Mainly for simple use.
+        void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
-            checkLinkingErrors();
+            vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
+            fragmentShader = generateShaderPath(GL_FRAGMENT_SHADER, fragmentPath);
+
+            linkProgram();
+
+            delete vertexShader; vertexShader = nullptr;
+            delete fragmentShader; fragmentShader = nullptr;
+        }
+
+        Shader* vShaderPointer() const {
+            return vertexShader;
+        }
+        Shader* fShaderPointer() const {
+            return fragmentShader;
         }
 
         GLint getId() const {
@@ -197,16 +219,17 @@ namespace shaderSystem {
 
         ~GlProgram() {
             glDeleteProgram(id);
-            if (vertexShader != nullptr) {
-                delete vertexShader;
-                vertexShader = nullptr;
-            }
-            if (fragmentShader != nullptr) {
-                delete fragmentShader;
-                fragmentShader = nullptr;
-            }
         }
 
+    private:
+        void linkProgram() {
+
+            glAttachShader(id, vertexShader->getId());
+            glAttachShader(id, fragmentShader->getId());
+            glLinkProgram(id);
+
+            checkLinkingErrors();
+        }
 
         void checkLinkingErrors() {
             GLint success;
