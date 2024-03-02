@@ -118,7 +118,7 @@ namespace yumegl {
 
     namespace eExit { // ENGINE'S PROCESS TERMINATION FUNCTIONS
         void close() {
-            std::cerr << "Opengl has been successfully closed" << std::endl;
+            std::cout << "Opengl has been successfully closed" << std::endl;
             glfwTerminate();
         }
 
