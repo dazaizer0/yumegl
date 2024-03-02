@@ -1,3 +1,3 @@
 #pragma once
 
-#include "../assets/game.hpp"
+#include "../project/program.hpp"

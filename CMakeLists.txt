@@ -9,10 +9,20 @@ add_subdirectory(glm)
 # project
 add_executable(${PROJECT_NAME}
         # main
-        src/main.cpp
+        src/source.cpp
+
         src/config.h
         src/yume.h
         src/project.h
+
+        # include yumegl
+        src/include/YUME_AUDIO.h
+        src/include/YUME_GUI.h
+        src/include/YUME_INPUT.h
+        src/include/YUME_KERNEL.h
+        src/include/YUME_MATH.h
+        src/include/YUME_PHYSICS.h
+        src/include/YUME_RENDER.h
 
         # math
         src/engine/math/mathy.hpp
@@ -51,7 +61,7 @@ add_executable(${PROJECT_NAME}
         src/engine/render/rd/tex_square.hpp
 
         # GAME
-        assets/game.hpp
+        project/program.hpp
 
         # audio
         src/engine/audio/beep_engine.hpp
