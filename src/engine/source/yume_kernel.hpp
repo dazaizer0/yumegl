@@ -1,7 +1,12 @@
 #pragma once
 
 #include "../../config.h"
+
 #include <cstdlib>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 namespace yumegl {
     // WINDOW
@@ -119,6 +124,7 @@ namespace yumegl {
     namespace eExit { // ENGINE'S PROCESS TERMINATION FUNCTIONS
         void close() {
             std::cout << "Opengl has been successfully closed" << std::endl;
+
             glfwTerminate();
         }
 

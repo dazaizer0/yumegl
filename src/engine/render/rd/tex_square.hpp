@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef YUMEGL_TEX_SQUARE_HPP
+#define YUMEGL_TEX_SQUARE_HPP
 
 #include "../../../config.h"
 #include "../../../yume.h"
@@ -26,14 +26,13 @@ namespace rd {
         void refresh() const;
 
         void textureErrorHandler();
-        void PanicHandler() const;
         
-        void render() const;
+        void simpleRender() const;
 
         void bindTexture() const;
-        void bindTexture_includePanic();
+        // void bindTexture_includePanic();
 
-        void render_ownShader_incudePanic();
+        // void render_ownShader_incudePanic();
         void render_ownShader() const;
 
         void render_getShader(const shaderSystem::GlProgram& other_shader) const;
@@ -48,7 +47,8 @@ namespace rd {
         unsigned int tex{};
         const char* texPath;
         unsigned char* texData;
-        bool panic{ false };
+        
+        struct PanicHandler panic { false };
 
         int texWidth{}, texHeight{};
 
@@ -155,20 +155,13 @@ namespace rd {
         }
         else {
             std::cout << "Failed to load texture" << std::endl;
-            panic = true;
+            panic.turnOnPanicMode();
         }
         stbi_image_free(texData);
 
         std::cout << "Checking panic mode...\n";
-        PanicHandler();
+        panic.considerPanicMode();
         std::cout << "The object has been successfully initialized\n";
-    }
-
-    void TexSquare::PanicHandler() const {
-        if (panic) {
-            std::cerr << "-> Panic Handler : panic mode detected" << std::endl;
-            std::exit(0);
-        }
     }
 
     // FUNCTIONS
@@ -232,7 +225,7 @@ namespace rd {
         }
         catch (const std::exception& e) {
             panic = true;
-            PanicHandler();
+            panic.considerPanicMode();
         }
     }
 
@@ -249,11 +242,11 @@ namespace rd {
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {
-            panic = true;
+            panic.turnOnPanicMode();
         }
     }
 
-    void TexSquare::render() const {
+    void TexSquare::simpleRender() const {
         glBindTexture(GL_TEXTURE_2D, tex);
 
         if (shader.getId()) {

@@ -23,6 +23,8 @@ add_executable(${PROJECT_NAME}
 
         # other
         src/engine/source/yume_kernel.hpp
+        src/engine/source/panic_handler.hpp
+        src/engine/source/program.hpp
 
         # deps
         dep/glad/glad.c
@@ -42,8 +44,9 @@ add_executable(${PROJECT_NAME}
         src/engine/gui/yumeGui.hpp
 
         # RENDER 2 / 2D
-        src/engine/render/rd2/module.hpp
+        src/engine/render/rd2/elementary_objects.hpp
         src/engine/render/rd2/square_rd2.hpp
+        
         src/engine/render/rd2/cube_rd2.hpp
 
         src/engine/render/rd/tex_square.hpp
@@ -53,6 +56,7 @@ add_executable(${PROJECT_NAME}
 
         # audio
         src/engine/audio/beep_engine.hpp
+
 )
 
 # OPENGL

@@ -1,5 +1,5 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+#ifndef YUMEGL_TRIANGLE_HPP
+#define YUMEGL_TRIANGLE_HPP
 
 #include "../../../config.h"
 #include "../../../yume.h"

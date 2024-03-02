@@ -13,6 +13,7 @@
 #include "engine/math/mathy.hpp"
 #include "engine/math/colour.hpp"
 #include "engine/source/yume_kernel.hpp"
+#include "engine/source/panic_handler.hpp"
 
 // BASIC
 #include <iostream>

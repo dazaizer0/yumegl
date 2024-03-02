@@ -1,5 +1,5 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef YUMEGL_SQUARE_HPP
+#define YUMEGL_SQUARE_HPP
 
 #include "../../../config.h"
 #include "../../../yume.h"

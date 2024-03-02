@@ -3,7 +3,7 @@
 
 #include "../../../config.h"
 #include "../../../yume.h"
-#include "module.hpp"
+#include "elementary_objects.hpp"
 
 namespace rd2 {
     class [[maybe_unused]] Cube {
