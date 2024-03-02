@@ -13,26 +13,26 @@
 
 namespace shaderSystem {
 
+    const char* names[3] = { "VERTEX", "FRAGMENT", "UNKNOWN" };
+
     struct Shader {
     private:
-        const char* vName = "VERTEX";
-        const char* fName = "FRAGMENT";
         GLuint id;
-        GLubyte stype;
+        GLenum stype;
 
-        const char* sType() {
-            return stype ? fName : vName;
+        const char* sType() const {
+            return (stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]);
         }
     public:
         Shader(GLenum sType) {
             switch (sType) {
             case GL_VERTEX_SHADER:
                 id = glCreateShader(GL_VERTEX_SHADER);
-                stype = 0;
+                stype = GL_VERTEX_SHADER;
                 break;
             case GL_FRAGMENT_SHADER:
                 id = glCreateShader(GL_FRAGMENT_SHADER);
-                stype = 1;
+                stype = GL_FRAGMENT_SHADER;
                 break;
             }
         }
@@ -83,7 +83,7 @@ namespace shaderSystem {
 
         ~Shader() {
             glDeleteShader(id);
-            std::cerr << "Shader has been deleted - " << stype << std::endl;
+            std::cerr << sType() << " shader has been deleted." << std::endl;
         }
 
     private:
@@ -118,7 +118,6 @@ namespace shaderSystem {
         Shader* vertexShader;
         Shader* fragmentShader;
     public:
-
 
         GlProgram() : id(glCreateProgram()) {};
 

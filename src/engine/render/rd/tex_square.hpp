@@ -197,8 +197,8 @@ namespace rd {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr )(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
+        /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);*/
     }
 
     void TexSquare::updateVertices_includePanic() {
@@ -227,8 +227,8 @@ namespace rd {
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
             glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
+            /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);*/
         }
         catch (const std::exception& e) {
             panic = true;
@@ -268,31 +268,32 @@ namespace rd {
         glBindTexture(GL_TEXTURE_2D, tex);
     }
 
-    void TexSquare::bindTexture_includePanic() {
-        try {
-            glBindTexture(GL_TEXTURE_2D, tex);
-        }
-        catch (const std::exception& e) {
-            std::cerr << "-> Panic Handler : error with binding texture" << std::endl;
+    //we need a proper opengl error handling system probably in kernel, commenting for now
+    /*void TexSquare::bindTexture_includePanic() {
+        glBindTexture(GL_TEXTURE_2D, tex);
+
+        if(GLenum err = glGetError())
+        {
+            std::cerr << "-> Panic Handler : TEXTURE BIND ERROR ; GLERROR: " << std::hex << err << std::endl;
             panic = true;
             PanicHandler();
         }
-    }
+    }*/
 
-    // include panic mode
-    void TexSquare::render_ownShader_incudePanic() {
-        try {
-            shader.use();
+    // we need a proper opengl error handling system probably in kernel, commenting for now
+    /*void TexSquare::render_ownShader_incudePanic() {
+        shader.use();
 
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        }
-        catch (const std::exception& e) {
-            std::cerr << "-> Panic Handler : error with rendering" << std::endl;
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        if (GLenum err = glGetError())
+        {
+            std::cerr << "-> Panic Handler : RENDERING ERROR ; GLERROR: " << std::hex << err << std::endl;
             panic = true;
             PanicHandler();
         }
-    }
+    }*/
 
     void TexSquare::render_ownShader() const {
         shader.use();
@@ -348,7 +349,7 @@ namespace rd {
 
         shader.~GlProgram();
 
-        std::cerr << "Textures data successfully deleted" << std::endl;
+        std::cout << "Textures data successfully deleted" << std::endl;
     }
 }
 #endif
