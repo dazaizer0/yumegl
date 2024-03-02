@@ -20,9 +20,6 @@ namespace shaderSystem {
         GLuint id;
         GLenum stype;
 
-        const char* sType() const {
-            return (stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]);
-        }
     public:
         Shader(GLenum sType) {
             switch (sType) {
@@ -35,6 +32,12 @@ namespace shaderSystem {
                 stype = GL_FRAGMENT_SHADER;
                 break;
             }
+            std::cout << ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]))
+                << " shader has been created." << std::endl;
+        }
+
+        const char* sType() const {
+            return (stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : names[2]);
         }
 
         GLuint getId() const {
@@ -83,7 +86,7 @@ namespace shaderSystem {
 
         ~Shader() {
             glDeleteShader(id);
-            std::cerr << sType() << " shader has been deleted." << std::endl;
+            std::cout << sType() << " shader has been deleted." << std::endl;
         }
 
     private:
@@ -95,7 +98,7 @@ namespace shaderSystem {
 
             if (!success) {
                 glGetShaderInfoLog(id, 1024, nullptr, infoLog);
-                std::cout << "ERROR: SHADER COMPILATION ERROR ; TYPE: " << sType() << std::endl
+                std::cerr << "ERROR: SHADER COMPILATION ERROR ; TYPE: " << sType() << std::endl
                     << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
             }
         }
@@ -212,7 +215,7 @@ namespace shaderSystem {
             glGetProgramiv(id, GL_LINK_STATUS, &success);
             if (!success) {
                 glGetProgramInfoLog(id, 1024, nullptr, infoLog);
-                std::cout << "ERROR: PROGRAM LINKING ERROR " << std::endl
+                std::cerr << "ERROR: PROGRAM LINKING ERROR " << std::endl
                     << infoLog << success << std::endl << " -- --------------------------------------------------- -- " << std::endl;
             }
         }
