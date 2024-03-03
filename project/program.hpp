@@ -5,7 +5,6 @@
 namespace Program {
     // CREATE OBJECTS
     rd::TexSquare* tex{ nullptr };
-    audio::beep::BeepMusic* startMusic{ nullptr };
 
     void Initialize() {
         yumegl::init("yumegl");
@@ -14,19 +13,16 @@ namespace Program {
         tex = new rd::TexSquare("../project/textures/chungus.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.45f, 0.9f });
         tex->shader.makeProgramFromPaths("../project/shaders/texture/vertex.glsl", "../project/shaders/texture/fragment.glsl");
         tex->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
-
-        startMusic = new audio::beep::BeepMusic{ {
-            audio::beep::BeepSound{500, 500},
-            audio::beep::BeepSound{400, 400},
-            audio::beep::BeepSound{800, 500},
-            audio::beep::BeepSound{900, 1000}
-        } };
     }
 
     void Start() {
         std::cout << "yumegl 0.0.0.2\n";
 
-        startMusic->play();
+        // INTRO
+        audio::beep::playBeepSound(audio::beep::BeepSound::LOWER_MIDRANGE());
+        audio::beep::playBeepSound(audio::beep::BeepSound::MIDRANGE());
+        audio::beep::playBeepSound(audio::beep::BeepSound{ 500, 500 });
+        audio::beep::playBeepSound(audio::beep::BeepSound{ 700, 500 });
     }
 
     void Update() {

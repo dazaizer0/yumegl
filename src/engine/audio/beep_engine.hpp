@@ -25,7 +25,7 @@ namespace audio::beep {
     class BeepSound {
     public:
         BeepSound() : frequency(0.0), duration(0) {} // default sound constructor
-        BeepSound(const double f, const int d) : frequency(f), duration(d) {}
+        BeepSound(const double frequencyV, const int durationV) : frequency(frequencyV), duration(durationV) {}
 
         [[nodiscard]] double getFrequency() const {
             return frequency;
@@ -36,6 +36,14 @@ namespace audio::beep {
 
         void play() const;
 
+        // default sound lasts 1s
+        static BeepSound BASS() { return { 60, 1000 }; }
+        static BeepSound LOWER_MIDRANGE() { return { 250, 1000 }; }
+        static BeepSound MIDRANGE() { return { 500, 1000 }; }
+        static BeepSound UPPER_MIDRANGE() { return { 2000, 1000 }; }
+        static BeepSound PRESENCE() { return { 4000, 1000 }; }
+        static BeepSound BRILLIANCE() { return { 6000, 1000 }; }
+
     private:
         double frequency;
         int duration;
@@ -43,6 +51,21 @@ namespace audio::beep {
 
     void BeepSound::play() const {
         playBeep(frequency, duration);
+    }
+
+    void playBeepSound(BeepSound beep) {
+        const double period = (1.0 / beep.getFrequency() * 1000000); // T = 1 / f
+
+        #ifdef _WIN32
+                Beep(static_cast<int>(beep.getFrequency()), beep.getDuration());
+        #else
+                const double period = (1.0 / beep.getFrequency() * 1000000);
+
+                for (int i = 0; i < beep.getDuration() * 1000; i += period) {
+                    std::cout << "\a"; // play sound
+                    std::this_thread::sleep_for(std::chrono::microseconds(static_cast<int>(period)));
+                }
+        #endif
     }
 #pragma endregion
 
