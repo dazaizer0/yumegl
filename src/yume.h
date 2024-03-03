@@ -13,3 +13,5 @@
 #include "src/engine/objects/camera.hpp"
 #include "src/engine/input/input.hpp"
 #include "src/engine/audio/beep_engine.hpp"
+
+#include "config.h"

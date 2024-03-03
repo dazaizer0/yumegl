@@ -1,6 +1,6 @@
-#include "config.h"
 #include "yume.h"
-#include "project.h"
+
+#include "../project/YumeLists.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -18,9 +18,30 @@ int main() {
     // chungus 
     Program::initialize();
 
-    Program::update();
+    glEnable(GL_DEPTH_TEST);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    Program::start();
+
+    while (yumegl::isWindowOpen()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        Program::update();
+        yumegl::swapBuffersPollEvents();
+    }
 
     Program::close();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    yumegl::eExit::close();
 
     return 0;
 }

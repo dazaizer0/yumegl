@@ -13,16 +13,7 @@ add_executable(${PROJECT_NAME}
 
         src/config.h
         src/yume.h
-        src/project.h
-
-        # include yumegl
-        src/include/YUME_AUDIO.h
-        src/include/YUME_GUI.h
-        src/include/YUME_INPUT.h
-        src/include/YUME_KERNEL.h
-        src/include/YUME_MATH.h
-        src/include/YUME_PHYSICS.h
-        src/include/YUME_RENDER.h
+        project/YumeLists.h
 
         # math
         src/engine/math/mathy.hpp

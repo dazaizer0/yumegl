@@ -25,3 +25,4 @@ dep
 glfw
 glm
 SFML
+build-release
