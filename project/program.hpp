@@ -10,7 +10,7 @@ namespace Program {
         yumegl::init("yumegl");
         yumegl::eFunc::setColor(colour::PURPLE());
 
-        tex = new rd::TexSquare("../project/textures/chungus.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.45f, 0.9f });
+        tex = new rd::TexSquare("../project/textures/chungus.png", mathy::vec3yu<>{ 0.0f, -0.150f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.3f, 0.5f });
         tex->shader.makeProgramFromPaths("../project/shaders/texture/vertex.glsl", "../project/shaders/texture/fragment.glsl");
         tex->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
     }
@@ -19,7 +19,6 @@ namespace Program {
         std::cout << "yumegl 0.0.0.2\n";
 
         // INTRO
-        audio::beep::playBeepSound(audio::beep::BeepSound::LOWER_MIDRANGE());
         audio::beep::playBeepSound(audio::beep::BeepSound::MIDRANGE());
         audio::beep::playBeepSound(audio::beep::BeepSound{ 500, 500 });
         audio::beep::playBeepSound(audio::beep::BeepSound{ 700, 500 });
@@ -45,12 +44,14 @@ namespace Program {
         --------------------- RENDER ----------------------
         ------------------------------------------------ */
         tex->simpleRender();
+        tex->position = mathy::vec3yu<>{ (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, 0 };
+
 
         /* ------------------------------------------------
         --------------------- OTHER -----------------------
         ------------------------------------------------ */
 
-        // IMGUI - create frame for tex object
+        // IMGUI
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
