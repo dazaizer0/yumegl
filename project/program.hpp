@@ -2,11 +2,11 @@
 
 #include "../src/yume.h"
 
-namespace Program {
+yumeSystem Program {
     // CREATE OBJECTS
     rd::TexSquare* tex{ nullptr };
 
-    void Initialize() {
+    yumeSubsystem Initialize() {
         yumegl::init("yumegl");
         yumegl::eFunc::setColor(colour::PURPLE());
 
@@ -15,7 +15,7 @@ namespace Program {
         tex->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
     }
 
-    void Start() {
+    yumeSubsystem Start() {
         std::cout << "yumegl 0.0.0.2\n";
 
         // INTRO
@@ -24,7 +24,7 @@ namespace Program {
         audio::beep::playBeepSound(audio::beep::BeepSound{ 700, 500 });
     }
 
-    void Update() {
+    yumeSubsystem Update() {
         yumegl::update();
         input::update();
 
@@ -44,7 +44,7 @@ namespace Program {
         --------------------- RENDER ----------------------
         ------------------------------------------------ */
         tex->simpleRender();
-        tex->position = mathy::vec3yu<>{ (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, 0 };
+        // tex->position = mathy::vec3yu<>{ (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, (float)(mathy::sine_0_1_smooth_period_change(glfwGetTime(), 0.8f)) * 0.3f, 0 };
 
 
         /* ------------------------------------------------
@@ -84,7 +84,7 @@ namespace Program {
         tex->refresh();
     }
 
-    void Close() {
+    yumeSubsystem Close() {
         delete tex;
     }
 }

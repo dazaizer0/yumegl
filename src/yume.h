@@ -1,8 +1,8 @@
 #pragma once
 
 
-//#define system class
-//#define subsystem void
+#define yumeSystem namespace
+#define yumeSubsystem void
 
 // YUME
 #include "src/engine/shader/shader.hpp"
