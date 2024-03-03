@@ -181,6 +181,20 @@ namespace mathy {
         }
     };
 
+
+    vec2yu<> scaleToWindow(int window_x, int window_y) {
+        return vec2yu<>{ 0.0f, 0.0f };
+
+        // example:
+        // vec.x = 1.0f, vec.y = 1.0f
+        // window_x == 1280
+        // window_y = 720
+        // = 16 : 9
+        // new vec = { 0.45f, 0.8f }
+    }
+
+
+
     // VECTOR 3
     template <typename T = float>
     class vec3yu {
@@ -423,6 +437,10 @@ namespace mathy {
         static vec4yu<T> FORWARD() { return { T(0), T(0), T(1), T(1) }; }
         static vec4yu<T> BACK() { return { T(0), T(0), T(-1), T(1) }; }
 
+        vec3yu<T> fromHomoToVec3yu() {
+            return vec3yu<T>(x(), y(), z()) / w();
+        }
+
         // OPERATORS
 
         vec4yu<T>& operator=(const vec4yu<T>& other) {
@@ -497,15 +515,292 @@ namespace mathy {
             return vec4yu<A>((A)this->container.x, (A)this->container.y, (A)this->container.z, (A)this->container.w);
         }
     };
-    
-    vec2yu<> scaleToWindow(int window_x, int window_y) {
-        return vec2yu<>{ 0.0f, 0.0f };
 
-        // example:
-        // vec.x = 1.0f, vec.y = 1.0f
-        // window_x == 1280
-        // window_y = 720
-        // = 16 : 9
-        // new vec = { 0.45f, 0.8f }
-    }
+    template <typename T = float>
+    class yuMatrix2x2 {
+    public:
+
+        glm::mat<2, 2, T, glm::defaultp> container;
+
+        inline T value(GLubyte column, GLubyte row) {
+            if (column > 1 || row > 1) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return 0;
+            }
+            return container[column][row];
+        }
+        inline void value(GLubyte column, GLubyte row, T in) { 
+            if (column > 1 || row > 1) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column][row] = in;
+        }
+
+        inline vec2yu<T> value(GLubyte column) {
+            if (column > 1 ) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return vec2yu<T>::ZERO();
+            }
+            return vec2yu<T>(container[column]);
+        }
+        inline void value(GLubyte column, vec2yu<T> in) {
+            if (column > 1 ) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column] = in.container;
+        }
+
+        yuMatrix2x2() : container({ {0, 0},{0, 0} }) {}
+        
+        yuMatrix2x2(const glm::mat<2, 2, T, glm::defaultp>& yeet) : container(yeet) {}
+        
+        yuMatrix2x2(const T arrayIn[2][2]) : container({ {arrayIn[0][0], arrayIn[0][1]}, {arrayIn[1][0], arrayIn[1][1]} }) {}
+
+        yuMatrix2x2(const yuMatrix2x2<T>& obj) : container(obj.container) { }
+
+        static yuMatrix2x2<T> unit() {
+            const T numbers[2][2] = { {(T)1, (T)0}, {(T)0, (T)1} };
+            return yuMatrix2x2<T>(numbers);
+        }
+
+        yuMatrix2x2<T> operator +(const yuMatrix2x2<T>& b) {
+            return yuMatrix2x2(this->container + b.container);
+        }
+        yuMatrix2x2<T> operator +=(const yuMatrix2x2<T>& b) {
+            this->container += b.container;
+            return *this;
+        }
+
+        yuMatrix2x2<T> operator -(const yuMatrix2x2<T>& b) {
+            return yuMatrix2x2(this->container - b.container);
+        }
+        yuMatrix2x2<T> operator -=(const yuMatrix2x2<T>& b) {
+            this->container -= b.container;
+            return *this;
+        }
+
+
+        yuMatrix2x2<T> operator *(const yuMatrix2x2<T>& b) {
+            return yuMatrix2x2(this->container * b.container);
+        }
+        yuMatrix2x2<T> operator *=(const yuMatrix2x2<T>& b) {
+            this->container *= b.container;
+            return *this;
+        }
+
+        /// <summary>
+        /// Returns a new vector. It is b transformed by the matrix on the left.
+        /// </summary>
+        /// <param name="b">Vector with the data to transform</param>
+        /// <returns>A new vector that = matrix * b.</returns>
+        vec2yu<T> operator *(const vec2yu<T> b) {
+            return vec2yu<T>(this->container * b.container);
+        }
+
+        /// <summary>
+        /// Transforms vector b by the matrix on the left.
+        /// Saves the changes to vector b.
+        /// </summary>
+        /// <param name="b">Vector to be transformed.</param>
+        /// <returns>Reference to the transformed vector.</returns>
+        vec2yu<T>& operator *=(vec2yu<T>& b) {
+            b = *this * b;
+            return b;
+        }
+    };
+
+    template <typename T = float>
+    class yuMatrix3x3 {
+    public:
+
+        glm::mat<3, 3, T, glm::defaultp> container;
+
+        inline T value(GLubyte column, GLubyte row) {
+            if (column > 2 || row > 2) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return 0;
+            }
+            return container[column][row];
+        }
+        inline void value(GLubyte column, GLubyte row, T in) {
+            if (column > 2 || row > 2) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column][row] = in;
+        }
+
+        inline vec3yu<T> value(GLubyte column) {
+            if (column > 2) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return vec3yu<T>::ZERO();
+            }
+            return vec3yu<T>(container[column]);
+        }
+        inline void value(GLubyte column, vec3yu<T> in) {
+            if (column > 2) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column] = in.container;
+        }
+
+        yuMatrix3x3() : container({ {0, 0, 0}, {0, 0, 0}, {0, 0, 0} }) {}
+
+        yuMatrix3x3(const glm::mat<3, 3, T, glm::defaultp>& yeet) : container(yeet) {}
+
+        yuMatrix3x3(const T arrayIn[3][3]) : container({ {arrayIn[0][0], arrayIn[0][1], arrayIn[0][2]},
+            {arrayIn[1][0], arrayIn[1][1], arrayIn[1][2]}, {arrayIn[2][0], arrayIn[2][1], arrayIn[2][2]} }) {}
+
+        yuMatrix3x3(const yuMatrix3x3<T>& obj) : container(obj.container) { }
+
+        static yuMatrix3x3<T> unit() {
+            const T numbers[3][3] = { {(T)1, (T)0, (T)0}, {(T)0, (T)1, (T)0}, {(T)0, (T)0, (T)1} };
+            return yuMatrix3x3<T>(numbers);
+        }
+
+        yuMatrix3x3<T> operator +(const yuMatrix3x3<T>& b) {
+            return yuMatrix3x3(this->container + b.container);
+        }
+        yuMatrix3x3<T> operator +=(const yuMatrix3x3<T>& b) {
+            this->container += b.container;
+            return *this;
+        }
+
+        yuMatrix3x3<T> operator -(const yuMatrix3x3<T>& b) {
+            return yuMatrix3x3(this->container - b.container);
+        }
+        yuMatrix3x3<T> operator -=(const yuMatrix3x3<T>& b) {
+            this->container -= b.container;
+            return *this;
+        }
+
+
+        yuMatrix3x3<T> operator *(const yuMatrix3x3<T>& b) {
+            return yuMatrix3x3(this->container * b.container);
+        }
+        yuMatrix3x3<T> operator *=(const yuMatrix3x3<T>& b) {
+            this->container *= b.container;
+            return *this;
+        }
+
+        /// <summary>
+        /// Returns a new vector. It is b transformed by the matrix on the left.
+        /// </summary>
+        /// <param name="b">Vector with the data to transform</param>
+        /// <returns>A new vector that = matrix * b.</returns>
+        vec3yu<T> operator *(const vec3yu<T> b) {
+            return vec3yu<T>(this->container * b.container);
+        }
+
+        /// <summary>
+        /// Transforms vector b by the matrix on the left.
+        /// Saves the changes to vector b.
+        /// </summary>
+        /// <param name="b">Vector to be transformed.</param>
+        /// <returns>Reference to the transformed vector.</returns>
+        vec3yu<T>& operator *=(vec3yu<T>& b) {
+            b = *this * b;
+            return b;
+        }
+    };
+
+    template <typename T = float>
+    class yuMatrix4x4 {
+    public:
+
+        glm::mat<4, 4, T, glm::defaultp> container;
+
+        inline T value(GLubyte column, GLubyte row) {
+            if (column > 3 || row > 3) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return 0;
+            }
+            return container[column][row];
+        }
+        inline void value(GLubyte column, GLubyte row, T in) {
+            if (column > 3 || row > 3) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column][row] = in;
+        }
+
+        inline vec4yu<T> value(GLubyte column) {
+            if (column > 3) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return vec4yu<T>::ZERO();
+            }
+            return vec4yu<T>(container[column]);
+        }
+        inline void value(GLubyte column, vec4yu<T> in) {
+            if (column > 3) {
+                std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
+                return;
+            }
+            container[column] = in.container;
+        }
+
+        yuMatrix4x4() : container({ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} }) {}
+
+        yuMatrix4x4(const glm::mat<4, 4, T, glm::defaultp>& yeet) : container(yeet) {}
+
+        yuMatrix4x4(const T arrayIn[4][4]) : container({ {arrayIn[0][0], arrayIn[0][1], arrayIn[0][2], arrayIn[0][3]},
+            {arrayIn[1][0], arrayIn[1][1], arrayIn[1][2], arrayIn[1][3]}, {arrayIn[2][0], arrayIn[2][1], arrayIn[2][2], arrayIn[2][3]},
+            {arrayIn[3][0], arrayIn[3][1], arrayIn[3][2], arrayIn[3][3]} }) {}
+
+        yuMatrix4x4(const yuMatrix4x4<T>& obj) : container(obj.container) { }
+
+        static yuMatrix4x4<T> unit() {
+            const T numbers[4][4] = { {(T)1, (T)0, (T)0, (T)0}, {(T)0, (T)1, (T)0, (T)0}, {(T)0, (T)0, (T)1, (T)0}, {(T)0, (T)0, (T)0, (T)1} };
+            return yuMatrix4x4<T>(numbers);
+        }
+
+        yuMatrix4x4<T> operator +(const yuMatrix4x4<T>& b) {
+            return yuMatrix4x4(this->container + b.container);
+        }
+        yuMatrix4x4<T> operator +=(const yuMatrix4x4<T>& b) {
+            this->container += b.container;
+            return *this;
+        }
+
+        yuMatrix4x4<T> operator -(const yuMatrix4x4<T>& b) {
+            return yuMatrix4x4(this->container - b.container);
+        }
+        yuMatrix4x4<T> operator -=(const yuMatrix4x4<T>& b) {
+            this->container -= b.container;
+            return *this;
+        }
+
+
+        yuMatrix4x4<T> operator *(const yuMatrix4x4<T>& b) {
+            return yuMatrix4x4(this->container * b.container);
+        }
+        yuMatrix4x4<T> operator *=(const yuMatrix4x4<T>& b) {
+            this->container *= b.container;
+            return *this;
+        }
+
+        /// <summary>
+        /// Returns a new vector. It is b transformed by the matrix on the left.
+        /// </summary>
+        /// <param name="b">Vector with the data to transform</param>
+        /// <returns>A new vector that = matrix * b.</returns>
+        vec4yu<T> operator *(const vec4yu<T> b) {
+            return vec4yu<T>(this->container * b.container);
+        }
+
+        /// <summary>
+        /// Transforms vector b by the matrix on the left.
+        /// Saves the changes to vector b.
+        /// </summary>
+        /// <param name="b">Vector to be transformed.</param>
+        /// <returns>Reference to the transformed vector.</returns>
+        vec4yu<T>& operator *=(vec4yu<T>& b) {
+            b = *this * b;
+            return b;
+        }
+    };
 }
