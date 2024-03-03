@@ -7,10 +7,7 @@ namespace Program {
     rd::TexSquare* tex{ nullptr };
     audio::beep::BeepMusic* startMusic{ nullptr };
 
-    void initialize() {
-        // INITIALIZE
-        std::cout << "yumegl 0.0.0.2\n";
-
+    void Initialize() {
         yumegl::init("yumegl");
         yumegl::eFunc::setColor(colour::PURPLE());
 
@@ -26,11 +23,13 @@ namespace Program {
         } };
     }
 
-    void start() {
+    void Start() {
+        std::cout << "yumegl 0.0.0.2\n";
+
         startMusic->play();
     }
 
-    void update() {
+    void Update() {
         yumegl::update();
         input::update();
 
@@ -88,7 +87,7 @@ namespace Program {
         tex->refresh();
     }
 
-    void close() {
+    void Close() {
         delete tex;
     }
 }

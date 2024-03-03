@@ -18,6 +18,11 @@ namespace yumegl {
     float dupaTime{};
     float lastFrame{};
 
+    void setWindowSize(unsigned int width, unsigned int height) {
+        WINDOW_WIDTH = width;
+        WINDOW_HEIGHT = height;
+    }
+
     void init(const std::string& title) {
         // GAME WINDOW INITIALIZATION
         if (!glfwInit()) {

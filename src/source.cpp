@@ -16,7 +16,8 @@
 
 int main() {
     // chungus 
-    Program::initialize();
+#pragma region INITIALIZATION_AND_STARTUP
+    Program::Initialize();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -27,15 +28,19 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    Program::start();
+    Program::Start();
+#pragma endregion
 
+#pragma region UPDATE
     while (yumegl::isWindowOpen()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        Program::update();
+        Program::Update();
         yumegl::swapBuffersPollEvents();
     }
+#pragma endregion
 
-    Program::close();
+#pragma region DE-INITIALIZATION
+    Program::Close();
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
@@ -44,4 +49,5 @@ int main() {
     yumegl::eExit::close();
 
     return 0;
+#pragma endregion
 }
