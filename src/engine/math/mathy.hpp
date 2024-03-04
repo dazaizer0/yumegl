@@ -75,16 +75,9 @@ namespace mathy {
             return x() * x() + y() * y();
         }
 
-        inline T length() {
-            if (typeid(T) == typeid(float))
-                return sqrtf(length_2());
-            else
-                return sqrt(length_2());
-        }
+        inline T length();
 
-        inline T lengthInv() {
-            return (T)1 / length();
-        }
+        inline T lengthInv();
 
         [[maybe_unused]] inline vec2yu normalizE() {
             return *this *= lengthInv();
@@ -94,9 +87,7 @@ namespace mathy {
             return *this * lengthInv();
         }
 
-        T distance(vec2yu<> other) {
-            return (*this - other).length();
-        }
+        T distance(vec2yu<T> other);
 
         static vec2yu<T> ZERO() { return { T(0), T(0) }; };
         static vec2yu<T> ONE() { return { T(1), T(1) }; };
@@ -181,6 +172,24 @@ namespace mathy {
         }
     };
 
+    template<typename T>
+    T vec2yu<T>::length() {
+        return sqrt(length_2());
+    }
+    template<>
+    float vec2yu<>::length() {
+        return sqrtf(length_2());
+    }
+
+    template<typename T>
+    T vec2yu<T>::lengthInv() {
+        return (T)1 / length();
+    }
+
+    template<typename T>
+    T distance(vec2yu<T> other) {
+        return (*this - other).length();
+    }
 
     vec2yu<> scaleToWindow(int window_x, int window_y) {
         return vec2yu<>{ 0.0f, 0.0f };
@@ -747,15 +756,12 @@ namespace mathy {
 
         yuMatrix4x4(const glm::mat<4, 4, T, glm::defaultp>& yeet) : container(yeet) {}
 
-        yuMatrix4x4(const T arrayIn[4][4]) : container({ {arrayIn[0][0], arrayIn[0][1], arrayIn[0][2], arrayIn[0][3]},
-            {arrayIn[1][0], arrayIn[1][1], arrayIn[1][2], arrayIn[1][3]}, {arrayIn[2][0], arrayIn[2][1], arrayIn[2][2], arrayIn[2][3]},
-            {arrayIn[3][0], arrayIn[3][1], arrayIn[3][2], arrayIn[3][3]} }) {}
+        yuMatrix4x4(const T arrayIn[4][4]) : container({ arrayIn[0], arrayIn[1], arrayIn[2], arrayIn[3] }) {}
 
         yuMatrix4x4(const yuMatrix4x4<T>& obj) : container(obj.container) { }
 
         static yuMatrix4x4<T> unit() {
-            const T numbers[4][4] = { {(T)1, (T)0, (T)0, (T)0}, {(T)0, (T)1, (T)0, (T)0}, {(T)0, (T)0, (T)1, (T)0}, {(T)0, (T)0, (T)0, (T)1} };
-            return yuMatrix4x4<T>(numbers);
+            return yuMatrix4x4<T>({ {(T)1, (T)0, (T)0, (T)0}, {(T)0, (T)1, (T)0, (T)0}, {(T)0, (T)0, (T)1, (T)0}, {(T)0, (T)0, (T)0, (T)1} });
         }
 
         yuMatrix4x4<T> operator +(const yuMatrix4x4<T>& b) {
