@@ -21,13 +21,12 @@ namespace rd {
 
         //FUNCTIONS
         void updateVertices();
-        void updateVertices_includePanic();
 
         void refresh() const;
 
         void textureErrorHandler();
         
-        void simpleRender() const;
+        void simpleRender();
 
         void bindTexture() const;
         // void bindTexture_includePanic();
@@ -54,6 +53,8 @@ namespace rd {
 
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
+
+        mathy::vec3yu<> prevPosition{};
     };
 
     TexSquare::TexSquare(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value) {
@@ -71,93 +72,100 @@ namespace rd {
         // texPath = yumegl::convertToAsssetsPath(path);
 
         position = position_value;
+        prevPosition = position;
         color = color_value;
         size = size_value;
 
         // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
-        vertices = {
-            // position, position, position
-            // tex coords, tex coords, tex coords
+        try {
+            vertices = {
+                // position, position, position
+                // tex coords, tex coords, tex coords
 
-             position.x() + size.x(), position.y() + size.y(), position.z(),
-             color.r, color.g, color.b,
-             0.0f, 1.0f,
+                 position.x() + size.x(), position.y() + size.y(), position.z(),
+                 color.r, color.g, color.b,
+                 0.0f, 1.0f,
 
-             position.x() + size.x(), position.y() + -size.y(), position.z(),
-             color.r, color.g, color.b,
-             0.0f, 0.0f,
+                 position.x() + size.x(), position.y() + -size.y(), position.z(),
+                 color.r, color.g, color.b,
+                 0.0f, 0.0f,
 
-            position.x() + -size.x(), position.y() + -size.y(), position.z(),
-            color.r, color.g, color.b,
-            1.0f, 0.0f,
+                position.x() + -size.x(), position.y() + -size.y(), position.z(),
+                color.r, color.g, color.b,
+                1.0f, 0.0f,
 
-            position.x() + -size.x(), position.y() + size.y(), position.z(),
-            color.r, color.g, color.b,
-            1.0f, 1.0f
-        };
-        indices = {
-            // triangle 1
-            // triangle 2
+                position.x() + -size.x(), position.y() + size.y(), position.z(),
+                color.r, color.g, color.b,
+                1.0f, 1.0f
+            };
+            indices = {
+                // triangle 1
+                // triangle 2
 
-            0, 1, 3,
-            1, 2, 3
-        };
+                0, 1, 3,
+                1, 2, 3
+            };
 
-        // CREATE TEX-SQUARE
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+            // CREATE TEX-SQUARE
+            glGenVertexArrays(1, &VAO);
+            glGenBuffers(1, &VBO);
+            glGenBuffers(1, &EBO);
 
-        glBindVertexArray(VAO);
+            glBindVertexArray(VAO);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);
 
-        // POSITION
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr);
-        glEnableVertexAttribArray(0);
+            // POSITION
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr);
+            glEnableVertexAttribArray(0);
 
-        // COLOR
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
+            // COLOR
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
 
-        // TEXTURE COORD
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
+            // TEXTURE COORD
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+            glEnableVertexAttribArray(2);
 
-        // LOADING TEXTURE
-        glGenTextures(1, &tex);
-        glBindTexture(GL_TEXTURE_2D, tex);
+            // LOADING TEXTURE
+            glGenTextures(1, &tex);
+            glBindTexture(GL_TEXTURE_2D, tex);
 
-        // TEXTURE PARAMETERS
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            // TEXTURE PARAMETERS
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        // FILTER
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            // FILTER
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        int nrChannels;
-        texData = stbi_load(
-            texPath,
-            &texWidth,
-            &texHeight,
-            &nrChannels,
-            0
-        );
+            int nrChannels;
+            texData = stbi_load(
+                texPath,
+                &texWidth,
+                &texHeight,
+                &nrChannels,
+                0
+            );
 
-        if (texData) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
-            glGenerateMipmap(GL_TEXTURE_2D);
+            if (texData) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+                glGenerateMipmap(GL_TEXTURE_2D);
+            }
+            else {
+                std::cerr << "Failed to load texture" << std::endl;
+                panic.turnOnPanicMode();
+            }
+            stbi_image_free(texData);
+            std::cout << "An object has been created successfully\n";
         }
-        else {
-            std::cout << "Failed to load texture" << std::endl;
-            panic.turnOnPanicMode();
+        catch (const std::exception& e) {
+            std::cerr << "An error occurred during initialization: " << e.what();
         }
-        stbi_image_free(texData);
 
         std::cout << "Checking panic mode...\n";
         panic.considerPanicMode();
@@ -194,41 +202,6 @@ namespace rd {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);*/
     }
 
-    void TexSquare::updateVertices_includePanic() {
-        try {
-            vertices = {
-                // position, position, position
-                // tex coords, tex coords, tex coords
-
-                position.x() + size.x(), position.y() + size.y(), position.z(),
-                color.r, color.g, color.b,
-                1.0f, 1.0f,
-
-                position.x() + size.x(), position.y() + -size.y(), position.z(),
-                color.r, color.g, color.b,
-                1.0f, 0.0f,
-
-                position.x() + -size.x(), position.y() + -size.y(), position.z(),
-                color.r, color.g, color.b,
-                0.0f, 0.0f,
-
-                position.x() + -size.x(), position.y() + size.y(), position.z(),
-                color.r, color.g, color.b,
-                0.0f, 1.0f
-            };
-
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
-
-            /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);*/
-        }
-        catch (const std::exception& e) {
-            panic = true;
-            panic.considerPanicMode();
-        }
-    }
-
     void TexSquare::refresh() const {
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -246,7 +219,7 @@ namespace rd {
         }
     }
 
-    void TexSquare::simpleRender() const {
+    void TexSquare::simpleRender() { // simpler way to render objects, but less efficient
         glBindTexture(GL_TEXTURE_2D, tex);
 
         if (shader.getId()) {
@@ -255,6 +228,13 @@ namespace rd {
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        if (prevPosition.container != position.container) {
+            this->updateVertices();
+            this->refresh();
+
+            prevPosition = position;
+        }
     }
 
     void TexSquare::bindTexture() const {

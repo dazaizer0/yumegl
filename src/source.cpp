@@ -34,6 +34,7 @@ int main() {
 #pragma region UPDATE
     while (yumegl::isWindowOpen()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         Program::Update();
         yumegl::swapBuffersPollEvents();
     }
