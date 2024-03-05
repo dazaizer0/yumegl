@@ -17,7 +17,21 @@
 int main() {
     // chungus 
 #pragma region INITIALIZATION_AND_STARTUP
-    Program::Initialize();
+    try {
+        Program::SetUp();
+        std::cout << "The SetUp() yumeSubsystem has been succesfully done.\n";
+    }
+    catch (const std::exception& e) {
+        std::cerr << "The SetUp() yumeSubsystem filed!" << std::endl;
+    }
+
+    try {
+        Program::Initialize();
+        std::cout << "The Initialize() yumeSubsystem has been succesfully done.\n";
+    }
+    catch (const std::exception& e) {
+        std::cerr << "The Initialize() yumeSubsystem filed!" << std::endl;
+    }
 
     glEnable(GL_DEPTH_TEST);
 
@@ -28,7 +42,15 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    Program::Start();
+    try {
+        Program::Start();
+        std::cout << "The Start() yumeSubsystem has been succesfully done.\n";
+    }
+    catch (const std::exception& e) {
+        std::cerr << "The Start() yumeSubsystem filed!" << std::endl;
+    }
+
+    std::cout << "------------------ \n\n";
 #pragma endregion
 
 #pragma region UPDATE

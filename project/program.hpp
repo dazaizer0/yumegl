@@ -6,10 +6,12 @@ yumeSystem Program {
     // CREATE OBJECTS
     rd::TexSquare* player{ nullptr };
 
-    yumeSubsystem Initialize() {
+    yumeSubsystem SetUp() {
         yumegl::setWindowSize(650, 780);
         yumegl::init("yumegl");
+    }
 
+    yumeSubsystem Initialize() {
         player = new rd::TexSquare("../project/textures/plane.png", mathy::vec3yu<>{ 0.0f, 0.8f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.16f, 0.16f });
         player->shader.makeProgramFromPaths("../project/shaders/texture/vertex.glsl", "../project/shaders/texture/fragment.glsl");
     }
@@ -28,17 +30,19 @@ yumeSystem Program {
     }
 
     yumeSubsystem Update() {
+        // UPDATE SYSTEMS
         yumegl::update();
         input::update();
 
-        // INPUT
+        // CLOSE WINDOW
         if (input::keyPressed(GLFW_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyDown(GLFW_KEY_RIGHT)) {
+        // MOVEMENT
+        if (input::keyDown(GLFW_KEY_RIGHT) && player->position.x() > -1.0f + player->size.x()) {
             player->position.container.x -= 1.0f * yumegl::dupaTime;
         }
-        else if (input::keyDown(GLFW_KEY_LEFT)) {
+        else if (input::keyDown(GLFW_KEY_LEFT) && player->position.x() < 1.0f - player->size.x()) {
             player->position.container.x += 1.0f * yumegl::dupaTime;
         }
 
