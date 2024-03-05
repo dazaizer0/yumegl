@@ -33,7 +33,7 @@ namespace mathy {
 
 
     // VECTOR 2
-    template <typename T = float>
+    template <typename T = GLfloat>
     class vec2yu {
 
     public:
@@ -205,7 +205,7 @@ namespace mathy {
 
 
     // VECTOR 3
-    template <typename T = float>
+    template <typename T = GLfloat>
     class vec3yu {
 
     public:
@@ -213,13 +213,13 @@ namespace mathy {
 
         glm::vec<3, T, glm::defaultp> container;
 
-        inline T x() { return container.x; }
+        inline T x() const { return container.x; }
         inline void x(T xIn) { container.x = xIn; }
 
-        inline T y() { return container.y; }
+        inline T y() const { return container.y; }
         inline void y(T yIn) { container.y = yIn; }
 
-        inline T z() { return container.z; }
+        inline T z() const { return container.z; }
         inline void z(T zIn) { container.z = zIn; }
 
         // CONSTRUCTORS
@@ -238,28 +238,28 @@ namespace mathy {
 
         // FUNCTIONS
 
-        std::string toString() {
+        std::string toString() const {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << ", z: " << z() << "\n";
             return ss.str();
         }
 
-        void toStdout() {
+        void toStdout() const {
             std::cout << toString(); // Uses toString() to make the code more clear. I know it's suboptimal to make an ss and then cout it, but this func.'s probably not going to be used too much and if it's going to be, then we'll think about it.
         }
 
-        inline T length_2() {
+        inline T length_2() const {
             return x() * x() + y() * y() + z() * z();
         }
 
-        inline T length() {
+        inline T length() const {
             if (typeid(T) == typeid(float))
                 return sqrtf(length_2());
             else
                 return sqrt(length_2());
         }
 
-        inline T lengthInv() {
+        inline T lengthInv() const {
             return (T)1 / length();
         }
 
@@ -267,11 +267,11 @@ namespace mathy {
             return *this *= lengthInv();
         }
 
-        [[maybe_unused]] inline vec3yu normalizED() {
+        [[maybe_unused]] inline vec3yu normalizED() const {
             return *this * lengthInv();
         }
 
-        T distance(vec3yu other) {
+        T distance(vec3yu other) const {
             return (*this - other).length();
         }
 
@@ -361,7 +361,7 @@ namespace mathy {
     };
 
     // VECTOR 4
-    template <typename T = float>
+    template <typename T = GLfloat>
     class vec4yu {
 
     public:
@@ -369,16 +369,16 @@ namespace mathy {
 
         glm::vec<4, T, glm::defaultp> container;
 
-        inline T x() { return container.x; }
+        inline T x() const { return container.x; }
         inline void x(T xIn) { container.x = xIn; }
 
-        inline T y() { return container.y; }
+        inline T y() const { return container.y; }
         inline void y(T yIn) { container.y = yIn; }
 
-        inline T z() { return container.z; }
+        inline T z() const { return container.z; }
         inline void z(T zIn) { container.z = zIn; }
 
-        inline T w() { return container.w; }
+        inline T w() const { return container.w; }
         inline void w(T wIn) { container.w = wIn; }
 
         // CONSTRUCTORS
@@ -395,32 +395,36 @@ namespace mathy {
             z(zIn);
             w(zIn);
         }
+        vec4yu(const vec3yu<>& vIn) {
+            std::memcpy(&(this->container), &vIn.container, sizeof((vIn.container));
+            w(1);
+        }
         explicit vec4yu(glm::vec<4, T, glm::defaultp> container) : container(container) { }
 
         // FUNCTIONS
 
-        std::string toString() {
+        std::string toString() const {
             std::stringstream ss;
             ss << "x: " << x() << ", y: " << y() << ", z: " << z() << ", w: " << w() << std::endl;
             return ss.str();
         }
 
-        void toStdout() {
+        void toStdout() const {
             std::cout << toString(); // Uses toString() to make the code more clear. I know it's suboptimal to make an ss and then cout it, but this func.'s probably not going to be used too much and if it's going to be, then we'll think about it.
         }
 
-        inline T length_2() {
+        inline T length_2() const {
             return x() * x() + y() * y() + z() * z() + w() * w();
         }
 
-        inline T length() {
+        inline T length() const {
             if (typeid(T) == typeid(float))
                 return sqrtf(length_2());
             else
                 return sqrt(length_2());
         }
 
-        inline T lengthInv() {
+        inline T lengthInv() const {
             return (T)1 / length();
         }
 
@@ -428,11 +432,11 @@ namespace mathy {
             return *this *= lengthInv();
         }
 
-        [[maybe_unused]] inline vec4yu normalizED() {
+        [[maybe_unused]] inline vec4yu normalizED() const {
             return *this * lengthInv();
         }
 
-        T distance(vec4yu other) {
+        T distance(vec4yu other) const {
             return (*this - other).length();
         }
 
@@ -446,7 +450,7 @@ namespace mathy {
         static vec4yu<T> FORWARD() { return { T(0), T(0), T(1), T(1) }; }
         static vec4yu<T> BACK() { return { T(0), T(0), T(-1), T(1) }; }
 
-        vec3yu<T> fromHomoToVec3yu() {
+        vec3yu<T> fromHomoToVec3yu() const {
             return vec3yu<T>(x(), y(), z()) / w();
         }
 
@@ -525,13 +529,13 @@ namespace mathy {
         }
     };
 
-    template <typename T = float>
+    template <typename T = GLfloat>
     class yuMatrix2x2 {
     public:
 
         glm::mat<2, 2, T, glm::defaultp> container;
 
-        inline T value(GLubyte column, GLubyte row) {
+        inline T value(GLubyte column, GLubyte row) const {
             if (column > 1 || row > 1) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
                 return 0;
@@ -546,7 +550,7 @@ namespace mathy {
             container[column][row] = in;
         }
 
-        inline vec2yu<T> value(GLubyte column) {
+        inline vec2yu<T> value(GLubyte column) const {
             if (column > 1 ) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
                 return vec2yu<T>::ZERO();
@@ -574,7 +578,7 @@ namespace mathy {
             return yuMatrix2x2<T>(numbers);
         }
 
-        yuMatrix2x2<T> operator +(const yuMatrix2x2<T>& b) {
+        yuMatrix2x2<T> operator +(const yuMatrix2x2<T>& b) const {
             return yuMatrix2x2(this->container + b.container);
         }
         yuMatrix2x2<T> operator +=(const yuMatrix2x2<T>& b) {
@@ -582,7 +586,7 @@ namespace mathy {
             return *this;
         }
 
-        yuMatrix2x2<T> operator -(const yuMatrix2x2<T>& b) {
+        yuMatrix2x2<T> operator -(const yuMatrix2x2<T>& b) const {
             return yuMatrix2x2(this->container - b.container);
         }
         yuMatrix2x2<T> operator -=(const yuMatrix2x2<T>& b) {
@@ -591,7 +595,7 @@ namespace mathy {
         }
 
 
-        yuMatrix2x2<T> operator *(const yuMatrix2x2<T>& b) {
+        yuMatrix2x2<T> operator *(const yuMatrix2x2<T>& b) const {
             return yuMatrix2x2(this->container * b.container);
         }
         yuMatrix2x2<T> operator *=(const yuMatrix2x2<T>& b) {
@@ -604,7 +608,7 @@ namespace mathy {
         /// </summary>
         /// <param name="b">Vector with the data to transform</param>
         /// <returns>A new vector that = matrix * b.</returns>
-        vec2yu<T> operator *(const vec2yu<T> b) {
+        vec2yu<T> operator *(const vec2yu<T> b) const {
             return vec2yu<T>(this->container * b.container);
         }
 
@@ -620,13 +624,13 @@ namespace mathy {
         }
     };
 
-    template <typename T = float>
+    template <typename T = GLfloat>
     class yuMatrix3x3 {
     public:
 
         glm::mat<3, 3, T, glm::defaultp> container;
 
-        inline T value(GLubyte column, GLubyte row) {
+        inline T value(GLubyte column, GLubyte row) const {
             if (column > 2 || row > 2) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
                 return 0;
@@ -641,7 +645,7 @@ namespace mathy {
             container[column][row] = in;
         }
 
-        inline vec3yu<T> value(GLubyte column) {
+        inline vec3yu<T> value(GLubyte column) const {
             if (column > 2) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
                 return vec3yu<T>::ZERO();
@@ -670,7 +674,7 @@ namespace mathy {
             return yuMatrix3x3<T>(numbers);
         }
 
-        yuMatrix3x3<T> operator +(const yuMatrix3x3<T>& b) {
+        yuMatrix3x3<T> operator +(const yuMatrix3x3<T>& b) const {
             return yuMatrix3x3(this->container + b.container);
         }
         yuMatrix3x3<T> operator +=(const yuMatrix3x3<T>& b) {
@@ -678,7 +682,7 @@ namespace mathy {
             return *this;
         }
 
-        yuMatrix3x3<T> operator -(const yuMatrix3x3<T>& b) {
+        yuMatrix3x3<T> operator -(const yuMatrix3x3<T>& b) const {
             return yuMatrix3x3(this->container - b.container);
         }
         yuMatrix3x3<T> operator -=(const yuMatrix3x3<T>& b) {
@@ -687,7 +691,7 @@ namespace mathy {
         }
 
 
-        yuMatrix3x3<T> operator *(const yuMatrix3x3<T>& b) {
+        yuMatrix3x3<T> operator *(const yuMatrix3x3<T>& b) const {
             return yuMatrix3x3(this->container * b.container);
         }
         yuMatrix3x3<T> operator *=(const yuMatrix3x3<T>& b) {
@@ -700,7 +704,7 @@ namespace mathy {
         /// </summary>
         /// <param name="b">Vector with the data to transform</param>
         /// <returns>A new vector that = matrix * b.</returns>
-        vec3yu<T> operator *(const vec3yu<T> b) {
+        vec3yu<T> operator *(const vec3yu<T> b) const {
             return vec3yu<T>(this->container * b.container);
         }
 
@@ -716,13 +720,13 @@ namespace mathy {
         }
     };
 
-    template <typename T = float>
+    template <typename T = GLfloat>
     class yuMatrix4x4 {
     public:
 
         glm::mat<4, 4, T, glm::defaultp> container;
 
-        inline T value(GLubyte column, GLubyte row) {
+        inline T value(GLubyte column, GLubyte row) const {
             if (column > 3 || row > 3) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT(s) OUT OF BOUNDS " << std::endl;
                 return 0;
@@ -737,7 +741,7 @@ namespace mathy {
             container[column][row] = in;
         }
 
-        inline vec4yu<T> value(GLubyte column) {
+        inline vec4yu<T> value(GLubyte column) const {
             if (column > 3) {
                 std::cerr << "ERROR: MATRIX: ARGUMENT OUT OF BOUNDS " << std::endl;
                 return vec4yu<T>::ZERO();
@@ -764,7 +768,7 @@ namespace mathy {
             return yuMatrix4x4<T>({ {(T)1, (T)0, (T)0, (T)0}, {(T)0, (T)1, (T)0, (T)0}, {(T)0, (T)0, (T)1, (T)0}, {(T)0, (T)0, (T)0, (T)1} });
         }
 
-        yuMatrix4x4<T> operator +(const yuMatrix4x4<T>& b) {
+        yuMatrix4x4<T> operator +(const yuMatrix4x4<T>& b) const {
             return yuMatrix4x4(this->container + b.container);
         }
         yuMatrix4x4<T> operator +=(const yuMatrix4x4<T>& b) {
@@ -772,7 +776,7 @@ namespace mathy {
             return *this;
         }
 
-        yuMatrix4x4<T> operator -(const yuMatrix4x4<T>& b) {
+        yuMatrix4x4<T> operator -(const yuMatrix4x4<T>& b) const {
             return yuMatrix4x4(this->container - b.container);
         }
         yuMatrix4x4<T> operator -=(const yuMatrix4x4<T>& b) {
@@ -781,7 +785,7 @@ namespace mathy {
         }
 
 
-        yuMatrix4x4<T> operator *(const yuMatrix4x4<T>& b) {
+        yuMatrix4x4<T> operator *(const yuMatrix4x4<T>& b) const {
             return yuMatrix4x4(this->container * b.container);
         }
         yuMatrix4x4<T> operator *=(const yuMatrix4x4<T>& b) {
@@ -794,7 +798,7 @@ namespace mathy {
         /// </summary>
         /// <param name="b">Vector with the data to transform</param>
         /// <returns>A new vector that = matrix * b.</returns>
-        vec4yu<T> operator *(const vec4yu<T> b) {
+        vec4yu<T> operator *(const vec4yu<T> b) const {
             return vec4yu<T>(this->container * b.container);
         }
 
@@ -809,4 +813,13 @@ namespace mathy {
             return b;
         }
     };
+
+    yuMatrix4x4<> matTransform(const vec3yu<>& vec) {
+        yuMatrix4x4<> mat = yuMatrix4x4<>::unit();
+        mat.value(3, 0, vec.x());
+        mat.value(3, 1, vec.y());
+        mat.value(3, 2, vec.z());
+        //mat.value(3, { vec });
+        return mat;
+    }
 }
