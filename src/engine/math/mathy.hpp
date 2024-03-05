@@ -13,12 +13,12 @@
 namespace mathy {
 
     /// <summary>
-/// Does what the name says.
-/// Designed to be invoked every frame.
-/// </summary>
-/// <param name="timer">: Usually a timer(a variable changing at a constant speed[at least here])</param>
-/// <param name="period">Period of the sine wave.</param>
-/// <returns></returns>
+    /// Does what the name says.
+    /// Designed to be invoked every frame.
+    /// </summary>
+    /// <param name="timer">: Usually a timer(a variable changing at a constant speed[at least here])</param>
+    /// <param name="period">Period of the sine wave.</param>
+    /// <returns></returns>
     double sine_0_1_smooth_period_change(double timer, double period) {
         static double last_period = 1, slide;
 
