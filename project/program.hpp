@@ -2,6 +2,8 @@
 
 #include "../src/yume.h"
 
+// :)
+
 yumeSystem Program {
     // CREATE OBJECTS
     rd::TexSquare* player{ nullptr };
