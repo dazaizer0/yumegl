@@ -396,7 +396,7 @@ namespace mathy {
             w(zIn);
         }
         vec4yu(const vec3yu<>& vIn) {
-            std::memcpy(&(this->container), &vIn.container, sizeof((vIn.container));
+            std::memcpy(&(this->container), &vIn.container, sizeof((vIn.container)));
             w(1);
         }
         explicit vec4yu(glm::vec<4, T, glm::defaultp> container) : container(container) { }
