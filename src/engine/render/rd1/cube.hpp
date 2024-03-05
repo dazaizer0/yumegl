@@ -6,7 +6,8 @@
 #include <src/engine/shader/shader.hpp>
 
 namespace rd1 {
-	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+    // TODO: MOVE TO MATHY 
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         glm::vec3 size{ 0.0f, 0.0f, 0.0f };

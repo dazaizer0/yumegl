@@ -12,7 +12,7 @@ yumeSystem Program {
     }
 
     yumeSubsystem Initialize() {
-        player = new rd::TexSquare("../project/textures/plane.png", mathy::vec3yu<>{ 0.0f, 0.8f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.16f, 0.16f });
+        player = new rd::TexSquare("../project/textures/plane.png", { 0.0f, 0.8f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.16f, 0.16f });
         player->shader.makeProgramFromPaths("../project/shaders/texture/vertex.glsl", "../project/shaders/texture/fragment.glsl");
     }
 
