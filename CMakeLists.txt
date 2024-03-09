@@ -25,7 +25,6 @@ add_executable(${PROJECT_NAME}
         # other
         src/engine/source/yume_kernel.hpp
         src/engine/source/panic_handler.hpp
-        src/engine/source/program.hpp
 
         # deps
         dep/glad/glad.c
@@ -48,6 +47,8 @@ add_executable(${PROJECT_NAME}
         src/engine/render/rd2/elementary_objects.hpp
         src/engine/render/rd2/square_rd2.hpp
         src/engine/render/rd2/cube_rd2.hpp
+        src/engine/render/render.hpp
+        src/engine/render/renderer.hpp
 
         src/engine/render/rd/tex_square.hpp
 
