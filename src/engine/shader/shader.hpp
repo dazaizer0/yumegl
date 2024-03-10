@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <vector>
+#include <map>
 
 namespace shaderSystem {
 
@@ -130,10 +132,11 @@ namespace shaderSystem {
     struct GlProgram {
     private:
         GLuint id{};
-        //can't be public or someone's gonna overwrite it without calling glDeleteProgram and that's a memory leak 
+        //can't be public or someone's gonna overwrite it without calling glDeleteProgram and that's a memory leak on the GPU
 
-        Shader* vertexShader{};
-        Shader* fragmentShader{};
+        char countVShaders{};
+        std::vector<Shader*> shaders;
+        std::map<const char*, GLuint> uniforms;
     public:
         GlProgram() : id(glCreateProgram()) {};
 
@@ -142,11 +145,13 @@ namespace shaderSystem {
         ///Created program object is not responsible for managing given
         ///pointers, however it stores them and can be queried for them.
         /// </summary>
-        GlProgram(Shader* vertexShader, Shader* fragmentShader) : id(glCreateProgram()),
-            vertexShader(vertexShader), fragmentShader(fragmentShader) {
+        GlProgram(Shader* vertexShader, Shader* fragmentShader) : id(glCreateProgram()) {
 
             if (vertexShader->sType() != GL_VERTEX_SHADER || fragmentShader->sType() != GL_FRAGMENT_SHADER)
                 std::cout << "ERROR: INCORRECT ARGUMENTS FOR GlProgram CONSTRUCTOR " << std::endl;
+
+            attachVShader(vertexShader);
+            attachFShader(fragmentShader);
 
             linkProgram();
         }
@@ -161,21 +166,120 @@ namespace shaderSystem {
         /// </summary>
         void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
-            vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
-            fragmentShader = generateShaderPath(GL_FRAGMENT_SHADER, fragmentPath);
+            Shader* vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
+            Shader* fragmentShader = generateShaderPath(GL_FRAGMENT_SHADER, fragmentPath);
+
+            glAttachShader(id, vertexShader->getId());
+            glAttachShader(id, fragmentShader->getId());
 
             linkProgram();
 
-            delete vertexShader; vertexShader = nullptr;
-            delete fragmentShader; fragmentShader = nullptr;
+            delete vertexShader;
+            delete fragmentShader;
         }
 
-        Shader* vShaderPointer() const {
-            return vertexShader;
+        Shader* vShaderPointer(size_t index) const {
+            if (index < 0 || index >= countVShaders) {
+                std::cout << "WARNING: WRONG VSHADER RETURN INDEX " << std::endl;
+                return nullptr;
+            }
+
+            return shaders[index];
         }
-        Shader* fShaderPointer() const {
-            return fragmentShader;
+        Shader* fShaderPointer(size_t index) const {
+            if (index >= shaders.size() || index < countVShaders) {
+                std::cout << "WARNING: WRONG FSHADER RFETURN INDEX " << std::endl;
+                return nullptr;
+            }
+
+            return shaders[index];
         }
+
+
+        void attachVShader(Shader* vertexShader) {
+            if (vertexShader->sType() != GL_VERTEX_SHADER) {
+                std::cout << "ERROR: INCORRECT ARGUMENT FOR attachVShader " << std::endl;
+                return;
+            }
+
+            shaders.insert(shaders.begin() + countVShaders, vertexShader);
+            countVShaders++;
+            glAttachShader(id, vertexShader->getId());
+        }
+
+        void attachFShader(Shader* fragmentShader) {
+            if (fragmentShader->sType() != GL_FRAGMENT_SHADER) {
+                std::cout << "ERROR: INCORRECT ARGUMENT FOR attachFShader " << std::endl;
+                return;
+            }
+
+            shaders.push_back(fragmentShader);
+            glAttachShader(id, fragmentShader->getId());
+        }
+
+
+        void detachVShader(Shader* vertexShader) {
+            if (vertexShader->sType() != GL_VERTEX_SHADER) {
+                std::cout << "ERROR: INCORRECT ARGUMENT FOR detachVShader " << std::endl;
+                return;
+            }
+
+            short i = countVShaders - 1;
+            
+            while (i >= 0 && vertexShader != shaders[i]) {
+                i--;
+            }
+
+            if (i == -1) {
+                std::cout << "WARNING: WRONG VSHADER DETACHMENT POINTER " << std::endl;
+                return;
+            }
+
+            detachVShader(i);
+        }
+
+        void detachFShader(Shader* fragmentShader) {
+            if (fragmentShader->sType() != GL_FRAGMENT_SHADER) {
+                std::cout << "ERROR: INCORRECT ARGUMENT FOR detachFShader " << std::endl;
+                return;
+            }
+
+            short i = shaders.size();
+
+            while (i >= countVShaders && fragmentShader != shaders[i]) {
+                i--;
+            }
+
+            if (i == countVShaders - 1) {
+                std::cout << "WARNING: WRONG FSHADER DETACHMENT POINTER " << std::endl;
+                return;
+            }
+
+            detachFShader(i);
+        }
+
+
+        void detachVShader(size_t index) {
+            if (index < 0 || index >= countVShaders) {
+                std::cout << "WARNING: WRONG VSHADER DETACHMENT INDEX " << std::endl;
+                return;
+            }
+
+            glDetachShader(id, shaders[index]->getId());
+            shaders.erase(shaders.begin() + index);
+            countVShaders--;
+        }
+
+        void detachFShader(size_t index) {
+            if (index >= shaders.size() || index < countVShaders) {
+                std::cout << "WARNING: WRONG FSHADER DETACHMENT INDEX " << std::endl;
+                return;
+            }
+
+            glDetachShader(id, shaders[index]->getId());
+            shaders.erase(shaders.begin() + index);
+        }
+
 
         GLint getId() const {
             return id;
@@ -292,11 +396,7 @@ namespace shaderSystem {
 
     private:
         void linkProgram() {
-
-            glAttachShader(id, vertexShader->getId());
-            glAttachShader(id, fragmentShader->getId());
             glLinkProgram(id);
-
             checkLinkingErrors();
         }
 
