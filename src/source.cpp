@@ -55,9 +55,13 @@ int main() {
 
 #pragma region UPDATE
     while (yumegl::isWindowOpen()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        // update
         Program::Update();
+
+        //render
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        Program::Render();
+
         yumegl::swapBuffersPollEvents();
     }
 #pragma endregion

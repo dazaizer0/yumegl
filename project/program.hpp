@@ -1,4 +1,5 @@
-#pragma once
+#ifndef YUMEGL_PROGRAM_HPP
+#define YUMEGL_PROGRAM_HPP
 
 #include "../src/yume.h"
 
@@ -18,14 +19,16 @@ yumeSystem Program {
         player->shader.makeProgramFromPaths("../project/shaders/texture/vertex.glsl", "../project/shaders/texture/fragment.glsl");
     }
 
+    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------
     yumeSubsystem Start() {
         // window
         yumegl::eFunc::setColor(colour::BLACK());
 
         // INTRO
-        //audio::beep::playBeepSound(audio::beep::BeepSound::MIDRANGE());
-        //audio::beep::playBeepSound(audio::beep::BeepSound{ 500, 500 });
-        //audio::beep::playBeepSound(audio::beep::BeepSound{ 700, 500 });
+        // audio::beep::playBeepSound(audio::beep::BeepSound::MIDRANGE());
+        // audio::beep::playBeepSound(audio::beep::BeepSound{ 500, 500 });
+        // audio::beep::playBeepSound(audio::beep::BeepSound{ 700, 500 });
 
         // player
         player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
@@ -47,14 +50,17 @@ yumeSystem Program {
         else if (input::keyDown(GLFW_KEY_LEFT) && player->position.x() < 1.0f - player->size.x()) {
             player->position.container.x += 1.0f * yumegl::dupaTime;
         }
+    }
 
-        /* ------------------------------------------------
-        --------------------- RENDER ----------------------
-        ------------------------------------------------ */
+    yumeSubsystem Render() {
         player->simpleRender();
     }
+    // -----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------
 
     yumeSubsystem Close() {
         delete player;
     }
 }
+
+#endif
