@@ -280,6 +280,10 @@ namespace shaderSystem {
             shaders.erase(shaders.begin() + index);
         }
 
+        void linkProgram() {
+            glLinkProgram(id);
+            checkLinkingErrors();
+        }
 
         GLint getId() const {
             return id;
@@ -395,10 +399,6 @@ namespace shaderSystem {
         }
 
     private:
-        void linkProgram() {
-            glLinkProgram(id);
-            checkLinkingErrors();
-        }
 
         void checkLinkingErrors() {
             GLint success;

@@ -30,7 +30,13 @@ namespace mathy {
         return sin((((timer - slide) / period) - 0.25) * 2 * M_PI) * 0.5 + 0.5;
     }
 
+    const glm::vec2 vec2zero{ 0,0 };
+    const glm::vec3 vec3zero{ 0,0,0 };
+    const glm::vec4 vec4zero{ 0,0,0,0 };
 
+    const glm::vec2 vec2one{ 1,1 };
+    const glm::vec3 vec3one{ 1,1,1 };
+    const glm::vec4 vec4one{ 1,1,1,1 };
 
     // VECTOR 2
     template <typename T = GLfloat>
