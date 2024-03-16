@@ -48,8 +48,8 @@ namespace rd2 {
 
     };
 
-    Square::Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) : ExtendedObject(
-            positionV, sizeV, enableV) {
+    Square::Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) 
+        : ExtendedObject(positionV, colorV, sizeV, enableV) {
         position = positionV;
         color = colorV;
         size = sizeV;

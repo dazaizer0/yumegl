@@ -25,12 +25,12 @@ namespace rd2 {
         colour color = colour::WHITE();
         mathy::vec3yu<> size{};
 
-        ExtendedObject(mathy::vec3yu<> positionV, mathy::vec3yu<> sizeV, bool enableV);
+        ExtendedObject(mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV);
 
         ~ExtendedObject() = default;
     };
 
-    ExtendedObject::ExtendedObject(mathy::vec3yu<> positionV, mathy::vec3yu<> sizeV, bool enableV) : Object(positionV, enableV) {
+    ExtendedObject::ExtendedObject(mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) : Object(positionV, enableV) {
         size = sizeV;
     }
 }

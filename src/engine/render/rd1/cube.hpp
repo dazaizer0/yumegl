@@ -3,17 +3,15 @@
 
 #include "../../../config.h"
 #include "../../../yume.h"
+
 #include <src/engine/shader/shader.hpp>
 
 namespace rd1 {
-	class Cube { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN DEVELOPMENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
-    // TODO: MOVE TO MATHY 
+	class Cube {
     public:
         glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         glm::vec3 size{ 0.0f, 0.0f, 0.0f };
         shaderSystem::GlProgram shader;
-
-        bool enable{};
 
         // CONSTRUCTOR
         Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value);
@@ -52,8 +50,8 @@ namespace rd1 {
         unsigned int window_width{};
         unsigned int window_height{};
 
-        // DATA
         std::vector<float> vertices;
+        bool enable{};
 	};
 
 	Cube::Cube(const std::string& path, glm::vec3 position_value, glm::vec3 size_value) {
