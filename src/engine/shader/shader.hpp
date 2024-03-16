@@ -136,7 +136,6 @@ namespace shaderSystem {
 
         char countVShaders{};
         std::vector<Shader*> shaders;
-        std::map<const char*, GLuint> uniforms;
     public:
         GlProgram() : id(glCreateProgram()) {};
 
@@ -162,7 +161,7 @@ namespace shaderSystem {
         ///To be used on a compleately untouched GlProgram created with the parameterless constuctor.
         ///Reads shader code from files, compiles it, REPLACES(NOT DELETEs) shader pointers with new objects, 
         ///attaches shaders to the program, links program, deletes pointers, that is shader objects.
-        ///Mainly for simple use.
+        ///Mainly for simple useage.
         /// </summary>
         void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
