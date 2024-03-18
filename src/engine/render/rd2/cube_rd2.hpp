@@ -62,7 +62,7 @@ namespace rd2 {
 
         Cube(const std::string& path, mathy::vec3yu<> positionV, mathy::vec3yu<> rotation, mathy::vec3yu<> sizeV, bool enableV);
 
-        void render();
+        void render() override;
 
         void rotate_otherAxis(mathy::vec3yu<> otherAxis, float rotationSpeed) const;
 
@@ -208,17 +208,16 @@ namespace rd2 {
                 shader.use();
             }
 
-            this->bindTexture();
-            this->render_ownShader();
+            bindTexture();
+            render_ownShader();
 
             if (prevPosition.container != position.container) {
-                this->updateVertices();
-                this->refresh();
-
+                updateVertices();
+                refresh();
                 prevPosition = position;
             }
 
-            this->setRotation();
+            setRotation();
         }
     }
 

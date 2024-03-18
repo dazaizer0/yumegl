@@ -53,7 +53,6 @@
 #define YINPUT_KEY_WORLD_1            161 /* non-US #1  idk */
 #define YINPUT_KEY_WORLD_2            162 /* non-US #2  idk */
 
-/* Function keys */
 #define YINPUT_KEY_ESCAPE             256
 #define YINPUT_KEY_ENTER              257
 #define YINPUT_KEY_TAB                258

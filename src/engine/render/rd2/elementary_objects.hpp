@@ -26,6 +26,8 @@ namespace rd2 {
 
         ExtendedObject(mathy::vec3yu<> positionV, mathy::vec3yu<> sizeV, bool enableV);
 
+        virtual void render();
+
         ~ExtendedObject() = default;
     };
 
@@ -33,6 +35,10 @@ namespace rd2 {
         position = positionV;
         size = sizeV;
         enable = enableV;
+    }
+
+    void ExtendedObject::render() {
+        std::cout << "...\n";
     }
 }
 #endif

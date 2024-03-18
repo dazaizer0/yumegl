@@ -26,9 +26,10 @@ yumeSystem Program {
         if (input::keyPressed(YINPUT_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyDown(YINPUT_KEY_UP))
+        // ROTATE CUBE
+        if (input::keyDown(YINPUT_KEY_RIGHT))
             cube_3D->rotationAngle += 10 * yumegl::dupaTime;
-        if (input::keyDown(YINPUT_KEY_DOWN))
+        if (input::keyDown(YINPUT_KEY_LEFT))
             cube_3D->rotationAngle -= 10 * yumegl::dupaTime;
 
         if (input::keyPressed(YINPUT_KEY_SPACE))
