@@ -13,6 +13,7 @@ namespace rd2 {
         // PROPERTIES
     public:
         shaderSystem::GlProgram shader;
+        colour color = colour::PURPLE();
 
         void render();
 
@@ -49,7 +50,7 @@ namespace rd2 {
     };
 
     Square::Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) 
-        : ExtendedObject(positionV, colorV, sizeV, enableV) {
+        : ExtendedObject(positionV, sizeV, enableV) {
         position = positionV;
         color = colorV;
         size = sizeV;

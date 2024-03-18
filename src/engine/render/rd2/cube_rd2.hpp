@@ -57,14 +57,14 @@ namespace rd2 {
     public:
         shaderSystem::GlProgram shader;
 
-        Cube(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV);
+        mathy::vec3yu<> rotationAxis;
+        float rotationAngle{};
+
+        Cube(const std::string& path, mathy::vec3yu<> positionV, mathy::vec3yu<> rotation, mathy::vec3yu<> sizeV, bool enableV);
 
         void render();
 
-        void rotate(mathy::vec3yu<> axis, float rotationSpeed) const;
-        void setRotation(mathy::vec3yu<> axis, float angle) const;
-
-        void setWindowSize(unsigned int window_w, unsigned int window_h);
+        void rotate_otherAxis(mathy::vec3yu<> otherAxis, float rotationSpeed) const;
 
         ~Cube();
     private:
@@ -91,16 +91,21 @@ namespace rd2 {
         void render_ownShader() const;
         void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
+
+        void setRotation() const;
     };
 
-    Cube::Cube(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV)
-        : ExtendedObject(position, colorV, size, enableV) {
+    Cube::Cube(const std::string& path, mathy::vec3yu<> positionV, mathy::vec3yu<> rotation, mathy::vec3yu<> sizeV, bool enableV)
+        : ExtendedObject(position, size, enableV) {
         try {
             position = positionV;
             prevPosition = position;
-            color = colorV;
+            rotationAxis = rotation;
             size = sizeV;
             enable = enableV;
+
+            window_width = yumegl::WINDOW_WIDTH;
+            window_height = yumegl::WINDOW_HEIGHT;
 
             texPath = path.c_str();
 
@@ -198,35 +203,34 @@ namespace rd2 {
     }
 
     void Cube::render() {
-        // use shader
-        if (shader.getId()) {
-            shader.use();
-        }
+        if (enable) {
+            if (shader.getId()) {
+                shader.use();
+            }
 
-        // render
-        this->bindTexture();
-        this->render_ownShader();
+            this->bindTexture();
+            this->render_ownShader();
 
-        // update if nessesery
-        if (prevPosition.container != position.container) {
-            this->updateVertices();
-            this->refresh();
+            if (prevPosition.container != position.container) {
+                this->updateVertices();
+                this->refresh();
 
-            prevPosition = position;
+                prevPosition = position;
+            }
+
+            this->setRotation();
         }
     }
 
-    void Cube::rotate(mathy::vec3yu<> axis, float rotationSpeed) const {
+    void Cube::rotate_otherAxis(mathy::vec3yu<> otherAxis, float rotationSpeed) const {
         // ROTATE
         auto model = glm::mat4(1.0f);
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
 
-        auto rotationAxis = axis;
-
         model = glm::translate(model, glm::vec3(position.x(), position.y(), position.z()));
 
-        model = glm::rotate(model, (float)glfwGetTime() * rotationSpeed, axis.container);
+        model = glm::rotate(model, (float)glfwGetTime() * rotationSpeed, otherAxis.container);
 
         model = glm::translate(model, -glm::vec3(position.x(), position.y(), position.z()));
 
@@ -242,7 +246,7 @@ namespace rd2 {
         shader.setMat4("projection", projection);
     }
 
-    void Cube::setRotation(mathy::vec3yu<> axis, float angle) const {
+    void Cube::setRotation() const {
         auto view = glm::mat4(1.0f);
         auto projection = glm::mat4(1.0f);
         auto model = glm::mat4(1.0f);
@@ -254,16 +258,10 @@ namespace rd2 {
         shader.setMat4("view", view);
 
         model = glm::translate(model, glm::vec3(position.x(), position.y(), position.z()));
-        model = glm::rotate(model, glm::radians(angle), axis.container);
+        model = glm::rotate(model, glm::radians(rotationAngle), rotationAxis.container);
         model = glm::translate(model, -glm::vec3(position.x(), position.y(), position.z()));
 
         shader.setMat4("model", model);
-    }
-
-
-    void Cube::setWindowSize(const unsigned int window_w, const unsigned int window_h) {
-        window_width = window_w;
-        window_height = window_h;
     }
 
     Cube::~Cube() {

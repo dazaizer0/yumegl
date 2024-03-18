@@ -56,6 +56,9 @@ int main() {
 #pragma region UPDATE
     while (yumegl::isWindowOpen()) {
         // update
+        yumegl::update();
+        input::update();
+
         Program::Update();
 
         //render
