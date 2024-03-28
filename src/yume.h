@@ -8,6 +8,7 @@
 #define yumeSubsystem void
 
 // YUME
+#ifdef THIS_IS_YUME_COMPILING
 #include "src/engine/shader/shader.hpp"
 
 #include "src/engine/render/render.hpp"
@@ -17,3 +18,4 @@
 #include "src/engine/audio/beep_engine.hpp"
 
 #include "config.h"
+#endif

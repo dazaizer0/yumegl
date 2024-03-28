@@ -1,3 +1,5 @@
+#define THIS_IS_YUME_COMPILING
+
 #include "yume.h"
 
 #include "../project/YumeLists.h"

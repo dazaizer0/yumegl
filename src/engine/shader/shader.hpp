@@ -38,7 +38,7 @@ namespace shaderSystem {
             default:
                 id = 0;
             }
-            std::cout << sTypeStr() << " shader has been created." << std::endl;
+            std::cout << sTypeStr() << " shader nr.: " << id << " has been created." << std::endl;
         }
 
         const char* sTypeStr() const {
@@ -96,7 +96,7 @@ namespace shaderSystem {
         }
 
         ~Shader() {
-            std::cout << sTypeStr() << " shader has been deleted." << std::endl;
+            std::cout << sTypeStr() << " shader nr.: " << id << " has been deleted." << std::endl;
             glDeleteShader(id);
         }
 
@@ -136,7 +136,9 @@ namespace shaderSystem {
         char countVShaders{};
         std::vector<Shader*> shaders;
     public:
-        GlProgram() : id(glCreateProgram()) {};
+        GlProgram() : id(glCreateProgram()) {
+            std::cout << "program nr.: " << id << " has been created." << std::endl;
+        };
 
         /// <summary>
         ///Makse an already linked program with given shaders.
@@ -144,6 +146,8 @@ namespace shaderSystem {
         ///pointers, however it stores them and can be queried for them.
         /// </summary>
         GlProgram(Shader* vertexShader, Shader* fragmentShader) : id(glCreateProgram()) {
+
+            std::cout << "program nr.: " << id << " has been created." << std::endl;
 
             if (vertexShader->sType() != GL_VERTEX_SHADER || fragmentShader->sType() != GL_FRAGMENT_SHADER)
                 std::cout << "ERROR: INCORRECT ARGUMENTS FOR GlProgram CONSTRUCTOR " << std::endl;
@@ -394,6 +398,7 @@ namespace shaderSystem {
 
         ~GlProgram() {
             glDeleteProgram(id);
+            std::cout << "program nr.: " << id << " has been deleted." << std::endl;
         }
 
     private:
