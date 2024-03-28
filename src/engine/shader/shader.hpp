@@ -2,7 +2,7 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
-#include "yumegl/src/engine/source/yume_kernel.hpp"
+#include "C:\Users/Marcel\Desktop/VS Projects\yumegl/src\yume.h" // fck windows a bit with dis circus
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
