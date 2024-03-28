@@ -20,7 +20,6 @@ namespace shaderSystem {
     struct Shader {
     private:
         GLuint id;
-        GLenum stype;
 
     public:
         /// <summary>
@@ -31,25 +30,24 @@ namespace shaderSystem {
             switch (sType) {
             case GL_VERTEX_SHADER:
                 id = glCreateShader(GL_VERTEX_SHADER);
-                stype = GL_VERTEX_SHADER;
                 break;
             case GL_FRAGMENT_SHADER:
                 id = glCreateShader(GL_FRAGMENT_SHADER);
-                stype = GL_FRAGMENT_SHADER;
                 break;
             default:
                 id = 0;
-                stype = 76;
             }
             std::cout << sTypeStr() << " shader has been created." << std::endl;
         }
 
         const char* sTypeStr() const {
-            return ((stype == GL_VERTEX_SHADER) ? names[0] : ((stype == GL_FRAGMENT_SHADER) ? names[1] : ((stype == 76) ? names[3] : names[2])));
+            return ((sType() == GL_VERTEX_SHADER) ? names[0] : ((sType() == GL_FRAGMENT_SHADER) ? names[1] : ((sType() == 0) ? names[3] : names[2])));
         }
 
-        int sType() const {
-            return stype;
+        GLenum sType() const {
+            GLenum ret{};
+            glGetShaderiv(id, GL_SHADER_TYPE, (int*)&ret);
+            return ret;
         }
 
         GLuint getId() const {
