@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef __PRETTY_FUNCTION__
+#define __PRETTY_FUNCTION__ __FUNCTION__
+#endif
 
 #define yumeSystem namespace
 #define yumeSubsystem void

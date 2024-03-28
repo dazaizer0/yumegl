@@ -1,7 +1,8 @@
-// FROM LEARN_OPENGL | during reconstruction
+// FROM MARC/LEARNOPENGL(little bit)
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
+#include "yumegl/src/engine/source/yume_kernel.hpp"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
@@ -95,8 +96,8 @@ namespace shaderSystem {
         }
 
         ~Shader() {
-            glDeleteShader(id);
             std::cout << sTypeStr() << " shader has been deleted." << std::endl;
+            glDeleteShader(id);
         }
 
     private:
