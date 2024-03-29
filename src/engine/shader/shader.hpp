@@ -113,17 +113,18 @@ namespace shaderSystem {
                     << infoLog << std::endl << " -- --------------------------------------------------- -- " << std::endl;
             }
         }
+
     };
 
 
-    Shader* generateShaderPath(GLenum sType, const std::string& path) {
-        Shader *shade = new Shader(sType);
-        shade->loadShaderPath(path);
+    Shader generateShaderPath(GLenum sType, const std::string& path) {
+        Shader shade = Shader(sType);
+        shade.loadShaderPath(path);
         return shade;
     }
-    Shader* generateShaderSource(GLenum sType, const char* sourceCode) {
-        Shader* shade = new Shader(sType);
-        shade->loadShaderSource(sourceCode);
+    Shader generateShaderSource(GLenum sType, const char* sourceCode) {
+        Shader shade = Shader(sType);
+        shade.loadShaderSource(sourceCode);
         return shade;
     }
 
@@ -168,16 +169,13 @@ namespace shaderSystem {
         /// </summary>
         void makeProgramFromPaths(const std::string& vertexPath, const std::string& fragmentPath) {
 
-            Shader* vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
-            Shader* fragmentShader = generateShaderPath(GL_FRAGMENT_SHADER, fragmentPath);
+            Shader vertexShader = generateShaderPath(GL_VERTEX_SHADER, vertexPath);
+            Shader fragmentShader = generateShaderPath(GL_FRAGMENT_SHADER, fragmentPath);
 
-            glAttachShader(id, vertexShader->getId());
-            glAttachShader(id, fragmentShader->getId());
+            glAttachShader(id, vertexShader.getId());
+            glAttachShader(id, fragmentShader.getId());
 
             linkProgram();
-
-            delete vertexShader;
-            delete fragmentShader;
         }
 
         Shader* vShaderPointer(size_t index) const {
