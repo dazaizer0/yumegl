@@ -38,6 +38,29 @@ namespace mathy {
     const glm::vec3 vec3one{ 1,1,1 };
     const glm::vec4 vec4one{ 1,1,1,1 };
 
+
+    inline glm::vec2 complexFromAngle(float a) {
+        return glm::vec2(cos(a), sin(a));
+    }
+
+    inline glm::vec2 complexMult(const glm::vec2 eins, const glm::vec2 zwei) {
+        return glm::vec2(eins.x * zwei.x - eins.y * zwei.y, eins.x * zwei.y + eins.y * zwei.x); // just cos (a + B), sin(a + B)
+    }
+
+    inline glm::vec2 complexMultNorm(const glm::vec2 eins, const glm::vec2 zwei) {
+        return glm::normalize(complexMult(eins, zwei));
+    }
+    /// <summary>
+    /// Maintains the length of the first argument on the returned value.
+    /// </summary>
+    /// <param name="eins"></param>
+    /// <param name="zwei"></param>
+    /// <returns></returns>
+    inline glm::vec2 complexMultNormToEinsMag(const glm::vec2 eins, const glm::vec2 zwei) {
+        return complexMultNorm(eins, zwei) * static_cast<float>(glm::length(eins));
+    }
+
+
     // VECTOR 2
     template <typename T = GLfloat>
     class vec2yu {
