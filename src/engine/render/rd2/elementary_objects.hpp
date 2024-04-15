@@ -38,7 +38,6 @@ namespace rd2 {
     }
 
     void ExtendedObject::render() {
-        std::cout << "...\n";
     }
 }
 #endif

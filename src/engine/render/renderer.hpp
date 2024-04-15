@@ -1,25 +1,34 @@
-#ifndef YUMEGL_RENDERER_HPP
-#define YUMEGL_RENDERER_HPP
-
+#include <vector>
 #include "../../config.h"
 #include "render.hpp"
 
 namespace rd::mng {
 	class Renderer {
 	public:
-		Renderer ();
-		~Renderer ();
+		Renderer();
+		~Renderer();
+
+		void append(rd2::ExtendedObject obj);
+		void render();
 
 	private:
-		// example 
 		std::vector<rd2::ExtendedObject> rendererData;
 	};
 
-	Renderer::Renderer () {
+	Renderer::Renderer() {
+		rendererData = std::vector<rd2::ExtendedObject>();
 	}
 
-	Renderer::~Renderer () {
+	void Renderer::append(rd2::ExtendedObject obj) {
+		rendererData.push_back(obj);
+	}
+
+	void Renderer::render() {
+		for (rd2::ExtendedObject& obj : rendererData) {
+			obj.render();
+		}
+	}
+
+	Renderer::~Renderer() {
 	}
 }
-
-#endif

@@ -5,6 +5,10 @@
 #include "../../../yume.h"
 #include "elementary_objects.hpp"
 
+#include "elementary_objects.hpp"
+#include "dep/stb/stb_image.h"
+#include "../../shader/shader.hpp"
+
 namespace rd2 {
     class Square : public rd2::ExtendedObject { // THE MODULE IS MORE EXPENSIVE THAN ORDINARY SQUARE/TEXTURE
         // BECAUSE IT SUPPORTS BOTH SHAPE AND TEXTURE DEPENDING ON THE TEXTURE YOU HAVE

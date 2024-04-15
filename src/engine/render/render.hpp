@@ -12,9 +12,9 @@
 
 namespace rd::mng {
 // creating new objects inside the update function
-	void createTexSquare(rd::TexSquare object /*, Renderer renderer*/) {
-		// renderer <- object
-		// display object
-		// delay
-	}
+	//void createTexSquare(rd::TexSquare object /*, Renderer renderer*/) {
+	//	// renderer <- object
+	//	// display object
+	//	// delay
+	//}
 }

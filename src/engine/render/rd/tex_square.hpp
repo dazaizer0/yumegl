@@ -3,7 +3,8 @@
 
 #include "../../../config.h"
 #include "../../../yume.h"
-#include "stb/stb_image.h"
+#include "dep/stb/stb_image.h"
+#include "../../shader/shader.hpp"
 
 namespace rd {
     class TexSquare {

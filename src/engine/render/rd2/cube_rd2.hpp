@@ -64,7 +64,7 @@ namespace rd2 {
 
         Cube(const std::string& path, mathy::vec3yu<> positionV, mathy::vec3yu<> rotation, mathy::vec3yu<> sizeV, bool enableV);
 
-        void render() override;
+        virtual void render() override;
 
         void rotate_otherAxis(mathy::vec3yu<> otherAxis, float rotationSpeed) const;
 

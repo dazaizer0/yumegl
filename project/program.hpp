@@ -4,12 +4,14 @@
 #include "../src/yume.h"
 #include "../src/engine/render/rd2/cube_rd2.hpp"
 #include "../src/engine/input/input.hpp"
+#include "../src/engine/render/renderer.hpp"
 // :)
 
 #define SPEED 100
 
 yumeSystem Program {
     rd2::Cube* cube_3D{ nullptr };
+    rd::mng::Renderer renderer;
 
     yumeSubsystem SetUp() {
         yumegl::setWindowSize(720, 720);
@@ -19,7 +21,7 @@ yumeSystem Program {
     yumeSubsystem Initialize() {
         cube_3D = new rd2::Cube("../project/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 0.0f, -3.0f }, mathy::vec3yu<>{ 0.0f, 1.0f, 0.0f }, mathy::vec3yu<>{ 1.0f, 1.0f, 1.0f }, true);
         cube_3D->shader.makeProgramFromPaths("../project/shaders/3D/vertex.glsl", "../project/shaders/3D/fragment.glsl");
-
+        renderer.append(*cube_3D);
         yumegl::eFunc::setColor(colour::BLACK());
     }
 
@@ -38,6 +40,7 @@ yumeSystem Program {
     }
 
     yumeSubsystem Render() {
+        // renderer.render(); does not work...
         cube_3D->render();
     }
 
