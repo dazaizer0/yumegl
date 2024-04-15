@@ -44,14 +44,6 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(yumegl::_window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    try {
-        Program::Start();
-        std::cout << "The Start() yumeSubsystem has been succesfully done.\n";
-    }
-    catch (const std::exception& e) {
-        std::cerr << "The Start() yumeSubsystem filed!" << std::endl;
-    }
-
     std::cout << "------------------ \n\n";
 #pragma endregion
 

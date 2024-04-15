@@ -5,6 +5,8 @@
 #include "../../../yume.h"
 
 #include "elementary_objects.hpp"
+#include "dep/stb/stb_image.h"
+#include "../../shader/shader.hpp"
 
 std::vector<float> convertPropertiesToVector(glm::vec3 position, glm::vec3 size) {
     return {
