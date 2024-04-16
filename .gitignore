@@ -10,19 +10,10 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# vs...
-.vs
 .idea
+.vs
 
-# BUILD
-out
-cmake
-cmake-build-debug
 build
-
-# LIBS
-dep
+out
 glfw
 glm
-SFML
-build-release

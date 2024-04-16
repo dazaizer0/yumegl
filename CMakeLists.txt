@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.25)
-project(yumegl VERSION 0.0.2)
+cmake_minimum_required(VERSION 3.26)
+project(yumegl_mp)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -15,40 +15,32 @@ elseif(UNIX AND NOT APPLE)
 
 endif()
 
-# project
+# PROJECT  ------------------------
+
 add_executable(${PROJECT_NAME}
-        dep/glad/glad.c
-        dep/stb/stb_image.h
-        dep/stb/stb.cpp
+        source/dependences/glad/glad.c
+        source/dependences/glad/glad.h
+        source/dependences/stb/stb.cpp
+        source/dependences/stb/stb_image.h
 
-        src/kernel.cpp
-        src/config.h
-        src/yume.h
+        source/yume_program.hpp
 
-        project/program.hpp
-        project/YumeLists.h
-
-        src/engine/math/mathy.hpp
-
-        src/engine/input/input.hpp
-
-        src/engine/source/yume_source.hpp
-        src/engine/source/panic_handler.hpp
-
-        src/engine/objects/camera.hpp
-
-        src/engine/render/graphics.hpp
-        src/engine/render/rd1/triangle.hpp
-        src/engine/render/rd1/square.hpp
-        src/engine/render/rd1/cube.hpp
-        src/engine/render/rd2/elementary_objects.hpp
-        src/engine/render/rd2/square_rd2.hpp
-        src/engine/render/rd2/cube_rd2.hpp
-        src/engine/render/rd/tex_square.hpp
-
-        src/engine/audio/beep_engine.hpp
-
+        source/kernel.cpp
+        source/yume_elementary.h
+        source/config.h
+        source/engine/math/mathy.hpp
+        source/engine/render/rd2/cube_rd2.hpp
+        source/engine/render/rd2/elementary_objects.hpp
+        source/engine/render/rd2/square_rd2.hpp
+        source/engine/render/graphics.hpp
+        source/engine/shader/shader.hpp
+        source/yume_expanded.h
+        source/engine/engine_properties.hpp
+        source/engine/panic_handler.hpp
+        source/engine/input/input.hpp
 )
+
+# PROJECT  ------------------------
 
 if(WIN32)
 
@@ -61,7 +53,7 @@ if(WIN32)
 
     target_include_directories(${PROJECT_NAME}
             PRIVATE
-            dep
+            source/dependences
     )
 
     # assets
@@ -70,33 +62,31 @@ if(WIN32)
             project
     )
 
-    target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
+    target_include_directories(${PROJECT_NAME} PRIVATE source/dependences/imgui source/dependences/imgui/backends ..)
     target_sources(${PROJECT_NAME}
             PRIVATE
-            dep/imgui/backends/imgui_impl_glfw.cpp
-            dep/imgui/backends/imgui_impl_opengl3.cpp
-            dep/imgui/imgui.cpp
-            dep/imgui/imgui_draw.cpp
-            dep/imgui/imgui_demo.cpp
-            dep/imgui/imgui_tables.cpp
-            dep/imgui/imgui_widgets.cpp
+            source/dependences/imgui/backends/imgui_impl_glfw.cpp
+            source/dependences/imgui/backends/imgui_impl_opengl3.cpp
+            source/dependences/imgui/imgui.cpp
+            source/dependences/imgui/imgui_draw.cpp
+            source/dependences/imgui/imgui_demo.cpp
+            source/dependences/imgui/imgui_tables.cpp
+            source/dependences/imgui/imgui_widgets.cpp
     )
 
 elseif(UNIX AND NOT APPLE)
 
     target_link_libraries(${PROJECT_NAME}
-            glfw
-            glm
             OpenGL::GL
     )
 
-    target_include_directories(${PROJECT_NAME}
-            dep
-    )
+    # IN DEVELOPMENT
+    #target_include_directories(${PROJECT_NAME}
+    #        dep
+    #)
 
-    # assets
-    target_link_directories(${PROJECT_NAME}
-            project
-    )
+    #target_link_directories(${PROJECT_NAME}
+    #        project
+    #)
 
 endif()
