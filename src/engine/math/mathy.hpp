@@ -215,10 +215,10 @@ namespace mathy {
         return (T)1 / length();
     }
 
-    template<typename T>
-    T distance(vec2yu<T> other) {
-        return (*this - other).length();
-    }
+    //template<typename T>
+    //T distance(vec2yu<T> other) {
+    //    return (*this - other).length();
+    //}
 
     vec2yu<> scaleToWindow(int window_x, int window_y) {
         return vec2yu<>{ 0.0f, 0.0f };

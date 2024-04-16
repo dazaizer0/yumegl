@@ -17,7 +17,7 @@ yumeSystem Program {
     }
 
     yumeSubsystem Initialize() {
-        cube_3D = new rd2::Cube("../project/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 0.0f, -3.0f }, mathy::vec3yu<>{ 0.0f, 1.0f, 0.0f }, mathy::vec3yu<>{ 1.0f, 1.0f, 1.0f }, true);
+        cube_3D = new rd2::Cube("../project/textures/sonic_warning.png", mathy::vec3yu<>{ 0.0f, 0.0f, -3.0f }, mathy::vec3yu<>{ 0.0f, 1.0f, 0.0f }, mathy::vec3yu<>{ 1.0f, 1.0f, 1.0f }, true);
         cube_3D->shader.makeProgramFromPaths("../project/shaders/3D/vertex.glsl", "../project/shaders/3D/fragment.glsl");
 
         yumegl::eFunc::setColor(colour::BLACK());
@@ -36,10 +36,17 @@ yumeSystem Program {
         }
 
         if (input::keyDown(YINPUT_KEY_UP)) {
-            cube_3D->rotationAngle += SPEED * yumegl::dupaTime;
+            auto time = (float)glfwGetTime();
+            auto yOffset = mathy::sine_0_1_smooth_period_change(time * 14.0f, 16.0f);
+
+            cube_3D->position.container.y = (float)yOffset;
         }
+
         if (input::keyDown(YINPUT_KEY_DOWN)) {
-            cube_3D->rotationAngle -= SPEED * yumegl::dupaTime;
+            auto time = (float)glfwGetTime();
+            auto yOffset = sin(time * 14.0f) * 16.0f;
+
+            cube_3D->position.container.y = (float)yOffset;
         }
 
         if (input::keyPressed(YINPUT_KEY_SPACE))
