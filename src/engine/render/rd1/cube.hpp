@@ -5,6 +5,7 @@
 #include "../../../yume.h"
 
 #include <src/engine/shader/shader.hpp>
+#include <stb/stb_image.h>
 
 namespace rd1 {
 	class Cube {

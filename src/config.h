@@ -11,7 +11,7 @@
 
 // YUME ESSENTIAL HEADLINES
 #include "engine/math/mathy.hpp"
-#include "engine/math/colour.hpp"
+#include "engine/render/graphics.hpp"
 #include "engine/source/yume_source.hpp"
 #include "engine/source/panic_handler.hpp"
 

@@ -88,7 +88,7 @@ namespace yumegl {
             glClearColor(color.r, color.g, color.b, color.a);
         }
 
-        std::string yumePath() {
+        /*std::string yumePath() {
             std::filesystem::path executablePath = std::filesystem::absolute(std::filesystem::path(__FILE__));
             std::filesystem::path folderPath = executablePath.parent_path().parent_path().parent_path().parent_path();
 
@@ -115,7 +115,7 @@ namespace yumegl {
             }
 
             return result;
-        }
+        }*/
 
         [[maybe_unused]] void clearTerminal() {
         #ifdef _WIN32
