@@ -22,6 +22,7 @@ yumeSystem Program {
         cube_3D = new rd2::Cube("../project/textures/sonic_dirt.png", mathy::vec3yu<>{ 0.0f, 0.0f, -3.0f }, mathy::vec3yu<>{ 0.0f, 1.0f, 0.0f }, mathy::vec3yu<>{ 1.0f, 1.0f, 1.0f }, true);
         cube_3D->shader.makeProgramFromPaths("../project/shaders/3D/vertex.glsl", "../project/shaders/3D/fragment.glsl");
         renderer.append(*cube_3D);
+
         yumegl::eFunc::setColor(colour::BLACK());
     }
 
@@ -30,10 +31,19 @@ yumeSystem Program {
             yumegl::setWindowStatus(false);
 
         // ROTATE CUBE
-        if (input::keyDown(YINPUT_KEY_RIGHT))
+        if (input::keyDown(YINPUT_KEY_RIGHT)) {
             cube_3D->rotationAngle += SPEED * yumegl::dupaTime;
-        if (input::keyDown(YINPUT_KEY_LEFT))
+        }
+        if (input::keyDown(YINPUT_KEY_LEFT)) {
             cube_3D->rotationAngle -= SPEED * yumegl::dupaTime;
+        }
+
+        if (input::keyDown(YINPUT_KEY_UP)) {
+            cube_3D->rotationAngle += SPEED * yumegl::dupaTime;
+        }
+        if (input::keyDown(YINPUT_KEY_DOWN)) {
+            cube_3D->rotationAngle -= SPEED * yumegl::dupaTime;
+        }
 
         if (input::keyPressed(YINPUT_KEY_SPACE))
             cube_3D->enable = !cube_3D->enable;

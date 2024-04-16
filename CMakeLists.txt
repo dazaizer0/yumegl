@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.25)
-project(yumegl)
+project(yumegl VERSION 0.0.2)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(glfw)
-add_subdirectory(glm)
+if(WIN32)
+    add_subdirectory(glfw)
+    add_subdirectory(glm)
+elseif(UNIX AND NOT APPLE)
+    cmake_policy(SET CMP0072 NEW)
+    find_package(OpenGL REQUIRED)
+endif()
 
 # project
 add_executable(${PROJECT_NAME}
         # main
-        src/source.cpp
+        src/kernel.cpp
 
         src/config.h
         src/yume.h
@@ -23,7 +28,7 @@ add_executable(${PROJECT_NAME}
         src/engine/input/input.hpp
 
         # other
-        src/engine/source/yume_kernel.hpp
+        src/engine/source/yume_source.hpp
         src/engine/source/panic_handler.hpp
 
         # deps
@@ -60,32 +65,49 @@ add_executable(${PROJECT_NAME}
 
 )
 
-# OPENGL
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        glfw
-        glm
-)
+if(WIN32)
+    # OPENGL
+    target_link_libraries(${PROJECT_NAME}
+            PRIVATE
+            glfw
+            glm
+    )
 
-target_include_directories(${PROJECT_NAME}
-        PRIVATE
-        dep
-)
+    target_include_directories(${PROJECT_NAME}
+            PRIVATE
+            dep
+    )
 
-# assets
-target_link_directories(${PROJECT_NAME}
-        PRIVATE
-        assets
-)
+    # assets
+    target_link_directories(${PROJECT_NAME}
+            PRIVATE
+            project
+    )
 
-target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
-target_sources(${PROJECT_NAME}
-        PRIVATE
-        dep/imgui/backends/imgui_impl_glfw.cpp
-        dep/imgui/backends/imgui_impl_opengl3.cpp
-        dep/imgui/imgui.cpp
-        dep/imgui/imgui_draw.cpp
-        dep/imgui/imgui_demo.cpp
-        dep/imgui/imgui_tables.cpp
-        dep/imgui/imgui_widgets.cpp
-)
+    target_include_directories(${PROJECT_NAME} PRIVATE dep/imgui dep/imgui/backends ..)
+    target_sources(${PROJECT_NAME}
+            PRIVATE
+            dep/imgui/backends/imgui_impl_glfw.cpp
+            dep/imgui/backends/imgui_impl_opengl3.cpp
+            dep/imgui/imgui.cpp
+            dep/imgui/imgui_draw.cpp
+            dep/imgui/imgui_demo.cpp
+            dep/imgui/imgui_tables.cpp
+            dep/imgui/imgui_widgets.cpp
+    )
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(${PROJECT_NAME}
+            glfw
+            glm
+            OpenGL::GL
+    )
+
+    target_include_directories(${PROJECT_NAME}
+            dep
+    )
+
+    # assets
+    target_link_directories(${PROJECT_NAME}
+            project
+    )
+endif()
