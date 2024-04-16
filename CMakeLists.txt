@@ -9,9 +9,13 @@ if(WIN32)
     add_subdirectory(glm)
 
 elseif(UNIX AND NOT APPLE)
-
+        
     cmake_policy(SET CMP0072 NEW)
+
+        # sudo apt-get install libglfw3-dev
     find_package(OpenGL REQUIRED)
+
+    add_subdirectory(glm)
 
 endif()
 
@@ -76,17 +80,40 @@ if(WIN32)
 
 elseif(UNIX AND NOT APPLE)
 
+    # OPENGL
     target_link_libraries(${PROJECT_NAME}
-            OpenGL::GL
+            PRIVATE
+            glfw
+            glm
     )
 
-    # IN DEVELOPMENT
-    #target_include_directories(${PROJECT_NAME}
-    #        dep
-    #)
+    target_include_directories(${PROJECT_NAME}
+            PRIVATE
+            source/dependences
+    )
 
-    #target_link_directories(${PROJECT_NAME}
-    #        project
-    #)
+    # assets
+    target_link_directories(${PROJECT_NAME}
+            PRIVATE
+            project
+    )
+
+    target_include_directories(${PROJECT_NAME} PRIVATE source/dependences/imgui source/dependences/imgui/backends ..)
+    target_sources(${PROJECT_NAME}
+            PRIVATE
+            source/dependences/imgui/backends/imgui_impl_glfw.cpp
+            source/dependences/imgui/backends/imgui_impl_opengl3.cpp
+            source/dependences/imgui/imgui.cpp
+            source/dependences/imgui/imgui_draw.cpp
+            source/dependences/imgui/imgui_demo.cpp
+            source/dependences/imgui/imgui_tables.cpp
+            source/dependences/imgui/imgui_widgets.cpp
+    )
+
+                # mkdir build
+                # cd build
+                # cmake ../
+                # make
+                # ./yumegl_mp
 
 endif()
