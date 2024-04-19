@@ -22,19 +22,19 @@ namespace program {
     }
 
     void update() {
-        if (input::keyPressed(YINPUT_KEY_ESCAPE))
+        if (input::keyPressed(KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyDown(YINPUT_KEY_UP)) {
+        if (input::keyDown(KEY_UP)) {
             player->position.container.y -= 1.0f * yumegl::dupaTime;
         }
-        if (input::keyDown(YINPUT_KEY_DOWN)) {
+        if (input::keyDown(KEY_DOWN)) {
             player->position.container.y += 1.0f * yumegl::dupaTime;
         }
-        if (input::keyDown(YINPUT_KEY_RIGHT)) {
+        if (input::keyDown(KEY_RIGHT)) {
             player->position.container.x -= 1.0f * yumegl::dupaTime;
         }
-        if (input::keyDown(YINPUT_KEY_LEFT)) {
+        if (input::keyDown(KEY_LEFT)) {
             player->position.container.x += 1.0f * yumegl::dupaTime;
         }
     }

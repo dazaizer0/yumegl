@@ -9,5 +9,6 @@
 #include "engine/shader/shader.hpp"
 #include "engine/render/graphics.hpp"
 #include "engine/render/rd2/elementary_objects.hpp"
+#include "engine/audio/beep_engine.hpp"
 
 #endif

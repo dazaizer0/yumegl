@@ -44,6 +44,9 @@ int main() {
         yumegl::swapBuffersPollEvents();
     }
 
+    std::cout << "\n\nfinishing processes...\n\n";
+    audio::playBeep(600, 600);
+
     program::close();
 
     ImGui_ImplOpenGL3_Shutdown();

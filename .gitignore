@@ -12,6 +12,7 @@ _deps
 
 .idea
 .vs
+.vsc
 
 build
 out

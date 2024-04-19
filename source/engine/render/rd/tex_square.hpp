@@ -20,26 +20,20 @@ namespace rd {
 
         //FUNCTIONS
         void updateVertices();
-
         void refresh() const;
-
-        void textureErrorHandler();
         
         void simpleRender();
-
         void bindTexture() const;
-        // void bindTexture_includePanic();
-
-        // void render_ownShader_incudePanic();
-        void render_ownShader() const;
-
         void render_getShader(const shaderSystem::GlProgram& other_shader) const;
-        void render_foregoingShader() const;
 
         void rotate(mathy::vec3yu<> axis, float rotationSpeed) const;
         void setRotation(mathy::vec3yu<> axis, float angle) const;
 
     private:
+        void textureErrorHandler();
+        void render_ownShader() const;
+        void render_foregoingShader() const;
+
         unsigned int VBO{}, VAO{}, EBO{};
 
         unsigned int tex{};
