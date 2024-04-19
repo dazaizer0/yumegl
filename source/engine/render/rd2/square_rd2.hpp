@@ -14,10 +14,14 @@ namespace rd2 {
         shaderSystem::GlProgram shader;
         colour color = colour::PURPLE();
 
+        Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV);
+
         void render();
 
         void rotate(mathy::vec3yu<> axis, float rotationSpeed);
         void setRotation(mathy::vec3yu<> axis, float angle);
+
+        ~Square();
 
     private:
         const unsigned int vertex_count{ 4 };
@@ -34,8 +38,6 @@ namespace rd2 {
         std::vector<unsigned int> indices;
 
         // LOGIC
-        Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV);
-
         void updatePosition();
         void refresh();
 
@@ -43,9 +45,6 @@ namespace rd2 {
         void render_ownShader() const;
         void render_getShader(const shaderSystem::GlProgram& other_shader) const;
         void render_foregoingShader() const;
-
-        ~Square();
-
     };
 
     Square::Square(const std::string& path, mathy::vec3yu<> positionV, colour colorV, mathy::vec3yu<> sizeV, bool enableV) 
@@ -90,6 +89,7 @@ namespace rd2 {
     void Square::render() {
         // render universal square rd2 with only one function
         bindTexture();
+
         if (shader.getId()) {
             shader.use();
             render_ownShader();

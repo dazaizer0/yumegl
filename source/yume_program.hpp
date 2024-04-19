@@ -6,7 +6,7 @@
 #include "yume_expanded.h"
 
 namespace program {
-    rd2::Cube* cube_3D{ nullptr };
+    rd::TexSquare* player{ nullptr };
 
     void setup() {
         yumegl::setWindowSize(720, 720);
@@ -14,8 +14,9 @@ namespace program {
     }
 
     void start() {
-        cube_3D = new rd2::Cube("../assets/textures/sonic_warning.png", mathy::vec3yu<>{ 0.0f, 0.0f, -3.0f }, mathy::vec3yu<>{ 0.0f, 1.0f, 0.0f }, mathy::vec3yu<>{ 1.0f, 1.0f, 1.0f }, true);
-        cube_3D->shader.makeProgramFromPaths("../assets/shaders/3D/vertex.glsl", "../assets/shaders/3D/fragment.glsl");
+        player = new rd::TexSquare("../assets/textures/sonic_grass.png", mathy::vec3yu<>{ 0.0f, 0.0f, 0.0f }, colour{ 0.0f, 0.0f, 0.0f, 1.0f }, mathy::vec2yu<>{ 0.16f, 0.16f });
+        player->shader.makeProgramFromPaths("../assets/shaders/texture/vertex.glsl", "../assets/shaders/texture/fragment.glsl");
+        player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
 
         setWindowColor(colour::BLACK());
     }
@@ -24,22 +25,26 @@ namespace program {
         if (input::keyPressed(YINPUT_KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyDown(YINPUT_KEY_RIGHT))
-            cube_3D->rotationAngle += 100.0f * yumegl::dupaTime;
-
-        if (input::keyDown(YINPUT_KEY_LEFT))
-            cube_3D->rotationAngle -= 100.0f * yumegl::dupaTime;
-
-        if (input::keyPressed(YINPUT_KEY_SPACE))
-            cube_3D->enable = !cube_3D->enable;
+        if (input::keyDown(YINPUT_KEY_UP)) {
+            player->position.container.y -= 1.0f * yumegl::dupaTime;
+        }
+        if (input::keyDown(YINPUT_KEY_DOWN)) {
+            player->position.container.y += 1.0f * yumegl::dupaTime;
+        }
+        if (input::keyDown(YINPUT_KEY_RIGHT)) {
+            player->position.container.x -= 1.0f * yumegl::dupaTime;
+        }
+        if (input::keyDown(YINPUT_KEY_LEFT)) {
+            player->position.container.x += 1.0f * yumegl::dupaTime;
+        }
     }
 
     void render() {
-        cube_3D->render();
+        player->simpleRender();
     }
 
     void close() {
-        delete cube_3D;
+        delete player;
     }
 }
 

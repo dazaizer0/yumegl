@@ -37,6 +37,7 @@ add_executable(${PROJECT_NAME}
         source/engine/render/rd2/elementary_objects.hpp
         source/engine/render/rd2/square_rd2.hpp
         source/engine/render/graphics.hpp
+        source/engine/render/rd/tex_square.hpp
         source/engine/shader/shader.hpp
         source/yume_expanded.h
         source/engine/engine_properties.hpp
