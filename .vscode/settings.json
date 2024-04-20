@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "chrono": "cpp",
+        "atomic": "cpp",
+        "cstdint": "cpp"
+    }
+}

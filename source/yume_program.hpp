@@ -5,8 +5,12 @@
 #include "yume_elementary.h"
 #include "yume_expanded.h"
 
+
+void movement_handler(rd::TexSquare* player, int* direction);
+
 namespace program {
     rd::TexSquare* player{ nullptr };
+    int direction;
 
     void setup() {
         yumegl::setWindowSize(720, 720);
@@ -25,18 +29,7 @@ namespace program {
         if (input::keyPressed(KEY_ESCAPE))
             yumegl::setWindowStatus(false);
 
-        if (input::keyDown(KEY_UP)) {
-            player->position.container.y -= 1.0f * yumegl::dupaTime;
-        }
-        if (input::keyDown(KEY_DOWN)) {
-            player->position.container.y += 1.0f * yumegl::dupaTime;
-        }
-        if (input::keyDown(KEY_RIGHT)) {
-            player->position.container.x -= 1.0f * yumegl::dupaTime;
-        }
-        if (input::keyDown(KEY_LEFT)) {
-            player->position.container.x += 1.0f * yumegl::dupaTime;
-        }
+        movement_handler(player, &direction);
     }
 
     void render() {
@@ -48,4 +41,37 @@ namespace program {
     }
 }
 
+void movement_handler(rd::TexSquare* player, int* direction) {
+    if (input::keyDown(KEY_UP))
+        *direction = 1;
+    else if (input::keyDown(KEY_DOWN))
+        *direction = 2;
+    else if (input::keyDown(KEY_RIGHT))
+        *direction = 3;
+    else if (input::keyDown(KEY_LEFT))
+        *direction = 4;
+    else
+        *direction = 0;
+
+    switch (*direction) {
+    case 1: // up
+        player->position.container.y -= 1.0f * yumegl::dupaTime;
+        break;
+    
+    case 2: // down
+        player->position.container.y += 1.0f * yumegl::dupaTime;
+        break;
+    
+    case 3: // right
+        player->position.container.x -= 1.0f * yumegl::dupaTime;
+        break;
+    
+    case 4: // left
+        player->position.container.x += 1.0f * yumegl::dupaTime;
+        break;
+    
+    default:
+        break;
+    }
+}
 #endif

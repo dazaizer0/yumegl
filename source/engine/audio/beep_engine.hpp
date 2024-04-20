@@ -3,12 +3,11 @@
 namespace audio {
     // essential beep function in beep_engine which allows you to play single beep on windows and linux
     void playBeep(const double frequency, int duration) { // MULTIPLATFORM SIMPLE SOUND ENGINE
-        const double period = (1.0 / frequency * 1000000); // T = 1 / f
+        double period = (1.0 / frequency * 1000000); // T = 1 / f
 
         #ifdef _WIN32
         Beep(static_cast<int>(frequency), duration);
         #else
-        const double period = (1.0 / frequency * 1000000);
 
         for (int i = 0; i < duration * 1000; i += period) {
             std::cout << "\a"; // play sound
@@ -51,13 +50,11 @@ namespace audio {
     }
 
     void playBeepSound(BeepSound beep) {
-        const double period = (1.0 / beep.getFrequency() * 1000000); // T = 1 / f
+        double period = (1.0 / beep.getFrequency() * 1000000); // T = 1 / f
 
         #ifdef _WIN32
                 Beep(static_cast<int>(beep.getFrequency()), beep.getDuration());
         #else
-                const double period = (1.0 / beep.getFrequency() * 1000000);
-
                 for (int i = 0; i < beep.getDuration() * 1000; i += period) {
                     std::cout << "\a"; // play sound
                     std::this_thread::sleep_for(std::chrono::microseconds(static_cast<int>(period)));
@@ -71,7 +68,11 @@ namespace audio {
             playBeep(sound.second.getFrequency(), sound.second.getDuration());
             std::cout << std::flush;
 
-            Sleep(base_sleep_time);
+            #ifdef _WIN32
+                Sleep(base_sleep_time);
+            #else
+                std::this_thread::sleep_for(std::chrono::milliseconds(base_sleep_time));
+            #endif
         }
     }
 
