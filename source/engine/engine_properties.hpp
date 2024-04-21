@@ -13,12 +13,16 @@
 #include "../config.h"
 #include "../yume_elementary.h"
 
+void mouseCallback(GLFWwindow* window, double xpos, double ypos);
+
 namespace yumegl {
     // WINDOW
     unsigned int WINDOW_WIDTH{ 1280 };
     unsigned int WINDOW_HEIGHT{ 720 };
 
     unsigned int GRID{ 1 };
+
+    bool audio_enabled{ true };
 
     GLFWwindow* _window;
 
@@ -88,6 +92,10 @@ namespace yumegl {
     void swapBuffersPollEvents() {
         glfwSwapBuffers(_window);
         glfwPollEvents();
+    }
+
+    void setCursorPosCallback(GLFWcursorposfun func) {
+        glfwSetCursorPosCallback(_window, func);
     }
 
     namespace eExit { // ENGINE'S PROCESS TERMINATION FUNCTIONS

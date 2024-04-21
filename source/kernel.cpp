@@ -45,7 +45,9 @@ int main() {
     }
 
     std::cout << "\n\nfinishing processes...\n\n";
-    audio::playBeep(600, 600);
+
+    if (yumegl::audio_enabled)
+        audio::playBeep(600, 600);
 
     program::close();
 

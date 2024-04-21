@@ -5,8 +5,15 @@
 #include "yume_elementary.h"
 #include "yume_expanded.h"
 
+double MOUSEX = 0;
+double MOUSEY = 0;
 
 void movement_handler(rd::TexSquare* player, int* direction);
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    MOUSEX = xpos;
+    MOUSEY = ypos;
+}
 
 namespace program {
     rd::TexSquare* player{ nullptr };
@@ -15,6 +22,7 @@ namespace program {
     void setup() {
         yumegl::setWindowSize(720, 720);
         yumegl::init("yumegl");
+        yumegl::audio_enabled = false;
     }
 
     void start() {
@@ -23,6 +31,8 @@ namespace program {
         player->setRotation(mathy::vec3yu<>{ 0.0f, 0.0f, 1.0f}, 180.0f);
 
         setWindowColor(colour::BLACK());
+
+        yumegl::setCursorPosCallback(mouse_callback);
     }
 
     void update() {
