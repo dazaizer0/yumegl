@@ -18,10 +18,10 @@ namespace rd {
         TexSquare(const std::string& path, mathy::vec3yu<> position_value, colour color_value, mathy::vec2yu<> size_value);
         ~TexSquare();
 
-        //FUNCTIONS
+        // FUNCTIONS
         void updateVertices();
         void refresh() const;
-        
+
         void simpleRender();
         void bindTexture() const;
         void render_getShader(const shaderSystem::GlProgram& other_shader) const;
@@ -39,7 +39,8 @@ namespace rd {
         unsigned int tex{};
         const char* texPath;
         unsigned char* texData;
-        
+        int nrChannels;
+
         struct PanicHandler panic { false };
 
         int texWidth{}, texHeight{};
@@ -59,7 +60,7 @@ namespace rd {
             std::cerr << "ERROR:LOADING:TEXTURE" << std::endl;
         }
         else {
-            std::cout << "texture loaded correctly\n";
+            std::cout << "Texture loaded correctly\n";
         }
 
         // texPath = yumegl::convertToAsssetsPath(path);
@@ -72,16 +73,14 @@ namespace rd {
         // SET UP VERTEX AND BUFFERS DATA. CONFIGURE VERTEX 
         try {
             vertices = {
-                // position, position, position
-                // tex coords, tex coords, tex coords
+                // position, color, tex coords
+                position.x() + size.x(), position.y() + size.y(), position.z(),
+                color.r, color.g, color.b,
+                0.0f, 1.0f,
 
-                 position.x() + size.x(), position.y() + size.y(), position.z(),
-                 color.r, color.g, color.b,
-                 0.0f, 1.0f,
-
-                 position.x() + size.x(), position.y() + -size.y(), position.z(),
-                 color.r, color.g, color.b,
-                 0.0f, 0.0f,
+                position.x() + size.x(), position.y() + -size.y(), position.z(),
+                color.r, color.g, color.b,
+                0.0f, 0.0f,
 
                 position.x() + -size.x(), position.y() + -size.y(), position.z(),
                 color.r, color.g, color.b,
@@ -93,9 +92,8 @@ namespace rd {
             };
             indices = {
                 // triangle 1
-                // triangle 2
-
                 0, 1, 3,
+                // triangle 2
                 1, 2, 3
             };
 
@@ -133,10 +131,9 @@ namespace rd {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
             // FILTER
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-            int nrChannels;
             texData = stbi_load(
                 texPath,
                 &texWidth,
@@ -146,7 +143,15 @@ namespace rd {
             );
 
             if (texData) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+                GLenum format = GL_RGB;
+                if (nrChannels == 1)
+                    format = GL_RED;
+                else if (nrChannels == 3)
+                    format = GL_RGB;
+                else if (nrChannels == 4)
+                    format = GL_RGBA;
+
+                glTexImage2D(GL_TEXTURE_2D, 0, format, texWidth, texHeight, 0, format, GL_UNSIGNED_BYTE, texData);
                 glGenerateMipmap(GL_TEXTURE_2D);
             }
             else {
@@ -168,31 +173,26 @@ namespace rd {
     // FUNCTIONS
     void TexSquare::updateVertices() {
         vertices = {
-                // position, position, position
-                // tex coords, tex coords, tex coords
+            // position, color, tex coords
+            position.x() + size.x(), position.y() + size.y(), position.z(),
+            color.r, color.g, color.b,
+            0.0f, 1.0f,
 
-                position.x() + size.x(), position.y() + size.y(), position.z(),
-                color.r, color.g, color.b,
-                0.0f, 1.0f,
+            position.x() + size.x(), position.y() + -size.y(), position.z(),
+            color.r, color.g, color.b,
+            0.0f, 0.0f,
 
-                position.x() + size.x(), position.y() + -size.y(), position.z(),
-                color.r, color.g, color.b,
-                0.0f, 0.0f,
+            position.x() + -size.x(), position.y() + -size.y(), position.z(),
+            color.r, color.g, color.b,
+            1.0f, 0.0f,
 
-                position.x() + -size.x(), position.y() + -size.y(), position.z(),
-                color.r, color.g, color.b,
-                1.0f, 0.0f,
-
-                position.x() + -size.x(), position.y() + size.y(), position.z(),
-                color.r, color.g, color.b,
-                1.0f, 1.0f
+            position.x() + -size.x(), position.y() + size.y(), position.z(),
+            color.r, color.g, color.b,
+            1.0f, 1.0f
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr )(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
-
-        /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr )(indices.size() * sizeof(float)), indices.data(), GL_STATIC_DRAW);*/
+        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)(vertices.size() * sizeof(float)), vertices.data(), GL_STATIC_DRAW);
     }
 
     void TexSquare::refresh() const {
@@ -204,7 +204,15 @@ namespace rd {
     // RENDER
     void TexSquare::textureErrorHandler() {
         if (texData) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+            GLenum format = GL_RGB;
+            if (nrChannels == 1)
+                format = GL_RED;
+            else if (nrChannels == 3)
+                format = GL_RGB;
+            else if (nrChannels == 4)
+                format = GL_RGBA;
+
+            glTexImage2D(GL_TEXTURE_2D, 0, format, texWidth, texHeight, 0, format, GL_UNSIGNED_BYTE, texData);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {
@@ -212,7 +220,7 @@ namespace rd {
         }
     }
 
-    void TexSquare::simpleRender() { // simpler way to render objects, but less efficient
+    void TexSquare::simpleRender() {
         glBindTexture(GL_TEXTURE_2D, tex);
 
         if (shader.getId()) {
@@ -233,33 +241,6 @@ namespace rd {
     void TexSquare::bindTexture() const {
         glBindTexture(GL_TEXTURE_2D, tex);
     }
-
-    //we need a proper opengl error handling system probably in kernel, commenting for now
-    /*void TexSquare::bindTexture_includePanic() {
-        glBindTexture(GL_TEXTURE_2D, tex);
-
-        if(GLenum err = glGetError())
-        {
-            std::cerr << "-> Panic Handler : TEXTURE BIND ERROR ; GLERROR: " << std::hex << err << std::endl;
-            panic = true;
-            PanicHandler();
-        }
-    }*/
-
-    // we need a proper opengl error handling system probably in kernel, commenting for now
-    /*void TexSquare::render_ownShader_incudePanic() {
-        shader.use();
-
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        if (GLenum err = glGetError())
-        {
-            std::cerr << "-> Panic Handler : RENDERING ERROR ; GLERROR: " << std::hex << err << std::endl;
-            panic = true;
-            PanicHandler();
-        }
-    }*/
 
     void TexSquare::render_ownShader() const {
         shader.use();
@@ -288,9 +269,6 @@ namespace rd {
         transform = glm::translate(transform, -position.container);
 
         shader.use();
-        //unsigned int transformLoc = glGetUniformLocation(shader.id, "transform");
-        //glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-        //wywal jak akceptujesz zmiane
         shader.setMat4("transform", transform);
     }
 
@@ -298,12 +276,7 @@ namespace rd {
         auto transform = glm::mat4{ 1.0f };
 
         transform = glm::rotate(transform, glm::radians(angle), axis.container);
-        //transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
-
         shader.use();
-        //unsigned int transformLoc = glGetUniformLocation(shader.id, "transform");
-        //glUniformMatrix4fv((GLint)transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-        //wywal jak akceptujesz zmiane
         shader.setMat4("transform", transform);
     }
 
