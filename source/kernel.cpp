@@ -5,8 +5,10 @@
 #include <imgui_impl_opengl3.h>
 
 int main() {
+    Program* program = new Program();
+
     try {
-        program::setup();
+        program->test();
         std::cout << "The SetUp() yumeSubsystem has been succesfully done.\n";
     }
     catch (const std::exception& e) {
@@ -14,7 +16,8 @@ int main() {
     }
 
     try {
-        program::start();
+        //program::start();
+        program->start();
         std::cout << "The Initialize() yumeSubsystem has been succesfully done.\n";
     }
     catch (const std::exception& e) {
@@ -35,11 +38,12 @@ int main() {
         yumegl::update();
         input::update();
 
-        program::update();
+        //program::update();
+        program->update();
 
         //render
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        program::render();
+        program->render();
 
         yumegl::swapBuffersPollEvents();
     }
@@ -49,7 +53,7 @@ int main() {
     //if (yumegl::audio_enabled)
         //audio::playBeep(600, 600);
 
-    program::close();
+    delete program;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

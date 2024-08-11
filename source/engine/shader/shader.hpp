@@ -404,8 +404,5 @@ namespace shaderSystem {
             }
         }
     };
-
-    
-
 };
 #endif

@@ -2,7 +2,7 @@
 
 #include "../config.h"
 
-struct PanicHandler {
+class PanicHandler {
 private :
 	bool panic;
 
