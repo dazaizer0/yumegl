@@ -3,6 +3,8 @@
 The project structure has been simplified, cleaned up and many bugs have been fixed. 
 With yumegl, the method of marking engine versions and the method of importing libraries used by yumegl will change.
 
+- Videos: https://www.youtube.com/watch?v=YlsAWpL4QVg&list=PLLJt8REMHj7lC7YGQYaoRcsonT3Z2c_mw
+- 
 - Libraries: https://drive.google.com/drive/folders/1sia8GdaQtF6IfAa7QOfRG_ASMAHdXo2_?hl=pl
 - Latest release: https://github.com/dazaizer0/yumegl/releases/tag/v0.0.1
 
