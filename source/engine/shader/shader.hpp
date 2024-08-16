@@ -47,15 +47,6 @@ namespace shaderSystem {
         }
 
         void loadShaderPath(const std::string& path) {
-
-            if (!std::filesystem::exists(path)) {
-                std::cerr << "ERROR: BAD SHADER PATH : " << path << std::endl;
-            }
-            /*else {
-                std::cout << "shader path correct" << std::endl;
-            }*/
-            // works => no info needed, delete if you want
-
             std::ifstream file;
             std::stringstream stream;
             std::string string;

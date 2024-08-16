@@ -4,5 +4,6 @@
 #include "engine/render/rd2/cube_rd2.hpp"
 #include "engine/render/rd2/square_rd2.hpp"
 #include "engine/render/rd/tex_square.hpp"
+#include "engine/render/renderer.hpp"
 
 #endif

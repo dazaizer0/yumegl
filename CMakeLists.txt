@@ -44,7 +44,11 @@ add_executable(${PROJECT_NAME}
         source/engine/panic_handler.hpp
         source/engine/input/input.hpp
         source/engine/audio/beep_engine.hpp
-   )
+        source/engine/render/renderer.cpp
+        source/engine/render/renderer.hpp
+        source/engine/core/scene.cpp
+        source/engine/core/scene.hpp
+)
 
 # PROJECT  ------------------------
 

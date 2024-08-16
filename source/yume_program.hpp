@@ -5,12 +5,12 @@
 #include "yume_elementary.h"
 #include "yume_expanded.h"
 
-class Program {
+class Program : public Scene {
     rd::TexSquare* player{ nullptr };
     bool jumping = false;
     float velocity = 0.0f;
     const float gravity = 0.001f;
-    const float jumpForce = -0.02f;
+    const float jumpForce = -0.03f;
 
 public:
     Program();
@@ -28,7 +28,7 @@ private:
 
 Program::Program() {
     yumegl::setWindowSize(720, 720);
-    yumegl::init("flappy bird");
+    yumegl::init("flappy drone");
 }
 
 void Program::test() {
@@ -72,4 +72,5 @@ Program::~Program()
 {
     delete player;
 }
+
 #endif
